@@ -1,12 +1,12 @@
-﻿using FBank.Domain.Common;
+﻿using FBank.Domain.Entities;
 
-namespace FBank.Application.Common.Interfaces
+namespace FBank.Application.Interfaces
 {
     public interface IBaseRepository<T> where T : EntityBase
     {
         void Insert(T entity);
         void Update(T entity);
         void Delete(T entity);
-        T SelectPerId(Guid id);
+        T SelectToId(Guid id);
     }
 }

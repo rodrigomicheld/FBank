@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FBank.Domain.Entities;
+using FBank.Infrastructure.Mappings;
+using Microsoft.EntityFrameworkCore;
 
 namespace FBank.Infrastructure
 {
@@ -6,14 +8,13 @@ namespace FBank.Infrastructure
     {
         public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options) { }
 
-        //public DbSet<Model> Models { get; set; }
-
+        public DbSet<Client> Clients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            //new ModelMapping().Initialize(modelBuilder.Entity<Model>());
+            new ClientMapping().Initialize(modelBuilder.Entity<Client>());
         }
     }
 }

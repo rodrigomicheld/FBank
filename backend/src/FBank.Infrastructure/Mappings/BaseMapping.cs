@@ -1,8 +1,8 @@
-﻿using FBank.Domain.Common;
+﻿using FBank.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FBank.Infrastructure.Common
+namespace FBank.Infrastructure.Mappings
 {
     public abstract class BaseMapping<T> where T : EntityBase
     {
@@ -19,7 +19,6 @@ namespace FBank.Infrastructure.Common
         {
             builder.Property(x => x.Id).HasColumnName("id").IsRequired();
             builder.Property(x => x.UpdateDate).HasColumnName("ultima_atualizacao").IsRequired();
-           
         }
 
         protected virtual void MapearChavePrimaria(EntityTypeBuilder<T> builder)

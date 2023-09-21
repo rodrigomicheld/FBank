@@ -1,8 +1,8 @@
-﻿using FBank.Application.Common.Interfaces;
-using FBank.Domain.Common;
+﻿using FBank.Application.Interfaces;
+using FBank.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace FBank.Infrastructure.Common
+namespace FBank.Infrastructure.Repositories
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : EntityBase
     {
@@ -28,7 +28,7 @@ namespace FBank.Infrastructure.Common
             Context.SaveChangesAsync();
         }
 
-        public T SelectPerId(Guid id)
+        public T SelectToId(Guid id)
         {
             return Entity.Find(id);
         }

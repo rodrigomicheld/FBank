@@ -1,16 +1,16 @@
-﻿using FBank.Infrastructure;
+﻿using FBank.Application.Interfaces;
+using FBank.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace InvestControl.Infrastructure
+namespace FBank.Infrastructure
 {
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddScoped<IModelRepository, ModelRepository>();
-
+            services.AddScoped<IClientRepository, ClientRepository>();
 
             AddSqlServer(services, configuration);
 
