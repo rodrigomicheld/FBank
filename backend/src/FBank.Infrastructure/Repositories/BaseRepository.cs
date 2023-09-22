@@ -18,14 +18,14 @@ namespace FBank.Infrastructure.Repositories
         public void Delete(T entity)
         {
             Entity.Remove(entity);
-            Context.SaveChangesAsync();
+            Context.SaveChanges();
         }
 
         public void Insert(T entity)
         {
             entity.UpdateDate = DateTime.Now;
-            Entity.AddAsync(entity);
-            Context.SaveChangesAsync();
+            Entity.Add(entity);
+            Context.SaveChanges();
         }
 
         public T SelectToId(Guid id)
@@ -36,8 +36,8 @@ namespace FBank.Infrastructure.Repositories
         public void Update(T entity)
         {
             entity.UpdateDate = DateTime.Now;
-            Entity.AddAsync(entity);
-            Context.SaveChangesAsync();
+            Entity.Add(entity);
+            Context.SaveChanges();
         }
     }
 }

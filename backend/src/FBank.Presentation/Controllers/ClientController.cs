@@ -20,7 +20,7 @@ namespace FBank.Presentation.Controllers
         [HttpGet("obter-client-por-id/{id}")]
         public IActionResult FindClientToId(Guid id)
         {
-            _logger.LogInformation("Executando o metodo ObterUsarioPorId");
+            _logger.LogInformation("Executando o metodo FindClientToId");
             return Ok(_clientRepository.SelectToId(id));
         }
     }
