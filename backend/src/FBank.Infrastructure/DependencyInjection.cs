@@ -11,6 +11,7 @@ namespace FBank.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IBankRepository, BankRepository>();
 
             AddSqlServer(services, configuration);
 
