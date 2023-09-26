@@ -9,12 +9,14 @@ namespace FBank.Infrastructure
         public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options) { }
 
         public DbSet<Client> Clients { get; set; }
+        public DbSet<Bank> Banks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             new ClientMapping().Initialize(modelBuilder.Entity<Client>());
+            new BankMapping().Initialize(modelBuilder.Entity<Bank>());
         }
     }
 }

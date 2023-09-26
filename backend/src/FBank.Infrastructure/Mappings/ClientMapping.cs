@@ -6,9 +6,9 @@ namespace FBank.Infrastructure.Mappings
 {
     public class ClientMapping : BaseMapping<Client>
     {
-        protected override void MapearEntidade(EntityTypeBuilder<Client> entityTypeBuilder)
+        protected override void MapEntity(EntityTypeBuilder<Client> entityTypeBuilder)
         {
-            entityTypeBuilder.ToTable("Client");
+            entityTypeBuilder.ToTable("Cliente");
 
             entityTypeBuilder.Property(p => p.Name)
                 .IsRequired()

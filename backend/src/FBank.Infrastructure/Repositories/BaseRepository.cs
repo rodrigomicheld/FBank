@@ -23,7 +23,8 @@ namespace FBank.Infrastructure.Repositories
 
         public void Insert(T entity)
         {
-            entity.UpdateDate = DateTime.Now;
+            entity.CreateDateAt = DateTime.Now;
+            entity.UpdateDateAt = DateTime.Now;
             Entity.Add(entity);
             Context.SaveChanges();
         }
@@ -35,7 +36,7 @@ namespace FBank.Infrastructure.Repositories
 
         public void Update(T entity)
         {
-            entity.UpdateDate = DateTime.Now;
+            entity.UpdateDateAt = DateTime.Now;
             Entity.Add(entity);
             Context.SaveChanges();
         }
