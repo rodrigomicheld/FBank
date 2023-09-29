@@ -2,8 +2,8 @@
 {
     public class Agency  : EntityBase
     {
-        public int Code { get; set; }
         public int BankCode { get; set; }
         public string Name { get; set; }        
+        public Bank Bank { get; set; }
     }
 }

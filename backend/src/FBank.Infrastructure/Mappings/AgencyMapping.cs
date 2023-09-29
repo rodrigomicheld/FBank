@@ -10,7 +10,7 @@ namespace FBank.Infrastructure.Mappings
         {
             entityTypeBuilder.ToTable("Agency");
 
-            entityTypeBuilder.Property(p => p.Code)
+            entityTypeBuilder.Property(p => p.Id)
                .IsRequired()
                .HasColumnName("codigo_agencia");
 
@@ -22,6 +22,9 @@ namespace FBank.Infrastructure.Mappings
                 .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("nome");
+
+            entityTypeBuilder.HasOne(a => a.Bank)
+                .WithMany(b => b.Agencies);
 
 
         }
