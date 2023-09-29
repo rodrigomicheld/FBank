@@ -12,7 +12,7 @@ namespace FBank.Infrastructure.Mappings
 
             entityTypeBuilder.Property(p => p.Id)
                .IsRequired()
-               .HasColumnName("codigo_agencia");
+               .HasColumnName("codigo");
 
             entityTypeBuilder.Property(p => p.BankCode)
                .IsRequired()
