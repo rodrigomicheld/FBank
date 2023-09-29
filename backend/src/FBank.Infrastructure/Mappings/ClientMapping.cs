@@ -13,6 +13,10 @@ namespace FBank.Infrastructure.Mappings
             entityTypeBuilder.Property(p => p.Name)
                 .IsRequired()
                 .HasColumnName("nome");
+            entityTypeBuilder.HasOne(x => x.Account)
+                .WithOne(a => a.Client)
+                .HasForeignKey<Account>(c => c.ClientId)
+                .IsRequired(false);
         }
     }
 }
