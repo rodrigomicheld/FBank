@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FBank.Infrastructure.Mappings
 {
-    public class BankMapping : BaseMapping<Bank>
+    public  class AgencyMapping : BaseMapping<Agency>
     {
-        protected override void MapEntity(EntityTypeBuilder<Bank> entityTypeBuilder)
+        protected override void MapEntity(EntityTypeBuilder<Agency> entityTypeBuilder) 
         {
-            entityTypeBuilder.ToTable("Banco");
+            entityTypeBuilder.ToTable("Agencia");            
 
             entityTypeBuilder.Property(p => p.Code)
                .IsRequired()
@@ -19,12 +19,13 @@ namespace FBank.Infrastructure.Mappings
                 .HasMaxLength(50)
                 .HasColumnName("nome");
 
-            entityTypeBuilder.HasAlternateKey(p => p.Code);
+            entityTypeBuilder.HasOne(a => a.Bank)
+                .WithMany(b => b.Agencies);
 
-            entityTypeBuilder.HasMany(b => b.Agencies)
-                .WithOne(a => a.Bank)
-                .HasForeignKey(a => a.BankId)
-                .OnDelete(DeleteBehavior.Cascade);
+            entityTypeBuilder.Property(p => p.BankId)
+               .IsRequired()
+               .HasColumnName("banco_id");
+
         }
     }
 }
