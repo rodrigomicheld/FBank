@@ -6,5 +6,6 @@
         public string Name { get; set; }        
         public Guid BankId { get; set; }
         public virtual Bank Bank { get; set; }
+        public virtual IEnumerable<Account> Accounts { get; set; }
     }
 }
