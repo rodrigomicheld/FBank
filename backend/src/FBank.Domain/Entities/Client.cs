@@ -8,5 +8,6 @@ namespace FBank.Domain.Entities
         public string Document { get; set; }
         public DocumentType DocumentType { get; set; }
         public Account Account { get; set; }
+        public Guid AccountId { get; set; }
     }
 }
