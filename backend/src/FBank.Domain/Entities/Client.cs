@@ -5,7 +5,7 @@ namespace FBank.Domain.Entities
     public class Client : EntityBase
     {
         public string Name { get; set; }
-        public int Document { get; set; }
+        public string Document { get; set; }
         public DocumentType DocumentType { get; set; }
     }
 }

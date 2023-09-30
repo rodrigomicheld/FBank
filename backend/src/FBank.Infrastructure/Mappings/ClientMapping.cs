@@ -17,7 +17,7 @@ namespace FBank.Infrastructure.Mappings
             entityTypeBuilder.Property(p => p.Document)
                 .IsRequired()
                 .HasColumnName("documento")
-                .HasMaxLength(15);
+                .HasMaxLength(20);
 
             entityTypeBuilder.Property(p => p.DocumentType)
                 .IsRequired()
