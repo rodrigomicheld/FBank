@@ -18,6 +18,8 @@ namespace FBank.Infrastructure.Mappings
                 .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("nome");
+
+            entityTypeBuilder.HasAlternateKey(p => p.Code);
         }
     }
 }
