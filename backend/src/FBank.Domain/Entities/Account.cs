@@ -1,10 +1,5 @@
-﻿using FonteSaber.Infra.CrossCutting.Enuns;
-using System;
-using System.Collections.Generic;
+﻿using FBank.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FBank.Domain.Entities
 {

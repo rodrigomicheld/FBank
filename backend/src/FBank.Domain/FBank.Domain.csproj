@@ -5,12 +5,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\FonteSaber.Infra.CrossCutting.Enuns\FonteSaber.Infra.CrossCutting.Enuns.csproj" />
-  </ItemGroup>
-
 </Project>
