@@ -2,8 +2,9 @@
 {
     public class Agency  : EntityBase
     {
-        public int BankCode { get; set; }
+        public int Code { get; set; }
         public string Name { get; set; }        
-        public Bank Bank { get; set; }
+        public Guid BankId { get; set; }
+        public virtual Bank Bank { get; set; }
     }
 }

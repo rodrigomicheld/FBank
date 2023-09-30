@@ -3,6 +3,6 @@
     public class Bank : EntityBase
     {        
         public string Name { get; set; }
-        public IEnumerable<Agency> Agencies { get; set; }
+        public virtual IEnumerable<Agency> Agencies { get; set; }
     }
 }

@@ -25,12 +25,17 @@ namespace FBank.Infrastructure.Migrations
             modelBuilder.Entity("FBank.Domain.Entities.Agency", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("codigo");
+                        .HasColumnName("id");
 
-                    b.Property<int>("BankCode")
+                    b.Property<Guid>("BankId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("BancoId");
+
+                    b.Property<int>("Code")
                         .HasColumnType("int")
-                        .HasColumnName("codigo_banco");
+                        .HasColumnName("codigo");
 
                     b.Property<DateTime>("CreateDateAt")
                         .HasColumnType("datetime2")
@@ -47,6 +52,8 @@ namespace FBank.Infrastructure.Migrations
                         .HasColumnName("atualizado_em");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BankId");
 
                     b.ToTable("Agency", (string)null);
                 });
@@ -106,7 +113,7 @@ namespace FBank.Infrastructure.Migrations
                 {
                     b.HasOne("FBank.Domain.Entities.Bank", "Bank")
                         .WithMany("Agencies")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("BankId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

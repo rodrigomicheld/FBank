@@ -8,15 +8,11 @@ namespace FBank.Infrastructure.Mappings
     {
         protected override void MapEntity(EntityTypeBuilder<Agency> entityTypeBuilder) 
         {
-            entityTypeBuilder.ToTable("Agency");
+            entityTypeBuilder.ToTable("Agency");            
 
-            entityTypeBuilder.Property(p => p.Id)
+            entityTypeBuilder.Property(p => p.Code)
                .IsRequired()
                .HasColumnName("codigo");
-
-            entityTypeBuilder.Property(p => p.BankCode)
-               .IsRequired()
-               .HasColumnName("codigo_banco");
 
             entityTypeBuilder.Property(p => p.Name)
                 .IsRequired()
@@ -26,6 +22,9 @@ namespace FBank.Infrastructure.Mappings
             entityTypeBuilder.HasOne(a => a.Bank)
                 .WithMany(b => b.Agencies);
 
+            entityTypeBuilder.Property(p => p.BankId)
+               .IsRequired()
+               .HasColumnName("BancoId");
 
         }
     }

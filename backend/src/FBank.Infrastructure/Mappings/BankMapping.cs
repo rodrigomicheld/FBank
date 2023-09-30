@@ -21,7 +21,7 @@ namespace FBank.Infrastructure.Mappings
 
             entityTypeBuilder.HasMany(b => b.Agencies)
                 .WithOne(a => a.Bank)
-                .HasForeignKey(a => a.Id)
+                .HasForeignKey(a => a.BankId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
