@@ -22,48 +22,16 @@ namespace FBank.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("FBank.Domain.Entities.Agency", b =>
+            modelBuilder.Entity("FBank.Domain.Entities.Bank", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("BankId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("BancoId");
-
                     b.Property<int>("Code")
                         .HasColumnType("int")
-                        .HasColumnName("codigo");
-
-                    b.Property<DateTime>("CreateDateAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("criado_em");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("nome");
-
-                    b.Property<DateTime>("UpdateDateAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("atualizado_em");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BankId");
-
-                    b.ToTable("Agency", (string)null);
-                });
-
-            modelBuilder.Entity("FBank.Domain.Entities.Bank", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("codigo");
+                        .HasColumnName("codigo_banco");
 
                     b.Property<DateTime>("CreateDateAt")
                         .HasColumnType("datetime2")
@@ -121,22 +89,6 @@ namespace FBank.Infrastructure.Migrations
                     b.HasAlternateKey("Document");
 
                     b.ToTable("Cliente", (string)null);
-                });
-
-            modelBuilder.Entity("FBank.Domain.Entities.Agency", b =>
-                {
-                    b.HasOne("FBank.Domain.Entities.Bank", "Bank")
-                        .WithMany("Agencies")
-                        .HasForeignKey("BankId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bank");
-                });
-
-            modelBuilder.Entity("FBank.Domain.Entities.Bank", b =>
-                {
-                    b.Navigation("Agencies");
                 });
 #pragma warning restore 612, 618
         }
