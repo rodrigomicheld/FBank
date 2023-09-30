@@ -10,7 +10,6 @@ namespace FBank.Domain.Entities
     {
         public int ClientId { get; set; }
         public Client Client { get; set; }
-        public DateTime Since { get; set; }
         public int IdStatus { get; set; }
         public Decimal Saldo { get; set; }
     }

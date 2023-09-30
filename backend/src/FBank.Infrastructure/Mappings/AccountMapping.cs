@@ -8,11 +8,7 @@ namespace FBank.Infrastructure.Mappings
     {
         protected override void MapEntity(EntityTypeBuilder<Account> entityTypeBuilder)
         {
-            entityTypeBuilder.ToTable("Account");
-
-            entityTypeBuilder.Property(p => p.Since)
-               .IsRequired()
-               .HasColumnName("Since");
+            entityTypeBuilder.ToTable("Conta");
 
             entityTypeBuilder.Property(p => p.IdStatus)
                 .IsRequired()
