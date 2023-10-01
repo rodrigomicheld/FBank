@@ -10,13 +10,13 @@ namespace FBank.Domain.Enums
     public enum AccountStatusEnum
     {
 
-        [Description("Ativo")]
-        Ativo = 1,
-        [Description("Inativo")]
-        Inativo = 2,
-        [Description("Em Abertura")]
-        EmAbertura = 3,
-        [Description("Cancelado")]
+        [Description("Active")]
+        Active = 1,
+        [Description("Inactive")]
+        Inactive = 2,
+        [Description("In Progress")]
+        InPrgress = 3,
+        [Description("Canceled")]
         Cancelado = 4
     }
 }

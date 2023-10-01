@@ -12,17 +12,15 @@ namespace FBank.Infrastructure.Mappings
 
             entityTypeBuilder.Property(p => p.IdStatus)
                 .IsRequired()
-                .HasColumnName("IdStatus");
+                .HasColumnName("Status_Id");
 
-            entityTypeBuilder.Property(p => p.Saldo)
+            entityTypeBuilder.Property(p => p.Balance)
                 .IsRequired()
                 .HasColumnType("Decimal(21,9)")
-                .HasColumnName("Saldo");
+                .HasColumnName("Balance");
 
             entityTypeBuilder.HasOne(p => p.Client)
-                .WithOne(q => q.Account)
-                .HasForeignKey<Account>(r => r.ClientId)
-                .IsRequired();
+                .WithMany(q => q.Accounts);
 
             entityTypeBuilder.Property(p => p.ClientId)
              .IsRequired()
