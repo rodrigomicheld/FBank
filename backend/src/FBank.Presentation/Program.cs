@@ -1,3 +1,4 @@
+using FBank.Application;
 using FBank.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+builder.Services.AddAplication();
 builder.Services.AddInfrastructure(configuration);
 
 var app = builder.Build();
