@@ -26,6 +26,11 @@ namespace FBank.Infrastructure.Mappings
                .IsRequired()
                .HasColumnName("banco_id");
 
+            entityTypeBuilder.HasMany(b => b.Accounts)
+               .WithOne(a => a.Agency)
+               .HasForeignKey(a => a.AgencyId)
+               .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

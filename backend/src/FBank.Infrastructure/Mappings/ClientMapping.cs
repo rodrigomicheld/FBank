@@ -23,7 +23,13 @@ namespace FBank.Infrastructure.Mappings
                 .IsRequired()
                 .HasColumnName("tipo_documento");
 
-            entityTypeBuilder.HasAlternateKey(p => p.Document);
+            entityTypeBuilder.HasAlternateKey(p => p.Document);    
+
+
+            entityTypeBuilder.HasMany(x => x.Accounts)
+                .WithOne(a => a.Client)
+                .HasForeignKey(c => c.ClientId)
+                .IsRequired(false);
         }
     }
 }
