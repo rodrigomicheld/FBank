@@ -13,5 +13,6 @@ namespace FBank.Domain.Entities
         [EnumDataType(typeof(AccountStatusEnum))]
         public int IdStatus { get; set; }
         public Decimal Balance { get; set; }
+        public virtual IEnumerable<TransactionBank> Transactions { get; set; }
     }
 }

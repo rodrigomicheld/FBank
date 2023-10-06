@@ -12,6 +12,7 @@ namespace FBank.Infrastructure
         {
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IBankRepository, BankRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
 
             AddSqlServer(services, configuration);
 
@@ -20,7 +21,7 @@ namespace FBank.Infrastructure
 
         private static void AddSqlServer(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnectionStrings:DefaultConnection")));
         }
     }
 }
