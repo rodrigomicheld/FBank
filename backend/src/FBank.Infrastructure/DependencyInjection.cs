@@ -21,7 +21,7 @@ namespace FBank.Infrastructure
 
         private static void AddSqlServer(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnectionStrings:DefaultConnection")));
+            services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         }
     }
 }
