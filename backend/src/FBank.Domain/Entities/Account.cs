@@ -14,5 +14,6 @@ namespace FBank.Domain.Entities
         public int IdStatus { get; set; }
         public Decimal Balance { get; set; }
         public virtual IEnumerable<TransactionBank> Transactions { get; set; }
+        public int Number { get; set; }
     }
 }
