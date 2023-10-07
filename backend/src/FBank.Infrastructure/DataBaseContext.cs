@@ -10,6 +10,9 @@ namespace FBank.Infrastructure
 
         public DbSet<Client> Clients { get; set; }
         public DbSet<Bank> Banks { get; set; }
+        public DbSet<Agency> Agencies { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<TransactionBank> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -17,6 +20,9 @@ namespace FBank.Infrastructure
 
             new ClientMapping().Initialize(modelBuilder.Entity<Client>());
             new BankMapping().Initialize(modelBuilder.Entity<Bank>());
+            new AccountMapping().Initialize(modelBuilder.Entity<Account>());
+            new AgencyMapping().Initialize(modelBuilder.Entity<Agency>());
+            new TransactionMapping().Initialize(modelBuilder.Entity<TransactionBank>());
         }
     }
 }

@@ -4,6 +4,7 @@ using FBank.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FBank.Infrastructure.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231004003820_Popular-bank-agency")]
+    partial class Popularbankagency
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,15 +34,15 @@ namespace FBank.Infrastructure.Migrations
 
                     b.Property<Guid>("AgencyId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("agencia_id");
+                        .HasColumnName("Agencia_id");
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("Decimal(21,2)")
-                        .HasColumnName("saldo");
+                        .HasColumnType("Decimal(21,9)")
+                        .HasColumnName("Balance");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("cliente_id");
+                        .HasColumnName("Cliente_id");
 
                     b.Property<DateTime>("CreateDateAt")
                         .HasColumnType("datetime2")
@@ -47,11 +50,7 @@ namespace FBank.Infrastructure.Migrations
 
                     b.Property<int>("IdStatus")
                         .HasColumnType("int")
-                        .HasColumnName("status_Id");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("int")
-                        .HasColumnName("numero");
+                        .HasColumnName("Status_Id");
 
                     b.Property<DateTime>("UpdateDateAt")
                         .HasColumnType("datetime2")
@@ -171,47 +170,6 @@ namespace FBank.Infrastructure.Migrations
                     b.ToTable("Cliente", (string)null);
                 });
 
-            modelBuilder.Entity("FBank.Domain.Entities.TransactionBank", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("AccountFromId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("conta_origem_id");
-
-                    b.Property<Guid>("AccountToId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("conta_destino_id");
-
-                    b.Property<DateTime>("CreateDateAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("criado_em");
-
-                    b.Property<int>("FlowType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("int")
-                        .HasColumnName("tipo_transacao");
-
-                    b.Property<DateTime>("UpdateDateAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("atualizado_em");
-
-                    b.Property<decimal>("Value")
-                        .HasColumnType("Decimal(21,2)")
-                        .HasColumnName("valor");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountToId");
-
-                    b.ToTable("Transacao", (string)null);
-                });
-
             modelBuilder.Entity("FBank.Domain.Entities.Account", b =>
                 {
                     b.HasOne("FBank.Domain.Entities.Agency", "Agency")
@@ -238,22 +196,6 @@ namespace FBank.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Bank");
-                });
-
-            modelBuilder.Entity("FBank.Domain.Entities.TransactionBank", b =>
-                {
-                    b.HasOne("FBank.Domain.Entities.Account", "AccountTo")
-                        .WithMany("Transactions")
-                        .HasForeignKey("AccountToId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AccountTo");
-                });
-
-            modelBuilder.Entity("FBank.Domain.Entities.Account", b =>
-                {
-                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("FBank.Domain.Entities.Agency", b =>

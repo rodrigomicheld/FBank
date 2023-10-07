@@ -1,4 +1,5 @@
 ﻿using FBank.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace FBank.Application.Interfaces
 {
@@ -8,5 +9,6 @@ namespace FBank.Application.Interfaces
         void Update(T entity);
         void Delete(T entity);
         T SelectToId(Guid id);
+        IEnumerable<T> Find(Expression<Func<T, bool>> predicate = null);
     }
 }

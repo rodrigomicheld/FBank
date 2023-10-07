@@ -12,12 +12,19 @@ namespace FBank.Infrastructure.Mappings
 
             entityTypeBuilder.Property(p => p.Code)
                .IsRequired()
-               .HasColumnName("codigo_banco");
+               .HasColumnName("codigo");
 
             entityTypeBuilder.Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("nome");
+
+            entityTypeBuilder.HasAlternateKey(p => p.Code);
+
+            entityTypeBuilder.HasMany(b => b.Agencies)
+                .WithOne(a => a.Bank)
+                .HasForeignKey(a => a.BankId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
