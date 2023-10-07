@@ -22,10 +22,11 @@ namespace FBank.Application.Services
 
         public Task<ClientViewModel> Handle(GetOneClientQuery request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Listando o cliente {request.Id}");
+            _logger.LogInformation($"Listando o cliente Documento: {request.Id}");
 
-            var queryResult = _clientRepository.SelectToId(request.Id);
-
+           
+             var queryResult = _clientRepository.SelectToId(request.Id); //corrigir
+           
             if (queryResult == null)
                 throw new NullReferenceException("Client not found!");
             
