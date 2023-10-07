@@ -1,6 +1,7 @@
 ﻿using FBank.Application.Interfaces;
 using FBank.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace FBank.Infrastructure.Repositories
 {
@@ -39,6 +40,15 @@ namespace FBank.Infrastructure.Repositories
             entity.UpdateDateAt = DateTime.Now;
             Entity.Add(entity);
             Context.SaveChanges();
+        }
+
+        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate = null)
+        {
+            if (predicate != null)
+            {
+                return Entity.Where(predicate);
+            }
+            return Entity.AsEnumerable();
         }
     }
 }
