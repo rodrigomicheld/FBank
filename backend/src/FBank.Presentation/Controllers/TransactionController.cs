@@ -1,15 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FBank.Application.Requests;
+using FBank.Application.ViewMoldels;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FBank.Presentation.Controllers
 {
-    public class TransactionController : ControllerBase
+    public class TransactionController : StandardController
     {
-        private readonly ILogger _logger;
-        public TransactionController(Logger<TransactionController> logger)
+        public TransactionController(IMediator mediator) : base(mediator)
         {
-            _logger = logger;
         }
 
+        [HttpPost]
+        public async Task<ActionResult<TransactionViewModel>> PostTransactionWithDraw([FromBody] WithDrawMoneyAccountRequest  request)
+        {
+            try
+            {
+                return Ok(await mediator.Send(request));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }

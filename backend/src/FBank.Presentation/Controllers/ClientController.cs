@@ -1,27 +1,27 @@
-﻿using FBank.Application.Interfaces;
+﻿using FBank.Application.Queries;
+using FBank.Application.ViewMoldels;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FBank.Presentation.Controllers
 {
-    [ApiController]
-    [Route("Client")]
-    public class ClientController : ControllerBase
+    public class ClientController : StandardController
     {
-        private IClientRepository _clientRepository;
-        private readonly ILogger<ClientController> _logger;
-        public ClientController(
-            IClientRepository clientRepository,
-            ILogger<ClientController> logger)
+        public ClientController(IMediator mediator) : base(mediator)
         {
-            _clientRepository = clientRepository;
-            _logger = logger;
         }
 
-        [HttpGet("obter-client-por-id/{id}")]
-        public IActionResult FindClientToId(Guid id)
+        [HttpGet]
+        public async Task<ActionResult<ClientViewModel>> GetOneAsync([FromQuery] Guid id)
         {
-            _logger.LogInformation("Executando o metodo FindClientToId");
-            return Ok(_clientRepository.SelectToId(id));
+            try
+            {
+                return await mediator.Send(new GetOneClientQuery { Id = id });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
