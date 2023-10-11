@@ -22,10 +22,10 @@ namespace FBank.Application.Services
 
         public Task<ClientViewModel> Handle(GetOneClientQuery request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Listando o cliente Documento: {request.Id}");
+            _logger.LogInformation($"Listando o cliente Documento: {request.Document}");
 
            
-             var queryResult = _clientRepository.SelectToId(request.Id); //corrigir
+             var queryResult = _clientRepository.SelectOne(x=> x.Document == request.Document);
            
             if (queryResult == null)
                 throw new NullReferenceException("Client not found!");
@@ -33,6 +33,7 @@ namespace FBank.Application.Services
             var mappedResult = _mapper.Map<ClientViewModel>(queryResult);
 
             return Task.FromResult(mappedResult);
+          
         }
     }
 }

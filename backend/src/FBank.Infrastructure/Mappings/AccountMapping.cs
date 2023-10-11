@@ -21,6 +21,7 @@ namespace FBank.Infrastructure.Mappings
 
             entityTypeBuilder.HasOne(p => p.Client)
                 .WithMany(q => q.Accounts);
+             
 
             entityTypeBuilder.Property(p => p.ClientId)
              .IsRequired()
