@@ -10,9 +10,9 @@ namespace FBank.Infrastructure.Mappings
         {
             entityTypeBuilder.ToTable("Conta");
 
-            entityTypeBuilder.Property(p => p.IdStatus)
+            entityTypeBuilder.Property(p => p.Status)
                 .IsRequired()
-                .HasColumnName("status_Id");
+                .HasColumnName("status");
 
             entityTypeBuilder.Property(p => p.Balance)
                 .IsRequired()

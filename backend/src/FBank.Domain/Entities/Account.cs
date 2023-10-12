@@ -1,5 +1,4 @@
 ﻿using FBank.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace FBank.Domain.Entities
 {
@@ -9,9 +8,7 @@ namespace FBank.Domain.Entities
         public virtual Client Client { get; set; }
         public Guid AgencyId { get; set; }
         public virtual Agency Agency { get; set; }
-
-        [EnumDataType(typeof(AccountStatusEnum))]
-        public int IdStatus { get; set; }
+        public AccountStatusEnum Status { get; set; }
         public Decimal Balance { get; set; }
         public virtual IEnumerable<TransactionBank> Transactions { get; set; }
         public int Number { get; set; }

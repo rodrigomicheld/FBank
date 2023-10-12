@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace FBank.Domain.Enums
 {
     public enum AccountStatusEnum
     {
 
-        [Description("Active")]
+        [Description("Ativo")]
         Active = 1,
-        [Description("Inactive")]
+        [Description("Inativo")]
         Inactive = 2,
-        [Description("In Progress")]
+        [Description("Em Processamento")]
         InPrgress = 3,
-        [Description("Canceled")]
+        [Description("Cancelado")]
         Cancelado = 4
     }
 }

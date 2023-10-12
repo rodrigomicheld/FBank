@@ -45,13 +45,13 @@ namespace FBank.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("criado_em");
 
-                    b.Property<int>("IdStatus")
-                        .HasColumnType("int")
-                        .HasColumnName("status_Id");
-
                     b.Property<int>("Number")
                         .HasColumnType("int")
                         .HasColumnName("numero");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("status");
 
                     b.Property<DateTime>("UpdateDateAt")
                         .HasColumnType("datetime2")

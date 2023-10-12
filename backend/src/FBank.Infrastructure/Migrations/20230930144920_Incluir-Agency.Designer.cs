@@ -110,7 +110,7 @@ namespace FBank.Infrastructure.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("documento");
 
-                    b.Property<int>("DocumentType")
+                    b.Property<int>("PersonType")
                         .HasColumnType("int")
                         .HasColumnName("tipo_documento");
 

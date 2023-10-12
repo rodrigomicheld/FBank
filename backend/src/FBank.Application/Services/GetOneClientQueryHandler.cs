@@ -23,8 +23,7 @@ namespace FBank.Application.Services
         public Task<ClientViewModel> Handle(GetOneClientQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Listando o cliente Documento: {request.Document}");
-
-           
+                       
              var queryResult = _clientRepository.SelectOne(x=> x.Document == request.Document);
            
             if (queryResult == null)
@@ -32,8 +31,7 @@ namespace FBank.Application.Services
             
             var mappedResult = _mapper.Map<ClientViewModel>(queryResult);
 
-            return Task.FromResult(mappedResult);
-          
+            return Task.FromResult(mappedResult); 
         }
     }
 }

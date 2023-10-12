@@ -15,10 +15,7 @@ var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").B
 builder.Services.AddAplication();
 builder.Services.AddInfrastructure(configuration);
 
-//builder.Services.AddControllers().AddJsonOptions(x =>
-//   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-
-builder.Services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+//.Services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 var app = builder.Build();
 

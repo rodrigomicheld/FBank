@@ -13,7 +13,8 @@ namespace FBank.Infrastructure.Repositories
         {
             IQueryable<Client> query = Context.Clients;
     
-            query = query.Include(client => client.Accounts);
+            query = query.Include(client => client.Accounts)
+                .ThenInclude(account => account.Agency);
 
             return query.AsNoTracking()
                 .Where(filter).FirstOrDefault();        
