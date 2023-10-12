@@ -25,7 +25,7 @@ namespace FBank.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TransactionViewModel>> PostTransactionDeposit([FromBody] WithDrawMoneyAccountRequest request)
+        public async Task<ActionResult<TransactionViewModel>> PostTransactionDeposit([FromBody] DepositMoneyAccountRequest request)
         {
             try
             {
