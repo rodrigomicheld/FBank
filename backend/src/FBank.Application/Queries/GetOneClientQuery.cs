@@ -5,6 +5,6 @@ namespace FBank.Application.Queries
 {
     public class GetOneClientQuery : IRequest<ClientViewModel>
     {
-        public Guid Id { get; set; }
+        public string Document { get; set; }
     }
 }
