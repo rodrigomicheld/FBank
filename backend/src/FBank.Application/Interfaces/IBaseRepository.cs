@@ -9,7 +9,7 @@ namespace FBank.Application.Interfaces
         void Update(T entity);
         void Delete(T entity);
         T SelectToId(Guid id);
-        T SelectOne(Expression<Func<T, bool>> filtro = null);
         IEnumerable<T> Find(Expression<Func<T, bool>> predicate = null);
+        T SelectOne(Expression<Func<T, bool>> filter = null);
     }
 }

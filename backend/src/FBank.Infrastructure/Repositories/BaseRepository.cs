@@ -36,16 +36,16 @@ namespace FBank.Infrastructure.Repositories
             return Entity.Find(id);
         }
 
-        public virtual T SelectOne(Expression<Func<T, bool>> filtro = null)
-        {
-            return Entity.Where(filtro).FirstOrDefault();
-        }
-
         public void Update(T entity)
         {
             entity.UpdateDateAt = DateTime.Now;
             Entity.Add(entity);
             Context.SaveChanges();
+        }
+
+        public virtual T SelectOne(Expression<Func<T, bool>> filter = null)
+        {
+            return Entity.Where(filter).FirstOrDefault();
         }
 
         public IEnumerable<T> Find(Expression<Func<T, bool>> predicate = null)
