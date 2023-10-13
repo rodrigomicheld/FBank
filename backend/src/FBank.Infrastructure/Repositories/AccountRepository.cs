@@ -1,10 +1,7 @@
 ﻿using FBank.Application.Interfaces;
 using FBank.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace FBank.Infrastructure.Repositories
 {
@@ -12,6 +9,18 @@ namespace FBank.Infrastructure.Repositories
     {
         public AccountRepository(DataBaseContext context) : base(context)
         {
+        }
+
+        public override Account SelectOne(Expression<Func<Account, bool>> filter = null)
+        {
+            IQueryable<Account> query = Context.Accounts;
+
+            query = query
+                .Include(account => account.Agency)
+                .Include(account => account.Transactions);
+
+            return query.AsNoTracking()
+                .Where(filter).FirstOrDefault();
         }
     }
 }

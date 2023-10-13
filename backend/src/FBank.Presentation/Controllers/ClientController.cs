@@ -12,11 +12,11 @@ namespace FBank.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ClientViewModel>> GetOneAsync([FromQuery] Guid id)
+        public async Task<ActionResult<ClientViewModel>> GetOneAsync([FromQuery] string document)
         {
             try
             {
-                return await mediator.Send(new GetOneClientQuery { Id = id });
+                return await mediator.Send(new GetOneClientQuery { Document = document });
             }
             catch (Exception ex)
             {

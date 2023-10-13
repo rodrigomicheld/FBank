@@ -7,14 +7,17 @@ namespace FBank.Infrastructure.Repositories
 {
     public class ClientRepository : BaseRepository<Client>, IClientRepository
     {
-        public ClientRepository(DataBaseContext context) : base(context)
-        {
+        public ClientRepository(DataBaseContext context) : base(context) {}
 
-        }
-
-        public override Client SelectOne(Expression<Func<Client, bool>> filtro = null)
+        public override Client SelectOne(Expression<Func<Client, bool>> filter = null)
         {
-            return Entity.Include(x=> x.Accounts).Where(filtro).FirstOrDefault();
+            IQueryable<Client> query = Context.Clients;
+    
+            query = query.Include(client => client.Accounts)
+                .ThenInclude(account => account.Agency);
+
+            return query.AsNoTracking()
+                .Where(filter).FirstOrDefault();        
         }
     }
 }
