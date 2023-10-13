@@ -41,7 +41,8 @@ namespace FBank.Infrastructure.Mappings
 
             entityTypeBuilder.Property(p => p.Number)
                 .IsRequired()
-                .HasColumnName("numero");
+                .HasColumnName("numero")
+                .UseIdentityColumn();
         }
     }
 }

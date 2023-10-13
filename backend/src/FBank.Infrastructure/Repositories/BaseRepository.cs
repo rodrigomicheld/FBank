@@ -53,9 +53,8 @@ namespace FBank.Infrastructure.Repositories
         }
 
         public virtual T SelectOne(Expression<Func<T, bool>> filter = null)
-        {        
+        {
             return Entity.Where(filter).FirstOrDefault();
         }
-
     }
 }

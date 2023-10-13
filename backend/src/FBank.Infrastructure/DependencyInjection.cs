@@ -14,6 +14,7 @@ namespace FBank.Infrastructure
             services.AddScoped<IBankRepository, BankRepository>();
             services.AddScoped<IAgencyRepository, AgencyRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
             AddSqlServer(services, configuration);
 
