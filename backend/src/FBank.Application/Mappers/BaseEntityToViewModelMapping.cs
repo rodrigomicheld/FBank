@@ -10,6 +10,9 @@ namespace FBank.Application.Mappers
         { 
             CreateMap<Client, ClientViewModel>()
                 .ForMember(to => to.Id, map => map.MapFrom(from => from.Id));
+
+            CreateMap<TransactionBank, TransactionViewModel>()
+                .ForMember(to => to.Id, map => map.MapFrom(from => from.Id));
         }
     }
 }

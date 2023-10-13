@@ -42,7 +42,7 @@ namespace FBank.Application.Services
             var transactionBank = new TransactionBank();
             transactionBank.TransactionType = Domain.Enums.TransactionType.DEPOSITO;
             transactionBank.FlowType = Domain.Enums.FlowType.ENTRADA;
-            transactionBank.AccountFromId = request.AccountFromId;
+            transactionBank.AccountFromId = Guid.Empty;
             transactionBank.AccountToId= request.AccountToId;
             transactionBank.Value= request.Value;       
             return transactionBank;
