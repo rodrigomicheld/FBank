@@ -8,6 +8,5 @@ namespace FBank.Domain.Entities
         public string Document { get; set; }
         public DocumentType DocumentType { get; set; }
         public virtual IEnumerable<Account> Accounts { get; set; }
-        
     }
 }

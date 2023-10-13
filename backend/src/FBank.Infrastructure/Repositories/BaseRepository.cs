@@ -35,6 +35,11 @@ namespace FBank.Infrastructure.Repositories
             return Entity.Find(id);
         }
 
+        public virtual T SelectOne(Expression<Func<T, bool>> filtro = null)
+        {
+            return Entity.Where(filtro).FirstOrDefault();
+        }
+
         public void Update(T entity)
         {
             entity.UpdateDateAt = DateTime.Now;

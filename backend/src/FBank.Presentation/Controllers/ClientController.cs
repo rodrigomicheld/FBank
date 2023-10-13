@@ -23,5 +23,24 @@ namespace FBank.Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterAsync([FromBody] PostOneClientQuery client)
+        {
+            try
+            {
+                var conta = await mediator.Send(new PostOneClientQuery 
+                { 
+                    Document = client.Document.Trim().Replace(".", "").Replace("-", "").Replace("/", ""),
+                    Name = client.Name
+                });
+
+                return Ok($"Account successfully registered. Number: {conta}" );
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
