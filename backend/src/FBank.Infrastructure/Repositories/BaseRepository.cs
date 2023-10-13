@@ -43,11 +43,6 @@ namespace FBank.Infrastructure.Repositories
             Context.SaveChanges();
         }
 
-        public virtual T SelectOne(Expression<Func<T, bool>> filter = null)
-        {
-            return Entity.Where(filter).FirstOrDefault();
-        }
-
         public IEnumerable<T> Find(Expression<Func<T, bool>> predicate = null)
         {
             if (predicate != null)
@@ -55,6 +50,11 @@ namespace FBank.Infrastructure.Repositories
                 return Entity.Where(predicate);
             }
             return Entity.AsEnumerable();
+        }
+
+        public virtual T SelectOne(Expression<Func<T, bool>> filter = null)
+        {
+            return Entity.Where(filter).FirstOrDefault();
         }
     }
 }
