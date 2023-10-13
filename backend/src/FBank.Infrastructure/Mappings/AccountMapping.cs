@@ -35,8 +35,8 @@ namespace FBank.Infrastructure.Mappings
               .HasColumnName("agencia_id");
 
             entityTypeBuilder.HasMany(t => t.Transactions)
-                .WithOne(p => p.AccountTo)
-                .HasForeignKey(p => p.AccountToId)
+                .WithOne(p => p.Account)
+                .HasForeignKey(p => p.AccountId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             entityTypeBuilder.Property(p => p.Number)

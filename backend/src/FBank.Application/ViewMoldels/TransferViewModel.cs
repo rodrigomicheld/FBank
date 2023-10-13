@@ -9,8 +9,6 @@ namespace FBank.Application.ViewMoldels
 {
     public class TransferViewModel
     {
-        public int AccountNumberFrom { get; set; }           
-        public int AccountNumberTo { get; set; }
-        public decimal Value { get; set; }
+        
     }
 }

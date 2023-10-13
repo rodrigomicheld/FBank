@@ -24,7 +24,7 @@ namespace FBank.Presentation.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Transfer")]
         public async Task<ActionResult<TransferViewModel>> PostTransactionTransfer([FromBody] TransferMoneyAccountRequest request)
         {
             try

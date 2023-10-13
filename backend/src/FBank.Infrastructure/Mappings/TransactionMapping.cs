@@ -1,4 +1,5 @@
 ﻿using FBank.Domain.Entities;
+using FBank.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -23,12 +24,23 @@ namespace FBank.Infrastructure.Mappings
                 .IsRequired()
                 .HasColumnName("conta_destino_id");
 
-            entityTypeBuilder.HasOne(p => p.AccountTo)
-             .WithMany(a => a.Transactions);
+            entityTypeBuilder.HasOne(p => p.Account)
+             .WithMany(a => a.Transactions).HasForeignKey(p => p.AccountId);
+
+            entityTypeBuilder.Property(p => p.AccountId)
+                .IsRequired()
+                .HasColumnName("conta_id");
 
             entityTypeBuilder.Property(p => p.AccountFromId)
                 .IsRequired()
                 .HasColumnName("conta_origem_id");
+
+            entityTypeBuilder.Property(p => p.FlowType)
+                .IsRequired()
+                 .HasColumnType("int")
+                .HasColumnName("flow_type");
+
+            
         }
     }
 }
