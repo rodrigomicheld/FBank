@@ -4,14 +4,14 @@ namespace FBank.Domain.Validator
 {
     public static class CpfCnpj
     {
-        public static DocumentType ValidTypeDocument(string document)
+        public static PersonType ValidTypeDocument(string document)
         {
             if (IsCpf(document))
-                return DocumentType.Person;
+                return PersonType.Person;
             else if (IsCnpj(document))
-                return DocumentType.Company;
+                return PersonType.Company;
 
-            return DocumentType.None;
+            return PersonType.None;
         }
 
         private static bool IsCpf(string cpf)

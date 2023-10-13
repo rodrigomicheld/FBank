@@ -33,13 +33,13 @@ namespace FBank.Application.Services
 
             var typeDocument = CpfCnpj.ValidTypeDocument(request.Document);
 
-            if(typeDocument == DocumentType.None)
+            if(typeDocument == PersonType.None)
                 throw new Exception("Invalid document!");
 
             var client = _clientRepository.SelectOne(x=> x.Document == request.Document);
 
             if (client != null && client.Accounts != null && 
-                !client.Accounts.Select(x=> x.IdStatus).Contains((int)AccountStatusEnum.Active))
+                !client.Accounts.Select(x=> x.Status).Contains(AccountStatusEnum.Active))
                 throw new Exception("Client already has an account!");
 
             if (client == null)
@@ -60,7 +60,7 @@ namespace FBank.Application.Services
             {
                 ClientId = client.Id,
                 AgencyId = agency.Id,
-                IdStatus = (int)AccountStatusEnum.Active,
+                Status = AccountStatusEnum.Active,
             };
 
             _accountRepository.Insert(account);
