@@ -1,14 +1,15 @@
 ﻿using FBank.Application.ViewMoldels;
+using FBank.Domain.Entities;
+using FBank.Domain.Enums;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FBank.Application.Requests
 {
-    public class DepositMoneyAccountRequest : IRequest<TransactionViewModel>
-    {
+    public class DepositMoneyAccountRequest :  IRequest<TransactionViewModel>
+    {        
+        public Guid AccountToId { get; set; }        
+        public Guid AccountFromId { get; set; }
+        public decimal Value { get; set; }
+
     }
 }
