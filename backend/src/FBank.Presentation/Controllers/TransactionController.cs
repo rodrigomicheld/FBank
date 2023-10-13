@@ -24,5 +24,18 @@ namespace FBank.Presentation.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<ActionResult<TransferViewModel>> PostTransactionTransfer([FromBody] TransferMoneyAccountRequest request)
+        {
+            try
+            {
+                return Ok(await mediator.Send(request));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
