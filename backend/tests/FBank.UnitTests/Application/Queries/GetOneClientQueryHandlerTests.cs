@@ -6,6 +6,7 @@ using FBank.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using System.Linq.Expressions;
 
 namespace FBank.UnitTests.Application.Queries
 {
@@ -21,7 +22,7 @@ namespace FBank.UnitTests.Application.Queries
         {
             _mockClientRepository = Substitute.For<IClientRepository>();
 
-            _mockClientRepository.SelectToId(Arg.Any<Guid>()).Returns(new Client());
+            _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).Returns(new Client()); ;
             _query = new GetOneClientQuery();
             _handler = new GetOneClientQueryHandler(
                 _mockClientRepository,
@@ -30,19 +31,17 @@ namespace FBank.UnitTests.Application.Queries
         }
 
         [Fact]
-        public void Shoud_return_client_requested()
+        public void Should_return_client_requested()
         {
-            _mockClientRepository.SelectToId(Arg.Any<Guid>()).Returns(new Client());
-            
             var response = _handler.Handle(_query, CancellationToken.None);
 
             Assert.NotNull(response);
         }
 
         [Fact]
-        public void Shoud_return_NullReferenceException_when_client_not_found()
+        public void Should_return_NullReferenceException_when_client_not_found()
         {
-            _mockClientRepository.SelectToId(Arg.Any<Guid>()).Throws(new NullReferenceException());
+            _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).Throws(new NullReferenceException());
             Assert.ThrowsAsync<NullReferenceException>(() => _handler.Handle(_query, CancellationToken.None));
         }
     }

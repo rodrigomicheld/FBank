@@ -16,7 +16,7 @@ namespace FBank.Presentation.Controllers
         {
             try
             {
-                return await mediator.Send(new GetOneClientQuery { Document = document });
+                return await mediator.Send(new GetOneClientQuery { Document = document.Trim().Replace(".", "").Replace("-", "").Replace("/", "") });
             }
             catch (Exception ex)
             {
@@ -24,7 +24,7 @@ namespace FBank.Presentation.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("register-account")]
         public async Task<IActionResult> RegisterAsync([FromBody] PostOneClientQuery client)
         {
             try

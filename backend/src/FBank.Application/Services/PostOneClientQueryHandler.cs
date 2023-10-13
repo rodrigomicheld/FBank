@@ -2,7 +2,7 @@
 using FBank.Application.Queries;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
-using FBank.Domain.Validator;
+using FBank.Domain.Validators;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -34,13 +34,13 @@ namespace FBank.Application.Services
             var typeDocument = CpfCnpj.ValidTypeDocument(request.Document);
 
             if(typeDocument == PersonType.None)
-                throw new Exception("Invalid document!");
+                throw new ArgumentException("Invalid document!");
 
             var client = _clientRepository.SelectOne(x=> x.Document == request.Document);
 
             if (client != null && client.Accounts != null && 
-                !client.Accounts.Select(x=> x.Status).Contains(AccountStatusEnum.Active))
-                throw new Exception("Client already has an account!");
+                client.Accounts.Any(x=> x.Status == AccountStatusEnum.Active))
+                throw new InvalidOperationException("Client already has an active account!");
 
             if (client == null)
             {
