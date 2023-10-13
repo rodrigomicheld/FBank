@@ -30,7 +30,7 @@ namespace FBank.UnitTests.Application.Queries
         }
 
         [Fact]
-        public void Shoud_return_client_requested()
+        public void Should_return_client_requested()
         {
             _mockClientRepository.SelectToId(Arg.Any<Guid>()).Returns(new Client());
             
@@ -40,7 +40,7 @@ namespace FBank.UnitTests.Application.Queries
         }
 
         [Fact]
-        public void Shoud_return_NullReferenceException_when_client_not_found()
+        public void Should_return_NullReferenceException_when_client_not_found()
         {
             _mockClientRepository.SelectToId(Arg.Any<Guid>()).Throws(new NullReferenceException());
             Assert.ThrowsAsync<NullReferenceException>(() => _handler.Handle(_query, CancellationToken.None));
