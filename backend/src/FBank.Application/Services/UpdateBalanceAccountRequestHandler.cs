@@ -20,7 +20,7 @@ namespace FBank.Application.Services
             try
             {
                 //var account = request.Account;
-                var accountUpdated = _accountRepository.SelectOne(x => x.Id == request.AccountId);
+                var accountUpdated = _accountRepository.SelectToId(request.AccountId);
                 List<string> errors = new List<string>();
                 if (accountUpdated == null)
                     errors.Add("Conta não encontrada");               

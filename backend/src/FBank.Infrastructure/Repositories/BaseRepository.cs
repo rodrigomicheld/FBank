@@ -39,7 +39,7 @@ namespace FBank.Infrastructure.Repositories
         public void Update(T entity)
         {
             entity.UpdateDateAt = DateTime.Now;
-            Entity.Add(entity);
+            Entity.Attach(entity);
             Context.SaveChanges();
         }
 

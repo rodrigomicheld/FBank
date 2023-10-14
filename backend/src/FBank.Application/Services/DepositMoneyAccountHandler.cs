@@ -5,12 +5,14 @@ using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Transactions;
 
 namespace FBank.Application.Services
 {
     public class DepositMoneyAccountHandler : IRequestHandler<DepositMoneyAccountRequest, TransactionViewModel>
     {
         private readonly ITransactionRepository _iTransactionRepository;
+        private readonly IAccountRepository _accountRepository;
         private readonly ILogger<DepositMoneyAccountHandler> _logger;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
@@ -18,6 +20,7 @@ namespace FBank.Application.Services
         public DepositMoneyAccountHandler(
             IMediator mediator,
             ITransactionRepository iTransactionRepository,
+            IAccountRepository accountRepository,
                 ILogger<DepositMoneyAccountHandler> logger,
                 IMapper mapper)
         {
@@ -25,9 +28,10 @@ namespace FBank.Application.Services
             _iTransactionRepository = iTransactionRepository;
             _logger = logger;
             _mapper = mapper;
+            _accountRepository = accountRepository;
         }
 
-        public Task<TransactionViewModel> Handle(DepositMoneyAccountRequest request, CancellationToken cancellationToken)
+        public async Task<TransactionViewModel> Handle(DepositMoneyAccountRequest request, CancellationToken cancellationToken)
         {
             //Todo: Trocar esta verificação, por uma rotina de validação, quando a rotina de verifica se uma conta existe estiver pronta
             //Todo: Incluir método para verificar se a conta existe
@@ -35,24 +39,32 @@ namespace FBank.Application.Services
             {
                 var transactionViewModel = new TransactionViewModel();
                 transactionViewModel.Id = Guid.Empty;
-                return Task.FromResult(transactionViewModel);
+                return await Task.FromResult(transactionViewModel);
             }
 
             var transactionBank = CompleteDataDeposit(request);
             _iTransactionRepository.Insert(transactionBank);
             var transactionReturn = _iTransactionRepository.SelectToId(transactionBank.Id);
-            //Todo: Incluir método para atualizar Saldo, quando a rotina de saldo estiver pronta
+          
+            await _mediator.Send(new UpdateBalanceAccountRequest()
+            {
+                AccountId = transactionBank.AccountId,
+                Value = transactionBank.Value,
+                FlowType = transactionBank.FlowType
+            });
             var mappedResult = _mapper.Map<TransactionViewModel>(transactionReturn);
-            return Task.FromResult(mappedResult);
+            return await Task.FromResult(mappedResult);
         }        
 
         public TransactionBank CompleteDataDeposit(DepositMoneyAccountRequest request) 
         {
+            var account = VerifyAccountExists(request.AccountNumber);
             var transactionBank = new TransactionBank();
             transactionBank.TransactionType = Domain.Enums.TransactionType.DEPOSITO;
             transactionBank.FlowType = Domain.Enums.FlowType.ENTRADA;
             transactionBank.AccountFromId = Guid.Empty;
-            transactionBank.AccountToId= request.AccountToId;
+            transactionBank.AccountToId= account.Id;
+            transactionBank.AccountId = account.Id;
             transactionBank.Value= request.Value;       
             return transactionBank;
         }
@@ -63,6 +75,13 @@ namespace FBank.Application.Services
                 return true;
             else
                 return false;
+        }
+        public Account VerifyAccountExists(int accountNumber)
+        {
+            var account = _accountRepository.SelectOne(x => x.Number == accountNumber);
+            if (account == null)
+                throw new Exception($"Conta não encontrada");
+            return account;
         }
     }
 }
