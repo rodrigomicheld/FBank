@@ -23,7 +23,7 @@ namespace FBank.UnitTests.Presentation
         {
             _mockMediator.Setup(obj => obj.Send(It.IsAny<GetOneClientQuery>(), new CancellationToken())).ReturnsAsync(new ClientViewModel());
 
-            var response = _clientController.GetOneAsync(It.IsAny<Guid>());
+            var response = _clientController.GetOneAsync(It.IsAny<string>());
             
             Assert.NotNull(response);      
         }
@@ -31,10 +31,9 @@ namespace FBank.UnitTests.Presentation
         [Fact]
         public void Should_return_bad_request_when_client_does_not_existAsync()
         {
-            var id = new Guid();
             var result = _mockMediator.Setup(obj => obj.Send(It.IsAny<GetOneClientQuery>(), new CancellationToken())).Throws<Exception>();
 
-            var response = _clientController.GetOneAsync(id).Result;
+            var response = _clientController.GetOneAsync(It.IsAny<string>()).Result;
 
             var resultado = response?.Result;
 

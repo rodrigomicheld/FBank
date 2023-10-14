@@ -22,17 +22,16 @@ namespace FBank.Application.Services
 
         public Task<ClientViewModel> Handle(GetOneClientQuery request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Listando o cliente Documento: {request.Id}");
-
-           
-             var queryResult = _clientRepository.SelectToId(request.Id); //corrigir
+            _logger.LogInformation($"Listando o cliente Documento: {request.Document}");
+                       
+             var queryResult = _clientRepository.SelectOne(x=> x.Document == request.Document);
            
             if (queryResult == null)
                 throw new NullReferenceException("Client not found!");
             
             var mappedResult = _mapper.Map<ClientViewModel>(queryResult);
 
-            return Task.FromResult(mappedResult);
+            return Task.FromResult(mappedResult); 
         }
     }
 }

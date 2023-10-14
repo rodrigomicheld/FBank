@@ -1,6 +1,7 @@
 ﻿using FBank.Application.Interfaces;
 using FBank.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace FBank.Infrastructure.Repositories
@@ -49,6 +50,11 @@ namespace FBank.Infrastructure.Repositories
                 return Entity.Where(predicate);
             }
             return Entity.AsEnumerable();
+        }
+
+        public virtual T SelectOne(Expression<Func<T, bool>> filter = null)
+        {
+            return Entity.Where(filter).FirstOrDefault();
         }
     }
 }
