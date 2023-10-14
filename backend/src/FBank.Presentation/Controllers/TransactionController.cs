@@ -11,8 +11,8 @@ namespace FBank.Presentation.Controllers
         {
         }
 
-        [HttpPost]
-        public async Task<ActionResult<TransactionViewModel>> PostTransactionWithDraw([FromBody] WithDrawMoneyAccountRequest  request)
+        [HttpPost]        
+        public async Task<ActionResult<ClientViewModel>> PostTransactionWithDraw([FromBody] WithDrawMoneyAccountRequest  request)
         {
             try
             {
@@ -23,6 +23,21 @@ namespace FBank.Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("DepositAccount")]
+        public async Task<ActionResult<TransactionViewModel>> PostTransactionDeposit([FromBody] DepositMoneyAccountRequest request)
+        {
+            try
+            {
+                return Ok(await mediator.Send(request));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }
