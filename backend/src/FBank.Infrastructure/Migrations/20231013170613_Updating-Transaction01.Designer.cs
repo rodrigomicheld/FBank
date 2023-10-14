@@ -4,6 +4,7 @@ using FBank.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FBank.Infrastructure.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231013170613_Updating-Transaction01")]
+    partial class UpdatingTransaction01
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,8 +189,7 @@ namespace FBank.Infrastructure.Migrations
                         .HasColumnName("conta_origem_id");
 
                     b.Property<Guid>("AccountId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("conta_id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AccountToId")
                         .HasColumnType("uniqueidentifier")
@@ -198,8 +200,7 @@ namespace FBank.Infrastructure.Migrations
                         .HasColumnName("criado_em");
 
                     b.Property<int>("FlowType")
-                        .HasColumnType("int")
-                        .HasColumnName("flow_type");
+                        .HasColumnType("int");
 
                     b.Property<int>("TransactionType")
                         .HasColumnType("int")
