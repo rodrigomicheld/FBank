@@ -23,6 +23,11 @@ namespace FBank.Infrastructure.Mappings
                 .IsRequired()
                 .HasColumnName("tipo_documento");
 
+            entityTypeBuilder.Property(p => p.Password)
+                .IsRequired()
+                .HasColumnName("Senha")
+                .HasMaxLength(50);
+
             entityTypeBuilder.HasAlternateKey(p => p.Document);    
 
 

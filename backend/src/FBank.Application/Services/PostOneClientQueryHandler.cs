@@ -49,9 +49,16 @@ namespace FBank.Application.Services
                     Document = request.Document,
                     Name = request.Name,
                     DocumentType = typeDocument,
+                    Password = request.Password,
                 };
 
                 _clientRepository.Insert(client);
+            }
+            else
+            {
+                client.Password = request.Password;
+                client.Name = request.Name;
+                _clientRepository.Update(client);
             }
 
             var agency = _agencyRepository.SelectOne(x => x.Code == 1);

@@ -32,7 +32,8 @@ namespace FBank.Presentation.Controllers
                 var conta = await mediator.Send(new PostOneClientQuery 
                 { 
                     Document = client.Document.Trim().Replace(".", "").Replace("-", "").Replace("/", ""),
-                    Name = client.Name
+                    Name = client.Name,
+                    Password = client.Password
                 });
 
                 return Ok($"Account successfully registered. Number: {conta}" );
