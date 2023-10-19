@@ -1,5 +1,6 @@
 ﻿using FBank.Application.Interfaces;
 using FBank.Application.Requests;
+using FBank.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -20,12 +21,15 @@ namespace FBank.Application.Services
 
         public async Task<string> Handle(TokenRequest request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Autenticando cliente: {request.Document}");
+            _logger.LogInformation($"Autenticando cliente da conta: {request.NumberAccount}");
 
-            var client = _clientRepository.SelectOne(x => x.Document == request.Document && x.Password == request.Password);
+            var client = _clientRepository.SelectOne(
+                         x => x.Accounts.Any(account => account.Status == AccountStatusEnum.Active && 
+                         account.Number == request.NumberAccount && account.Agency.Code == request.NumberAgency) && 
+                         x.Password == request.Password);
 
             if (client == null)
-                throw new ArgumentException("Incorrect client or password!");
+                throw new ArgumentException("Incorrect account or password!");
 
             return _tokenService.GerarToken(client);
         }

@@ -17,7 +17,8 @@ namespace FBank.Presentation.Controllers
             {
                 var token =  await mediator.Send(new TokenRequest
                 {
-                    Document = tokenRequest.Document.Trim().Replace(".", "").Replace("-", "").Replace("/", ""),
+                    NumberAgency = tokenRequest.NumberAgency,
+                    NumberAccount = tokenRequest.NumberAccount,
                     Password = tokenRequest.Password
                 });
 

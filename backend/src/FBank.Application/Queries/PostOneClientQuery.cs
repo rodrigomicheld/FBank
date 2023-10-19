@@ -2,7 +2,7 @@
 
 namespace FBank.Application.Queries
 {
-    public class PostOneClientQuery : IRequest<int>
+    public class PostOneClientQuery : IRequest<string>
     {
         public string Name { get; set; }
         public string Document { get; set; }

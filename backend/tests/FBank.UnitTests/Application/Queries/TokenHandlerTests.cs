@@ -30,7 +30,7 @@ namespace FBank.UnitTests.Application.Queries
         [Fact]
         public void Should_return_ArgumentException_when_client_invalid()
         {
-            var query = new TokenRequest { Document = "1234", Password = "test" };
+            var query = new TokenRequest { NumberAgency = 1, NumberAccount = 2, Password = "test" };
 
             _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).ReturnsNull();
 
@@ -42,7 +42,7 @@ namespace FBank.UnitTests.Application.Queries
         [Fact]
         public void Should_return_token_when_client_and_password_correct()
         {
-            var query = new TokenRequest { Document = "29209320042", Password = "123" };
+            var query = new TokenRequest { NumberAgency = 1, NumberAccount = 2, Password = "123" };
 
             var client = new Client
             {
@@ -56,7 +56,8 @@ namespace FBank.UnitTests.Application.Queries
             var agency = new Agency
             {
                 Id = Guid.NewGuid(),
-                Name = "Agency test"
+                Name = "Agency test",
+                Code = 1
             };
 
             client.Accounts = new List<Account>() 
@@ -65,7 +66,7 @@ namespace FBank.UnitTests.Application.Queries
                 { 
                     ClientId = client.Id,
                     AgencyId = agency.Id,
-                    Number = 1,
+                    Number = 2,
                     Status = AccountStatusEnum.Active
                 } 
             };
