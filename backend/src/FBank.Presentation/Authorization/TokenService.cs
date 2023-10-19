@@ -1,5 +1,6 @@
 ﻿using FBank.Application.Interfaces;
 using FBank.Domain.Entities;
+using FBank.Domain.Enums;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -20,11 +21,16 @@ namespace FBank.Presentation.Authorization
         {
             var tokenHandle = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("Secret"));
+            var agency = client.Accounts.FirstOrDefault(x => x.Status == AccountStatusEnum.Active).Number.ToString();
+            var account = client.Accounts.FirstOrDefault(x => x.Status == AccountStatusEnum.Active).Agency.Code.ToString();
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
+                    new Claim("Document", client.Document),
                     new Claim(ClaimTypes.Name, client.Name),
+                    new Claim ("Account" , agency),
+                    new Claim ("Agenccy" , account)
                     //new Claim(ClaimTypes.Role, client.Permission.ToString())
                 }),
 
