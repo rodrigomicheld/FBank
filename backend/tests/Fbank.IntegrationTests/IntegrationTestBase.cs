@@ -27,8 +27,8 @@ namespace Fbank.IntegrationTests
             _serviceScope = factory.Services.GetService<IServiceScopeFactory>()!.CreateScope()!;
             _dataBaseContext = _serviceScope.ServiceProvider.GetRequiredService<DataBaseContext>()!;
             _mediator = _serviceScope.ServiceProvider.GetService<IMediator>()!;
-            // _dataBaseContext.Database.Migrate();
 
+            _dataBaseContext.Database.EnsureDeleted();
             _dataBaseContext.Database.EnsureCreated();
         }
         public void Dispose()

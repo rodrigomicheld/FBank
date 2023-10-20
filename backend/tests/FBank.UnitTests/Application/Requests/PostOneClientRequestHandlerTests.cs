@@ -34,7 +34,7 @@ namespace FBank.UnitTests.Application.Requests
         {
             var query = new PostOneClientRequest { Document = "1234", Name = "test" };
 
-            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockLogger, _mockAgencyRepository, _mockAccountRepository);
+            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockAgencyRepository, _mockAccountRepository, _mockLogger);
 
             Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(query, CancellationToken.None));
         }
@@ -72,7 +72,7 @@ namespace FBank.UnitTests.Application.Requests
             _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).Returns(client);
             _mockAgencyRepository.SelectOne(Arg.Any<Expression<Func<Agency, bool>>>()).Returns(agency);
 
-            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockLogger, _mockAgencyRepository, _mockAccountRepository);
+            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockAgencyRepository, _mockAccountRepository, _mockLogger);
 
             Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(query, CancellationToken.None));
         }
@@ -91,7 +91,7 @@ namespace FBank.UnitTests.Application.Requests
             _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).ReturnsNull();
             _mockAgencyRepository.SelectOne(Arg.Any<Expression<Func<Agency, bool>>>()).Returns(agency);
 
-            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockLogger, _mockAgencyRepository, _mockAccountRepository);
+            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockAgencyRepository, _mockAccountRepository, _mockLogger);
 
             var response = handler.Handle(query, CancellationToken.None);
 
@@ -131,7 +131,7 @@ namespace FBank.UnitTests.Application.Requests
             _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).Returns(client);
             _mockAgencyRepository.SelectOne(Arg.Any<Expression<Func<Agency, bool>>>()).Returns(agency);
 
-            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockLogger, _mockAgencyRepository, _mockAccountRepository);
+            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockAgencyRepository, _mockAccountRepository, _mockLogger);
 
             var response = handler.Handle(query, CancellationToken.None);
 
