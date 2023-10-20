@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FBank.Application.Services
 {
-    public class PostOneClientQueryHandler : IRequestHandler<PostOneClientQuery, int>
+    public class PostOneClientQueryHandler : IRequestHandler<PostOneClientQuery, string>
     {
         private readonly IClientRepository _clientRepository;
         private readonly IAgencyRepository _agencyRepository;
@@ -27,7 +27,7 @@ namespace FBank.Application.Services
             _accountRepository = accountRepository;
         }
 
-        public Task<int> Handle(PostOneClientQuery request, CancellationToken cancellationToken)
+        public Task<string> Handle(PostOneClientQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Cadastrando o cliente: {request.Document}");
 
@@ -49,9 +49,16 @@ namespace FBank.Application.Services
                     Document = request.Document,
                     Name = request.Name,
                     DocumentType = typeDocument,
+                    Password = request.Password,
                 };
 
                 _clientRepository.Insert(client);
+            }
+            else
+            {
+                client.Password = request.Password;
+                client.Name = request.Name;
+                _clientRepository.Update(client);
             }
 
             var agency = _agencyRepository.SelectOne(x => x.Code == 1);
@@ -65,7 +72,7 @@ namespace FBank.Application.Services
 
             _accountRepository.Insert(account);
 
-            return Task.FromResult(account.Number);
+            return Task.FromResult($"Agency: {agency.Code} - Account: {account.Number}");
         }
     }
 }

@@ -6,6 +6,7 @@ namespace FBank.Domain.Entities
     {
         public string Name { get; set; }
         public string Document { get => document; set => document = FormatDocument(value); }
+        public string Password { get; set; }
         public PersonType DocumentType { get ; set ; }
         public virtual IEnumerable<Account> Accounts { get; set; }
 
