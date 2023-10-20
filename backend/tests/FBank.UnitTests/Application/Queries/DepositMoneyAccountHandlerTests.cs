@@ -13,6 +13,7 @@ namespace FBank.UnitTests.Application.Queries
     public class DepositMoneyAccountHandlerTests
     {
         private readonly ITransactionRepository _mockTransactionRepository;
+        private readonly IAccountRepository _mockAccountRepository;
         private readonly DepositMoneyAccountRequest _query;
         private readonly DepositMoneyAccountHandler _handler;
         private readonly IMediator _mockMediator;
@@ -20,6 +21,7 @@ namespace FBank.UnitTests.Application.Queries
         public DepositMoneyAccountHandlerTests()
         {
             _mockTransactionRepository = Substitute.For<ITransactionRepository>();
+            _mockAccountRepository = Substitute.For<IAccountRepository>();
             _mockMediator = Substitute.For<IMediator>();
 
             _mockTransactionRepository.SelectToId(Arg.Any<Guid>()).Returns(new TransactionBank());
@@ -27,6 +29,7 @@ namespace FBank.UnitTests.Application.Queries
             _handler = new DepositMoneyAccountHandler(
                 _mockMediator,
                 _mockTransactionRepository,
+                _mockAccountRepository,
                 Substitute.For<ILogger<DepositMoneyAccountHandler>>(),
                 Substitute.For<IMapper>());
         }

@@ -27,7 +27,7 @@ namespace FBank.Application.Services
             _accountRepository = accountRepository;
         }
 
-        public Task<Guid> Handle(PostOneClientRequest request, CancellationToken cancellationToken)
+        public Task<string> Handle(PostOneClientQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Cadastrando o cliente: {request.Document}");
 
@@ -49,24 +49,30 @@ namespace FBank.Application.Services
                     Document = request.Document,
                     Name = request.Name,
                     DocumentType = typeDocument,
+                    Password = request.Password,
                 };
 
                 _clientRepository.Insert(client);
             }
+            else
+            {
+                client.Password = request.Password;
+                client.Name = request.Name;
+                _clientRepository.Update(client);
+            }
 
-            //var agency = _agencyRepository.SelectOne(x => x.Code == 1);
+            var agency = _agencyRepository.SelectOne(x => x.Code == 1);
 
-            //var account = new Account
-            //{
-            //    ClientId = client.Id,
-            //    AgencyId = agency.Id,
-            //    Status = AccountStatusEnum.Active,
-            //};
+            var account = new Account
+            {
+                ClientId = client.Id,
+                AgencyId = agency.Id,
+                Status = AccountStatusEnum.Active,
+            };
 
-            //_accountRepository.Insert(account);
+            _accountRepository.Insert(account);
 
-           // return Task.FromResult(account.Number);
-            return Task.FromResult(client.Id);
+            return Task.FromResult($"Agency: {agency.Code} - Account: {account.Number}");
         }
     }
 }
