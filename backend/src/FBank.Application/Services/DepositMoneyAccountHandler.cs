@@ -31,6 +31,10 @@ namespace FBank.Application.Services
             _accountRepository = accountRepository;
         }
 
+        public DepositMoneyAccountHandler(IMediator mockMediator, ITransactionRepository mockTransactionRepository, ILogger<DepositMoneyAccountHandler> logger, IMapper mapper)
+        {
+        }
+
         public async Task<TransactionViewModel> Handle(DepositMoneyAccountRequest request, CancellationToken cancellationToken)
         {
             //Todo: Trocar esta verificação, por uma rotina de validação, quando a rotina de verifica se uma conta existe estiver pronta

@@ -15,8 +15,6 @@ var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").B
 builder.Services.AddAplication();
 builder.Services.AddInfrastructure(configuration);
 
-//.Services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,3 +31,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+public partial class Program { }

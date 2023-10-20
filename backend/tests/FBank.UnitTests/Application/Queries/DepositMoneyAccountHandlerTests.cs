@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FBank.Application.Interfaces;
-using FBank.Application.Queries;
 using FBank.Application.Requests;
 using FBank.Application.Services;
 using FBank.Domain.Entities;

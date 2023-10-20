@@ -1,5 +1,5 @@
 ﻿using FBank.Application.Interfaces;
-using FBank.Application.Queries;
+using FBank.Application.Requests;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
 using FBank.Domain.Validators;
@@ -8,16 +8,16 @@ using Microsoft.Extensions.Logging;
 
 namespace FBank.Application.Services
 {
-    public class PostOneClientQueryHandler : IRequestHandler<PostOneClientQuery, int>
+    public class PostOneClientRequestHandler : IRequestHandler<PostOneClientRequest, Guid>
     {
         private readonly IClientRepository _clientRepository;
         private readonly IAgencyRepository _agencyRepository;
         private readonly IAccountRepository _accountRepository;
-        private readonly ILogger<PostOneClientQueryHandler> _logger;
+        private readonly ILogger<PostOneClientRequestHandler> _logger;
 
-        public PostOneClientQueryHandler(
+        public PostOneClientRequestHandler(
             IClientRepository clientRepository, 
-            ILogger<PostOneClientQueryHandler> logger,
+            ILogger<PostOneClientRequestHandler> logger,
             IAgencyRepository agencyRepository,
             IAccountRepository accountRepository)
         {
@@ -27,7 +27,7 @@ namespace FBank.Application.Services
             _accountRepository = accountRepository;
         }
 
-        public Task<int> Handle(PostOneClientQuery request, CancellationToken cancellationToken)
+        public Task<Guid> Handle(PostOneClientRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Cadastrando o cliente: {request.Document}");
 
@@ -54,18 +54,19 @@ namespace FBank.Application.Services
                 _clientRepository.Insert(client);
             }
 
-            var agency = _agencyRepository.SelectOne(x => x.Code == 1);
+            //var agency = _agencyRepository.SelectOne(x => x.Code == 1);
 
-            var account = new Account
-            {
-                ClientId = client.Id,
-                AgencyId = agency.Id,
-                Status = AccountStatusEnum.Active,
-            };
+            //var account = new Account
+            //{
+            //    ClientId = client.Id,
+            //    AgencyId = agency.Id,
+            //    Status = AccountStatusEnum.Active,
+            //};
 
-            _accountRepository.Insert(account);
+            //_accountRepository.Insert(account);
 
-            return Task.FromResult(account.Number);
+           // return Task.FromResult(account.Number);
+            return Task.FromResult(client.Id);
         }
     }
 }

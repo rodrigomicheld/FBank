@@ -1,4 +1,5 @@
 ﻿using FBank.Application.Queries;
+using FBank.Application.Requests;
 using FBank.Application.ViewMoldels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -25,11 +26,11 @@ namespace FBank.Presentation.Controllers
         }
 
         [HttpPost("register-account")]
-        public async Task<IActionResult> RegisterAsync([FromBody] PostOneClientQuery client)
+        public async Task<IActionResult> RegisterAsync([FromBody] PostOneClientRequest client)
         {
             try
             {
-                var conta = await mediator.Send(new PostOneClientQuery 
+                var conta = await mediator.Send(new PostOneClientRequest 
                 { 
                     Document = client.Document.Trim().Replace(".", "").Replace("-", "").Replace("/", ""),
                     Name = client.Name

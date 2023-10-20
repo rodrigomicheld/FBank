@@ -1,10 +1,11 @@
 ﻿using MediatR;
 
-namespace FBank.Application.Queries
+namespace FBank.Application.Requests
 {
-    public class PostOneClientQuery : IRequest<int>
+    public class PostOneClientRequest : IRequest<Guid>
     {
         public string Name { get; set; }
         public string Document { get; set; }
     }
 }
+
