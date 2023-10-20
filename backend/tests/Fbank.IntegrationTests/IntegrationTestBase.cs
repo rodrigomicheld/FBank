@@ -21,16 +21,13 @@ namespace Fbank.IntegrationTests
 
         public IntegrationTestBase(WebApplicationFactory<Program> factory)
         {
-            _factory = factory;
             Environment.SetEnvironmentVariable("FBANK_DB_NAME", "true");
-            //var serviceProvider = new ServiceCollection()
-            //    .AddDbContext<DataBaseContext>(options => options.UseSqlServer("SuaStringDeConexão"))
-            //    .BuildServiceProvider();
 
+            _factory = factory;
             _serviceScope = factory.Services.GetService<IServiceScopeFactory>()!.CreateScope()!;
             _dataBaseContext = _serviceScope.ServiceProvider.GetRequiredService<DataBaseContext>()!;
             _mediator = _serviceScope.ServiceProvider.GetService<IMediator>()!;
-           // _dataBaseContext.Database.Migrate();
+            // _dataBaseContext.Database.Migrate();
 
             _dataBaseContext.Database.EnsureCreated();
         }

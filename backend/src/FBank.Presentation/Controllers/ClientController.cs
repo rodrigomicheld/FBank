@@ -30,7 +30,7 @@ namespace FBank.Presentation.Controllers
         {
             try
             {
-                var account = await mediator.Send(new PostOneClientQuery 
+                var account = await mediator.Send(new PostOneClientRequest 
                 { 
                     Document = client.Document.Trim().Replace(".", "").Replace("-", "").Replace("/", ""),
                     Name = client.Name,

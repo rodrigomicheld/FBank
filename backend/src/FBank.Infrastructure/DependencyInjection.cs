@@ -16,15 +16,11 @@ namespace FBank.Infrastructure
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
 
-            //var seprov = services.BuildServiceProvider();
-            //var config =seprov.GetServices<IConfiguration>()!;
-            
-            //var test = config["FBANK_DB_NAME"];
+            var dbName = Environment.GetEnvironmentVariable("FBANK_DB_NAME") ?? "false";
 
-
-            //if (bool.Parse(configuration["FBANK_DB_NAME"]) is false)
-            //    AddSqlServer(services, configuration);
-            //else
+            if (bool.Parse(dbName) is false)
+                AddSqlServer(services, configuration);
+            else
                 AddSqlServerTest(services, configuration);
 
             return services;

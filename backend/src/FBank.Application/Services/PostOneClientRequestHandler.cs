@@ -8,26 +8,22 @@ using Microsoft.Extensions.Logging;
 
 namespace FBank.Application.Services
 {
-    public class PostOneClientRequestHandler : IRequestHandler<PostOneClientRequest, Guid>
+    public class PostOneClientRequestHandler : IRequestHandler<PostOneClientRequest, string>
     {
         private readonly IClientRepository _clientRepository;
         private readonly IAgencyRepository _agencyRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly ILogger<PostOneClientRequestHandler> _logger;
 
-        public PostOneClientRequestHandler(
-            IClientRepository clientRepository, 
-            ILogger<PostOneClientRequestHandler> logger,
-            IAgencyRepository agencyRepository,
-            IAccountRepository accountRepository)
+        public PostOneClientRequestHandler(IClientRepository clientRepository, IAgencyRepository agencyRepository, IAccountRepository accountRepository, ILogger<PostOneClientRequestHandler> logger)
         {
             _clientRepository = clientRepository;
-            _logger = logger;
             _agencyRepository = agencyRepository;
             _accountRepository = accountRepository;
+            _logger = logger;
         }
 
-        public Task<string> Handle(PostOneClientQuery request, CancellationToken cancellationToken)
+        public Task<string> Handle(PostOneClientRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Cadastrando o cliente: {request.Document}");
 
