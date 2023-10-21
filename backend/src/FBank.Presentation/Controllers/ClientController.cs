@@ -10,13 +10,19 @@ namespace FBank.Presentation.Controllers
         public ClientController(IMediator mediator) : base(mediator)
         {
         }
-
+    
         [HttpGet]
         public async Task<ActionResult<ClientViewModel>> GetOneAsync([FromQuery] string document)
         {
+            var authorizationResult = CheckDocumentClaim(document);
+            if (authorizationResult != null)
+            {
+                return authorizationResult;
+            }
+
             try
             {
-                return await mediator.Send(new GetOneClientQuery { Document = document.Trim().Replace(".", "").Replace("-", "").Replace("/", "") });
+                return await mediator.Send(new GetOneClientQuery { Document = RemoveDocumentMask(document) });
             }
             catch (Exception ex)
             {
@@ -31,7 +37,7 @@ namespace FBank.Presentation.Controllers
             {
                 var account = await mediator.Send(new PostOneClientQuery 
                 { 
-                    Document = client.Document.Trim().Replace(".", "").Replace("-", "").Replace("/", ""),
+                    Document = RemoveDocumentMask(client.Document),
                     Name = client.Name,
                     Password = client.Password
                 });
@@ -42,6 +48,30 @@ namespace FBank.Presentation.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private ActionResult CheckDocumentClaim(string document)
+        {
+            var user = HttpContext.User;
+
+            if (!user.Identity.IsAuthenticated)
+            {
+                return Unauthorized("Unauthorized user");
+            }
+
+            var documentClaim = user.Claims.FirstOrDefault(c => c.Type == "Document");
+
+            if (documentClaim == null || documentClaim.Value != RemoveDocumentMask(document))
+            {
+                return Unauthorized("User does not have permission.");
+            }
+
+            return null;
+        }
+
+        private string RemoveDocumentMask(string document)
+        {
+            return document.Trim().Replace(".", "").Replace("-", "").Replace("/", "");
         }
     }
 }

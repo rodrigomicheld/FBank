@@ -1,5 +1,6 @@
 ﻿using FBank.Application.Requests;
 using FBank.Application.ViewMoldels;
+using FBank.Presentation.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,8 +13,15 @@ namespace FBank.Presentation.Controllers
         }
 
         [HttpPost]        
-        public async Task<ActionResult<ClientViewModel>> PostTransactionWithDraw([FromBody] WithDrawMoneyAccountRequest  request)
+        public async Task<ActionResult<ClientViewModel>> PostTransactionWithDraw([FromBody] WithDrawMoneyAccountRequest request)
         {
+            var authorizationResult = CheckAccountClaim();
+            if (authorizationResult == null)
+            {
+                return Unauthorized("Unauthorized user");
+            }
+
+
             try
             {
                 return Ok(await mediator.Send(request));
@@ -28,9 +36,15 @@ namespace FBank.Presentation.Controllers
         [Route("DepositAccount")]
         public async Task<ActionResult<TransactionViewModel>> PostTransactionDeposit([FromBody] DepositMoneyAccountRequest request)
         {
+            var authorizationResult = CheckAccountClaim();
+            if (authorizationResult == null)
+            {
+                return Unauthorized("Unauthorized user");
+            }
+
             try
             {
-                return Ok(await mediator.Send(request));
+                return Ok(await mediator.Send(request)); 
             }
             catch (Exception ex)
             {
@@ -40,11 +54,22 @@ namespace FBank.Presentation.Controllers
 
 
         [HttpPost("Transfer")]
-        public async Task<ActionResult<TransferViewModel>> PostTransactionTransfer([FromBody] TransferMoneyAccountRequest request)
+        public async Task<ActionResult<TransferViewModel>> PostTransactionTransfer([FromBody] TransferMoneyAccountDto dto)
         {
+            var authorizationResult = CheckAccountClaim();
+            if (authorizationResult == null)
+            {
+                return Unauthorized("Unauthorized user");
+            }
+
             try
             {
-                return Ok(await mediator.Send(request));
+                return Ok(await mediator.Send(new TransferMoneyAccountRequest
+                {
+                    AccountNumberFrom = authorizationResult.Value,
+                    AccountNumberTo = dto.AccountNumberTo,
+                    Value = dto.Value,
+                }));
             }
             catch (Exception ex)
             {
@@ -52,5 +77,28 @@ namespace FBank.Presentation.Controllers
             }
         }
 
+        private int? CheckAccountClaim()
+        {
+            var user = HttpContext.User;
+
+            if (!user.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+
+            var documentClaim = user.Claims.FirstOrDefault(c => c.Type == "Account");
+
+            if (documentClaim == null)
+            {
+                return null;
+            }
+
+            if (int.TryParse(documentClaim.Value, out int accountValue))
+            {
+                return accountValue;
+            }
+
+            return null;
+        }
     }
 }
