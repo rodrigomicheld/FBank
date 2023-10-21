@@ -1,11 +1,12 @@
 ﻿using MediatR;
 
-namespace FBank.Application.Queries
+namespace FBank.Application.Requests
 {
-    public class PostOneClientQuery : IRequest<string>
+    public class PostOneClientRequest : IRequest<string>
     {
         public string Name { get; set; }
         public string Document { get; set; }
         public string Password { get; set; }
     }
 }
+

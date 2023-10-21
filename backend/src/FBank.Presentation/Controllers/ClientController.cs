@@ -1,4 +1,5 @@
 ﻿using FBank.Application.Queries;
+using FBank.Application.Requests;
 using FBank.Application.ViewMoldels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -31,11 +32,11 @@ namespace FBank.Presentation.Controllers
         }
 
         [HttpPost("register-account")]
-        public async Task<IActionResult> RegisterAsync([FromBody] PostOneClientQuery client)
+        public async Task<IActionResult> RegisterAsync([FromBody] PostOneClientRequest client)
         {
             try
             {
-                var account = await mediator.Send(new PostOneClientQuery 
+                var account = await mediator.Send(new PostOneClientRequest 
                 { 
                     Document = RemoveDocumentMask(client.Document),
                     Name = client.Name,
