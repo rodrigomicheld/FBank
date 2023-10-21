@@ -13,14 +13,16 @@ namespace FBank.Infrastructure.Repositories
 
         public override Account SelectOne(Expression<Func<Account, bool>> filter = null)
         {
-            IQueryable<Account> query = Context.Accounts;
+            IQueryable<Account> query = context.Accounts;
 
             query = query
                 .Include(account => account.Agency)
-                .Include(account => account.Transactions);
+                .Include(account => account.Transactions)
+                .Include(account => account.Client);
 
             return query.AsNoTracking()
                 .Where(filter).FirstOrDefault();
         }
+
     }
 }

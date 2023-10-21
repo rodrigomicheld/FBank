@@ -10,6 +10,7 @@ namespace FBank.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IBankRepository, BankRepository>();
             services.AddScoped<IAgencyRepository, AgencyRepository>();

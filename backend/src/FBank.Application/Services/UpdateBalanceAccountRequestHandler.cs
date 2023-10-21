@@ -3,24 +3,25 @@ using FBank.Application.Requests;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Enums;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace FBank.Application.Services
 {
     public class UpdateBalanceAccountRequestHandler : IRequestHandler<UpdateBalanceAccountRequest, UpdateBalanceViewModel>
     {        
-        private readonly IAccountRepository _accountRepository;
-
-        public UpdateBalanceAccountRequestHandler(IAccountRepository accountRepository)
+        IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+        public UpdateBalanceAccountRequestHandler(IUnitOfWork unitOfWork, ILogger<UpdateBalanceAccountRequestHandler> logger)
         {
-            _accountRepository = accountRepository;
+            _unitOfWork=unitOfWork;
+            _logger=logger;
         }
 
         public async Task<UpdateBalanceViewModel> Handle(UpdateBalanceAccountRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                //var account = request.Account;
-                var accountUpdated = _accountRepository.SelectToId(request.AccountId);
+                var accountUpdated = _unitOfWork.AccountRepository.SelectToId(request.AccountId);
                 List<string> errors = new List<string>();
                 if (accountUpdated == null)
                     errors.Add("Conta não encontrada");               
@@ -34,12 +35,12 @@ namespace FBank.Application.Services
                 accountUpdated.Balance = accountUpdated.Balance +
                                          ((request.FlowType.GetHashCode() == FlowType.SAIDA.GetHashCode()) ? (request.Value * -1)
                                          : request.Value);
-                
-                _accountRepository.Update(accountUpdated);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                _unitOfWork.Rollback();
+                _logger.LogInformation(ex.ToString());
+                throw new Exception("Erro ao alterar saldo", ex);
             }
             return new UpdateBalanceViewModel();       
         }

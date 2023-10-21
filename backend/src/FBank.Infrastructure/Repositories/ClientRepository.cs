@@ -11,7 +11,7 @@ namespace FBank.Infrastructure.Repositories
 
         public override Client SelectOne(Expression<Func<Client, bool>> filter = null)
         {
-            IQueryable<Client> query = Context.Clients;
+            IQueryable<Client> query = context.Clients;
     
             query = query.Include(client => client.Accounts)
                 .ThenInclude(account => account.Agency);

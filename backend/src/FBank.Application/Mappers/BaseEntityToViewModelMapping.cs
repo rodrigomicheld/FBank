@@ -28,8 +28,6 @@ namespace FBank.Application.Mappers
                 .ForMember(to => to.Id, map => map.MapFrom(from => from.Id))
                 .ForMember(to => to.Number, map => map.MapFrom(from => from.Code));
 
-            CreateMap<TransactionBank, TransactionViewModel>()
-                .ForMember(to => to.Id, map => map.MapFrom(from => from.Id));
         }
 
         private static string GetDescription(Enum @enum)

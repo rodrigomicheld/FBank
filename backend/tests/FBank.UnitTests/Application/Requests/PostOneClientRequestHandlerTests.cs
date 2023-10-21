@@ -17,7 +17,7 @@ namespace FBank.UnitTests.Application.Requests
         private readonly IAgencyRepository _mockAgencyRepository;
         private readonly IAccountRepository _mockAccountRepository;
         private readonly ILogger<PostOneClientRequestHandler> _mockLogger;
-
+        private readonly IUnitOfWork _unitOfWork;
 
         public PostOneClientRequestHandlerTests()
         {
@@ -27,6 +27,7 @@ namespace FBank.UnitTests.Application.Requests
             _mockAgencyRepository = Substitute.For<IAgencyRepository>();
             _mockAccountRepository = Substitute.For<IAccountRepository>();
             _mockLogger = Substitute.For<ILogger<PostOneClientRequestHandler>>();
+            _unitOfWork = Substitute.For<IUnitOfWork>();
         }
 
         [Fact]
@@ -34,7 +35,8 @@ namespace FBank.UnitTests.Application.Requests
         {
             var query = new PostOneClientRequest { Document = "1234", Name = "test" };
 
-            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockAgencyRepository, _mockAccountRepository, _mockLogger);
+            //var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockAgencyRepository, _mockAccountRepository, _mockLogger);
+            var handler = new PostOneClientRequestHandler(_mockLogger, _unitOfWork);
 
             Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(query, CancellationToken.None));
         }
@@ -53,7 +55,8 @@ namespace FBank.UnitTests.Application.Requests
             _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).ReturnsNull();
             _mockAgencyRepository.SelectOne(Arg.Any<Expression<Func<Agency, bool>>>()).Returns(agency);
 
-            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockAgencyRepository, _mockAccountRepository, _mockLogger);
+            //var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockAgencyRepository, _mockAccountRepository, _mockLogger);
+            var handler = new PostOneClientRequestHandler(_mockLogger, _unitOfWork);
 
             var response = handler.Handle(query, CancellationToken.None);
 
