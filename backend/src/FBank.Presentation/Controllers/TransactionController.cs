@@ -34,7 +34,7 @@ namespace FBank.Presentation.Controllers
 
         [HttpPost]
         [Route("DepositAccount")]
-        public async Task<ActionResult<TransactionViewModel>> PostTransactionDeposit([FromBody] DepositMoneyAccountDto dto)
+        public async Task<ActionResult<TransactionViewModel>> PostTransactionDeposit([FromBody] DepositMoneyAccountRequest request)
         {
             var authorizationResult = CheckAccountClaim();
             if (authorizationResult == null)
@@ -44,11 +44,7 @@ namespace FBank.Presentation.Controllers
 
             try
             {
-                return Ok(await mediator.Send(new DepositMoneyAccountRequest
-                {
-                    AccountNumber = authorizationResult.Value,
-                    Value = dto.Value,
-                })); ;
+                return Ok(await mediator.Send(request)); 
             }
             catch (Exception ex)
             {
