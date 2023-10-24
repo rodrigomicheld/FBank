@@ -1,6 +1,8 @@
 ﻿using FBank.Application.Queries;
 using FBank.Application.Requests;
 using FBank.Application.ViewMoldels;
+using FBank.Domain.Common;
+using FBank.Domain.Common.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +48,19 @@ namespace FBank.Presentation.Controllers
                 return Ok($"Account successfully registered. {account}" );
             }
             catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<PaginationResponse<ClientExtractViewModel>>> GetListExtract([FromQuery] FilterClient filterClient)
+        {
+            try
+            {
+                return await mediator.Send(new ListExtractClientQuery { FilterClient = filterClient });
+            }
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }

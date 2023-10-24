@@ -46,7 +46,7 @@ namespace FBank.Application.Services
              AccountToId = accountTo.Id,
              TransactionType = Domain.Enums.TransactionType.TRANSFERENCIA,
              Value = request.Value,
-             FlowType = Domain.Enums.FlowType.SAIDA,
+             FlowType = Domain.Enums.FlowType.OUTPUT,
              AccountId = accountFrom.Id
             };
 
@@ -63,7 +63,7 @@ namespace FBank.Application.Services
                 AccountToId = accountTo.Id,
                 TransactionType = Domain.Enums.TransactionType.TRANSFERENCIA,
                 Value = request.Value,
-                FlowType = Domain.Enums.FlowType.ENTRADA,
+                FlowType = Domain.Enums.FlowType.INPUT,
                 AccountId = accountTo.Id
             };
 

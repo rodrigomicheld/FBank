@@ -32,7 +32,7 @@ namespace FBank.Application.Services
                     throw new Exception($"Erro ao atualizar Saldo, erros : {String.Join(",", errors)}");
                
                 accountUpdated.Balance = accountUpdated.Balance +
-                                         ((request.FlowType.GetHashCode() == FlowType.SAIDA.GetHashCode()) ? (request.Value * -1)
+                                         ((request.FlowType.GetHashCode() == FlowType.OUTPUT.GetHashCode()) ? (request.Value * -1)
                                          : request.Value);
                 
                 _accountRepository.Update(accountUpdated);

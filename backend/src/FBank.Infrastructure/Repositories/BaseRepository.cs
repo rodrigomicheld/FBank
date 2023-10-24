@@ -56,5 +56,14 @@ namespace FBank.Infrastructure.Repositories
         {
             return Entity.Where(filter).FirstOrDefault();
         }
+
+        public TColumn SelectOneColumn<TColumn>(Expression<Func<T, bool>> filter, Expression<Func<T, TColumn>> columnSelected)
+        {
+            return Entity 
+                .Where(filter)
+                .AsNoTracking()
+                .Select(columnSelected)
+                .FirstOrDefault();
+        }
     }
 }

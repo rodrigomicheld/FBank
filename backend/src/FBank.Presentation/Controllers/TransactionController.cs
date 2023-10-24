@@ -1,6 +1,6 @@
-﻿using FBank.Application.Requests;
+﻿using FBank.Application.Dto;
+using FBank.Application.Requests;
 using FBank.Application.ViewMoldels;
-using FBank.Presentation.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

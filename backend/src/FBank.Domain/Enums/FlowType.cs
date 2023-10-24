@@ -2,8 +2,8 @@
 {
     public enum FlowType
     {
-        ENTRADA = 1,
-        SAIDA = 2,
+        INPUT = 1,
+        OUTPUT = 2,
     }
 
 }

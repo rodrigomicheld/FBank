@@ -1,4 +1,4 @@
-﻿namespace FBank.Presentation.Dto
+﻿namespace FBank.Application.Dto
 {
     public class TransferMoneyAccountDto
     {

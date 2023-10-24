@@ -11,5 +11,6 @@ namespace FBank.Application.Interfaces
         T SelectToId(Guid id);
         IEnumerable<T> Find(Expression<Func<T, bool>> predicate = null);
         T SelectOne(Expression<Func<T, bool>> filter = null);
+        TColumn SelectOneColumn<TColumn>(Expression<Func<T, bool>> filter, Expression<Func<T, TColumn>> columnSelected);
     }
 }

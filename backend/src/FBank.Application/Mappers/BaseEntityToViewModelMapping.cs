@@ -32,7 +32,7 @@ namespace FBank.Application.Mappers
                 .ForMember(to => to.Id, map => map.MapFrom(from => from.Id));
         }
 
-        private static string GetDescription(Enum @enum)
+        public static string GetDescription(Enum @enum)
         {
             var description = @enum.GetType().GetField(@enum.ToString());
 

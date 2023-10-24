@@ -65,7 +65,7 @@ namespace FBank.Application.Services
             var account = VerifyAccountExists(request.AccountNumber);
             var transactionBank = new TransactionBank();
             transactionBank.TransactionType = Domain.Enums.TransactionType.DEPOSITO;
-            transactionBank.FlowType = Domain.Enums.FlowType.ENTRADA;
+            transactionBank.FlowType = Domain.Enums.FlowType.INPUT;
             transactionBank.AccountFromId = Guid.Empty;
             transactionBank.AccountToId= account.Id;
             transactionBank.AccountId = account.Id;
