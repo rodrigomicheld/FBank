@@ -1,18 +1,11 @@
-﻿using FBank.Domain.Entities;
-using Fbank.IntegrationTests.Builders.Entities;
-using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FBank.Application.Requests;
-using System.Reflection.Metadata;
+﻿using Fbank.IntegrationTests.Builders.Entities;
 using FBank.Application.Queries;
-using FBank.Domain.Common;
 using FBank.Application.ViewMoldels;
+using FBank.Domain.Common;
 using FBank.Domain.Common.Filters;
+using FBank.Domain.Enums;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Fbank.IntegrationTests.Application.Queries
 {
@@ -63,8 +56,58 @@ namespace Fbank.IntegrationTests.Application.Queries
             paginationResponse.TotalPages.Should().Be(totalPages);
             paginationResponse.CurrentPage.Should().Be(page);
 
-            var codigo = Enumerable.Range(1,99).ToList();
-            var codigosesperados = codigo.Skip((page-1) * pageSize).Take(pageSize).ToList();
+            var transaction = Enumerable.Range(1, 99).ToList();
+            var transactionsWait = transaction.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        }
+
+        [Fact]
+        public async Task Deve_exibir_extrato_das_transacoes_do_client()
+        {
+            Guid clientId = Guid.NewGuid();
+            Guid clientIdTo = Guid.NewGuid();
+            Guid bankId = Guid.NewGuid();
+            Guid agencyId = Guid.NewGuid();
+            Guid accountId = Guid.NewGuid();
+            Guid accountIdTo = Guid.NewGuid();
+
+            InsertOne(new BankBuilder().WithCode(1).WithId(bankId).Build());
+            InsertOne(new AgencyBuilder().WithId(agencyId).WithCode(1).WithBankId(bankId).Build());
+            InsertOne(new ClientBuilder().WithId(clientId).Build());
+            InsertOne(new ClientBuilder().WithId(clientIdTo).WithDocument("123").Build());
+            InsertOne(new AccountBuilder().WithClientId(clientId).WithAgencyId(agencyId).WithId(accountId).Build());
+            InsertOne(new AccountBuilder().WithClientId(clientIdTo).WithAgencyId(agencyId).WithId(accountIdTo).Build());
+
+            InsertOne(new TransactionBuilder()
+                .WithAccountId(accountId)
+                .WithTransactionType(TransactionType.DEPOSIT)
+                .Build());
+
+            InsertOne(new TransactionBuilder()
+                .WithAccountId(accountId)
+                .WithAccountIdDestination(accountIdTo)
+                .WithValue(10)
+                .WithDate(DateTime.Now.AddMinutes(10))
+                .WithTransactionType(TransactionType.TRANSFER)
+                .Build());
+
+            var paginationResponse = await Handle<ListExtractClientQuery, PaginationResponse<ClientExtractViewModel>>(
+                new ListExtractClientQuery
+                {
+                    FilterClient = new FilterClient()
+                    {
+                        NumberAccount = 1,
+                        InitialDate = DateTime.Now.Date,
+                        FinalDate = DateTime.Now.AddDays(1),
+                    }
+                });
+
+            paginationResponse.TotalItems.Should().Be(2);
+
+            Assert.Contains("Transferência", paginationResponse.Data.ElementAt(0).Description);
+            Assert.Equal("10,00", paginationResponse.Data.ElementAt(0).Amount);
+
+            Assert.Contains("Depósito", paginationResponse.Data.ElementAt(1).Description);
+            Assert.Equal("100,00", paginationResponse.Data.ElementAt(1).Amount);
         }
     }
 }

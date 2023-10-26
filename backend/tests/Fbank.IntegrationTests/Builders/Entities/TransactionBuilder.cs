@@ -12,6 +12,7 @@ namespace Fbank.IntegrationTests.Builders.Entities
         private Guid _accountId;
         private FlowType? _flowType;
         private Guid? _accountIdDestination; 
+        private DateTime? _dateTransaction; 
 
         public Transaction Build() 
         {
@@ -23,8 +24,14 @@ namespace Fbank.IntegrationTests.Builders.Entities
                 AccountId = _accountId,
                 AccountToId = _accountIdDestination,
                 FlowType = _flowType ?? FlowType.INPUT,
-                CreateDateAt = DateTime.Now,
+                CreateDateAt = _dateTransaction ?? DateTime.Now,
             };
+        }
+
+        public TransactionBuilder WithDate(DateTime date)
+        {
+            _dateTransaction = date;
+            return this;
         }
 
         public TransactionBuilder WithId(Guid id)
@@ -54,6 +61,11 @@ namespace Fbank.IntegrationTests.Builders.Entities
         public TransactionBuilder WithFlowType (FlowType flowType)
         {
             _flowType = flowType;
+            return this;
+        }
+        public TransactionBuilder WithValue(decimal value)
+        {
+            _value = value;
             return this;
         }
     }

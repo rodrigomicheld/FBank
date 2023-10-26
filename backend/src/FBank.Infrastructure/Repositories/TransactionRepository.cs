@@ -31,7 +31,7 @@ namespace FBank.Infrastructure.Repositories
                     DateTransaction = x.CreateDateAt,
                     Amount = x.Value,
                     TransactionType = x.TransactionType,
-                    IdAccountDestination = (Guid)x.AccountToId,
+                    IdAccountDestination = x.AccountToId ?? Guid.Empty,
                     IdAccountOrigin = x.AccountId
                     
                 })
@@ -47,7 +47,7 @@ namespace FBank.Infrastructure.Repositories
             predicate.And(x => x.CreateDateAt >= filterClient.InitialDate && x.CreateDateAt <= filterClient.FinalDate);
 
             predicate.And(x => x.Account.Number == filterClient.NumberAccount);
-
+            
             if(filterClient.FlowType is not null)
                 predicate.And(x => x.FlowType.Equals(filterClient.FlowType));
             

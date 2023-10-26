@@ -29,43 +29,19 @@ namespace FBank.Application.Services
 
             if (query.FilterClient.InitialDate > query.FilterClient.FinalDate || query.FilterClient.FinalDate < query.FilterClient.InitialDate)
                 throw new ArgumentException();
-            
+
             var paginationResponse = await _transactionRepository.SelectManyWithFilterToList(query.FilterClient);
 
             var viewModels = new List<ClientExtractViewModel>();
             DateTime? dateBase = null;
             foreach (var extractClient in paginationResponse.Data)
             {
-                if (extractClient.DateTransaction != dateBase)
+                viewModels.Add(new ClientExtractViewModel
                 {
-                    dateBase = extractClient.DateTransaction;
-
-                    viewModels.Add(new ClientExtractViewModel
-                    {
-                        DateTransaction = (DateTime)dateBase,
-                        Description = GetDescriptionTransaction(),
-                        Amount = string.Empty,
-                        Balance = GetBalanceAccount(extractClient.IdAccountOrigin).ToString()
-                    });
-
-                    viewModels.Add(new ClientExtractViewModel
-                    {
-                        DateTransaction = extractClient.DateTransaction,
-                        Description = GetDescriptionTransaction(extractClient),
-                        Amount = extractClient.Amount.ToString(),
-                        Balance = string.Empty
-                    });
-                }
-                else
-                {
-                    viewModels.Add(new ClientExtractViewModel
-                    {
-                        DateTransaction = extractClient.DateTransaction,
-                        Description = GetDescriptionTransaction(extractClient),
-                        Amount = extractClient.Amount.ToString(),
-                        Balance = string.Empty
-                    });
-                }
+                    DateTransaction = extractClient.DateTransaction.Date,
+                    Description = GetDescriptionTransaction(extractClient),
+                    Amount = extractClient.Amount.ToString(),
+                });
             }
 
             return new PaginationResponse<ClientExtractViewModel>(viewModels, paginationResponse.TotalItems, paginationResponse.CurrentPage, query.FilterClient._size);
@@ -76,14 +52,13 @@ namespace FBank.Application.Services
             return _accountRepository.SelectOneColumn(c => c.Id == idAccountOrigin, c => c.Balance).ToString();
         }
 
-        private string GetDescriptionTransaction(ClientExtractToListDto extractClient = null) 
+        private string GetDescriptionTransaction(ClientExtractToListDto extractClient = null)
         {
             switch (extractClient?.TransactionType)
             {
                 case TransactionType.TRANSFER:
                     var accountDestination = _accountRepository.SelectOneColumn(x => x.Id == extractClient.IdAccountDestination, x => x.Client.Name);
-                    var dateTransaction = extractClient.DateTransaction.ToString("MM-dd");
-                    return $"{extractClient.IdTransaction.ToString().Substring(0, 7)} {EnumExtensions.GetDescription(extractClient.TransactionType)} {accountDestination.Substring(0, 6)}{dateTransaction}";
+                    return $"{extractClient.IdTransaction.ToString().Substring(0, 7)} {EnumExtensions.GetDescription(extractClient.TransactionType)} {accountDestination.Substring(0, 7)}";
 
                 case TransactionType.WITHDRAW:
                     return $"{extractClient.IdTransaction.ToString().Substring(0, 7)} {EnumExtensions.GetDescription(extractClient.TransactionType)}";
@@ -91,14 +66,11 @@ namespace FBank.Application.Services
                 case TransactionType.DEPOSIT:
                     return $"{extractClient.IdTransaction.ToString().Substring(0, 7)} {EnumExtensions.GetDescription(extractClient.TransactionType)}";
 
-                case TransactionType.PAYMENT: 
+                case TransactionType.PAYMENT:
                     return string.Empty;
 
                 default:
-                    return "SALDO TOTAL DISPONÍVEL DIA";
-
-
-
+                    return string.Empty;
             }
         }
     }

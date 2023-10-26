@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FBank.Application.Queries;
 using FBank.Application.ViewMoldels;
+using FBank.Infrastructure;
 
 namespace Fbank.IntegrationTests.Application.Queries
 {
