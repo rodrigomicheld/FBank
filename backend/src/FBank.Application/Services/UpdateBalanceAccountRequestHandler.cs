@@ -28,10 +28,13 @@ namespace FBank.Application.Services
                 if (request.Value <= 0)
                     errors.Add("Valor a ser atualizao não pode menor ou igual a zero");
 
-
+                if (request.FlowType.GetHashCode() == FlowType.SAIDA.GetHashCode() && request.Value > accountUpdated.Balance)
+                    errors.Add("Saldo insuficiente");
+                
                 if (errors.Count > 0)
                     throw new Exception($"Erro ao atualizar Saldo, erros : {String.Join(",", errors)}");
-               
+
+
                 accountUpdated.Balance = accountUpdated.Balance +
                                          ((request.FlowType.GetHashCode() == FlowType.SAIDA.GetHashCode()) ? (request.Value * -1)
                                          : request.Value);
