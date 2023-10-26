@@ -8,21 +8,21 @@ namespace FBank.Application.Services
     public class AccountStatusRequestHandler : IRequestHandler<AccountStatusRequest, string>
     {
         private readonly ILogger<AccountStatusRequestHandler> _logger;
-        private readonly IAccountRepository _accountRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AccountStatusRequestHandler(
             ILogger<AccountStatusRequestHandler> logger,
-            IAccountRepository accountRepository)
+             IUnitOfWork unitOfWork)
         {
             _logger = logger;
-            _accountRepository = accountRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<string> Handle(AccountStatusRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Atualizando status da conta: {request.AccountNumber} - Status: {request.AccountStatus}");
 
-            var account = _accountRepository.SelectOne(x => x.Number == request.AccountNumber);
+            var account =_unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumber);
 
             if (account == null)
                 throw new InvalidOperationException("Account does not exist!");
@@ -31,9 +31,10 @@ namespace FBank.Application.Services
                 throw new InvalidOperationException($"Account is {request.AccountStatus}!");
 
             account.Status = request.AccountStatus;
-            _accountRepository.Update(account);
+            _unitOfWork.AccountRepository.Update(account);
+            _unitOfWork.Commit();
 
             return await Task.FromResult($"Account {account.Status} is successfully.");
-        }        
+        }
     }
 }

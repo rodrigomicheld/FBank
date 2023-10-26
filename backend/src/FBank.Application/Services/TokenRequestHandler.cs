@@ -8,22 +8,22 @@ namespace FBank.Application.Services
 {
     public class TokenRequestHandler : IRequestHandler<TokenRequest, string>
     {
-        private readonly IClientRepository _clientRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<TokenRequestHandler> _logger;
         private readonly ITokenService _tokenService;
 
-        public TokenRequestHandler(IClientRepository clientRepository, ILogger<TokenRequestHandler> logger, ITokenService tokenService)
+        public TokenRequestHandler(IUnitOfWork unitOfWork, ILogger<TokenRequestHandler> logger, ITokenService tokenService)
         {
-            _clientRepository = clientRepository;
             _logger = logger;
             _tokenService = tokenService;
+            _unitOfWork=unitOfWork;
         }
 
         public async Task<string> Handle(TokenRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Autenticando cliente da conta: {request.NumberAccount}");
 
-            var client = _clientRepository.SelectOne(
+            var client = _unitOfWork.ClientRepository.SelectOne(
                          x => x.Accounts.Any(account => account.Number == request.NumberAccount && account.Agency.Code == request.NumberAgency) && 
                          x.Password == request.Password);
 

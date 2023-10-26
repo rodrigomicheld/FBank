@@ -20,9 +20,6 @@ namespace FBank.UnitTests.Application.Requests
 {
     public class WithDrawMoneyAccountRequestHandlerTests
     {
-        //private readonly DepositMoneyAccountRequest _query;
-        //private readonly WithDrawMoneyAccountRequestHandler _handler;
-        //private readonly IMediator _mockMediator;
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
         private readonly Mock<ILogger<WithDrawMoneyAccountRequestHandler>> _mockLogger;
             public WithDrawMoneyAccountRequestHandlerTests()
