@@ -19,8 +19,7 @@ namespace FBank.Infrastructure.Repositories
                 .Include(account => account.Agency)
                 .Include(account => account.Transactions);
 
-            return query.AsNoTracking()
-                .Where(filter).FirstOrDefault();
+            return query.Where(filter).FirstOrDefault();
         }
     }
 }
