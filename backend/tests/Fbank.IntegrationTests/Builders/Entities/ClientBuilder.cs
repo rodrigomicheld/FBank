@@ -18,6 +18,7 @@ namespace Fbank.IntegrationTests.Builders.Entities
                 Name = _name ?? "Cliente Test",
                 Document = _document ?? "12345678",
                 DocumentType = _personType ?? PersonType.Person,
+                Password = "123",
                 Accounts = _accounts ?? new List<Account>()
                 {
                   

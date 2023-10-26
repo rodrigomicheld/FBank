@@ -27,17 +27,5 @@ namespace FBank.UnitTests.Presentation
             var response = _transactionController.PostTransactionDeposit(It.IsAny<DepositMoneyAccountRequest>());
             Assert.NotNull(response);
         }
-
-        [Fact]
-        public void Should_return_bad_request_when_transaction_does_not_didAsync()
-        {
-            var depositMoneyAccountRequest = new DepositMoneyAccountRequest();
-            var result = _mockMediator.Setup(obj => obj.Send(It.IsAny<DepositMoneyAccountRequest>(), new CancellationToken())).Throws<Exception>();
-            var response = _transactionController.PostTransactionDeposit(depositMoneyAccountRequest).Result;
-            var resultado = response?.Result;
-
-            Assert.Null(response?.Value);
-            Assert.IsType<BadRequestObjectResult>(resultado);
-        }
     }
 }

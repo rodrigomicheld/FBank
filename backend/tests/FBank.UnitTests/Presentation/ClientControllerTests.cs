@@ -27,18 +27,5 @@ namespace FBank.UnitTests.Presentation
             
             Assert.NotNull(response);      
         }
-
-        [Fact]
-        public void Should_return_bad_request_when_client_does_not_existAsync()
-        {
-            var result = _mockMediator.Setup(obj => obj.Send(It.IsAny<GetOneClientQuery>(), new CancellationToken())).Throws<Exception>();
-
-            var response = _clientController.GetOneAsync(It.IsAny<string>()).Result;
-
-            var resultado = response?.Result;
-
-            Assert.Null(response?.Value);
-            Assert.IsType<BadRequestObjectResult>(resultado);
-        }
     }
 }

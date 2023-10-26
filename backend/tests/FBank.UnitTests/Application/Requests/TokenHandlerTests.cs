@@ -8,11 +8,11 @@ using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using System.Linq.Expressions;
 
-namespace FBank.UnitTests.Application.Queries
+namespace FBank.UnitTests.Application.Requests
 {
     public class TokenHandlerTests
     {
-        
+
         private readonly IClientRepository _mockClientRepository;
         private readonly ILogger<TokenRequestHandler> _mockLogger;
         private readonly ITokenService _mockTokenService;
@@ -34,7 +34,7 @@ namespace FBank.UnitTests.Application.Queries
 
             _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).ReturnsNull();
 
-            var handler = new TokenRequestHandler(_mockClientRepository, _mockLogger, _mockTokenService);           
+            var handler = new TokenRequestHandler(_mockClientRepository, _mockLogger, _mockTokenService);
 
             Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(query, CancellationToken.None));
         }
@@ -60,15 +60,15 @@ namespace FBank.UnitTests.Application.Queries
                 Code = 1
             };
 
-            client.Accounts = new List<Account>() 
-            { 
-                new Account 
-                { 
+            client.Accounts = new List<Account>()
+            {
+                new Account
+                {
                     ClientId = client.Id,
                     AgencyId = agency.Id,
                     Number = 2,
                     Status = AccountStatusEnum.Active
-                } 
+                }
             };
 
             _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).Returns(client);
