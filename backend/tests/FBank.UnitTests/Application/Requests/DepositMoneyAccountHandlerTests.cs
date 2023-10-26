@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
-namespace FBank.UnitTests.Application.Queries
+namespace FBank.UnitTests.Application.Requests
 {
     public class DepositMoneyAccountHandlerTests
     {

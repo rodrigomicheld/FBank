@@ -24,8 +24,7 @@ namespace FBank.Application.Services
             _logger.LogInformation($"Autenticando cliente da conta: {request.NumberAccount}");
 
             var client = _clientRepository.SelectOne(
-                         x => x.Accounts.Any(account => account.Status == AccountStatusEnum.Active && 
-                         account.Number == request.NumberAccount && account.Agency.Code == request.NumberAgency) && 
+                         x => x.Accounts.Any(account => account.Number == request.NumberAccount && account.Agency.Code == request.NumberAgency) && 
                          x.Password == request.Password);
 
             if (client == null)
