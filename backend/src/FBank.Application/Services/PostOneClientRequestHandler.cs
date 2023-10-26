@@ -53,7 +53,7 @@ namespace FBank.Application.Services
             {
                 ClientId = client.Id,
                 AgencyId = agency.Id,
-                Status = AccountStatusEnum.Active,
+                Status = AccountStatus.Active,
             };
 
             _accountRepository.Insert(account);

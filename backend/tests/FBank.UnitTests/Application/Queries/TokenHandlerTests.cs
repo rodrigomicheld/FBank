@@ -67,7 +67,7 @@ namespace FBank.UnitTests.Application.Queries
                     ClientId = client.Id,
                     AgencyId = agency.Id,
                     Number = 2,
-                    Status = AccountStatusEnum.Active
+                    Status = AccountStatus.Active
                 } 
             };
 

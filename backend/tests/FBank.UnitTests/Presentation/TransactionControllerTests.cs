@@ -1,5 +1,4 @@
-﻿using FBank.Application.Queries;
-using FBank.Application.Requests;
+﻿using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using FBank.Presentation.Controllers;
 using MediatR;

@@ -53,14 +53,14 @@ namespace FBank.Presentation.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("extract-account")]
         public async Task<ActionResult<PaginationResponse<ClientExtractViewModel>>> GetListExtract([FromQuery] FilterClient filterClient)
         {
             try
             {
                 return await mediator.Send(new ListExtractClientQuery { FilterClient = filterClient });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

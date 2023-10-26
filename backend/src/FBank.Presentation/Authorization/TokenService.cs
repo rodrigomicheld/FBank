@@ -21,8 +21,8 @@ namespace FBank.Presentation.Authorization
         {
             var tokenHandle = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("Secret"));
-            var agency = client.Accounts.FirstOrDefault(x => x.Status == AccountStatusEnum.Active).Number.ToString();
-            var account = client.Accounts.FirstOrDefault(x => x.Status == AccountStatusEnum.Active).Agency.Code.ToString();
+            var agency = client.Accounts.FirstOrDefault(x => x.Status == AccountStatus.Active).Number.ToString();
+            var account = client.Accounts.FirstOrDefault(x => x.Status == AccountStatus.Active).Agency.Code.ToString();
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new Claim[]

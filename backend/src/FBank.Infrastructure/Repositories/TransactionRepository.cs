@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FBank.Infrastructure.Repositories
 {
-    public class TransactionRepository : BaseRepository<TransactionBank>, ITransactionRepository
+    public class TransactionRepository : BaseRepository<Transaction>, ITransactionRepository
     {
         public TransactionRepository(DataBaseContext context) : base(context)
         {
@@ -31,22 +31,25 @@ namespace FBank.Infrastructure.Repositories
                     DateTransaction = x.CreateDateAt,
                     Amount = x.Value,
                     TransactionType = x.TransactionType,
-                    IdAccountOrigin = x.AccountId,
-                    IdAccountDestination = x.AccountToId
+                    IdAccountDestination = (Guid)x.AccountToId,
+                    IdAccountOrigin = x.AccountId
+                    
                 })
                 .AsNoTracking()
                 .Sort(sort)
                 .PaginateAsync(filterClient._page, filterClient._size);
         }
 
-        private ExpressionStarter<TransactionBank> GetExtractClientWithFilter(FilterClient filterClient)
+        private ExpressionStarter<Transaction> GetExtractClientWithFilter(FilterClient filterClient)
         {
-            var predicate = PredicateBuilder.New<TransactionBank>(defaultExpression: true);
+            var predicate = PredicateBuilder.New<Transaction>(defaultExpression: true);
 
-            predicate = predicate.And(x => x.CreateDateAt == filterClient.InitialDate && x.CreateDateAt <= filterClient.FinalDate);
+            predicate.And(x => x.CreateDateAt >= filterClient.InitialDate && x.CreateDateAt <= filterClient.FinalDate);
+
+            predicate.And(x => x.Account.Number == filterClient.NumberAccount);
 
             if(filterClient.FlowType is not null)
-                predicate = predicate.And(x => x.FlowType.Equals(filterClient.FlowType));
+                predicate.And(x => x.FlowType.Equals(filterClient.FlowType));
             
 
             return predicate;

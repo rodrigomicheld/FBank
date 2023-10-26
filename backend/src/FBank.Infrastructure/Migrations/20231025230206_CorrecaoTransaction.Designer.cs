@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FBank.Infrastructure.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20231007140156_ContaDestino")]
-    partial class ContaDestino
+    [Migration("20231025230206_CorrecaoTransaction")]
+    partial class CorrecaoTransaction
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,13 +48,16 @@ namespace FBank.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("criado_em");
 
-                    b.Property<int>("IdStatus")
-                        .HasColumnType("int")
-                        .HasColumnName("status_Id");
-
                     b.Property<int>("Number")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("numero");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Number"));
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("status");
 
                     b.Property<DateTime>("UpdateDateAt")
                         .HasColumnType("datetime2")
@@ -154,7 +157,7 @@ namespace FBank.Infrastructure.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("documento");
 
-                    b.Property<int>("PersonType")
+                    b.Property<int>("DocumentType")
                         .HasColumnType("int")
                         .HasColumnName("tipo_documento");
 
@@ -162,6 +165,12 @@ namespace FBank.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("nome");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Senha");
 
                     b.Property<DateTime>("UpdateDateAt")
                         .HasColumnType("datetime2")
@@ -181,11 +190,11 @@ namespace FBank.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("AccountFromId")
+                    b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("conta_origem_id");
+                        .HasColumnName("conta_id");
 
-                    b.Property<Guid>("AccountToId")
+                    b.Property<Guid?>("AccountToId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("conta_destino_id");
 
@@ -194,7 +203,8 @@ namespace FBank.Infrastructure.Migrations
                         .HasColumnName("criado_em");
 
                     b.Property<int>("FlowType")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("fluxo");
 
                     b.Property<int>("TransactionType")
                         .HasColumnType("int")
@@ -210,7 +220,7 @@ namespace FBank.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountToId");
+                    b.HasIndex("AccountId");
 
                     b.ToTable("Transacao", (string)null);
                 });
@@ -245,13 +255,13 @@ namespace FBank.Infrastructure.Migrations
 
             modelBuilder.Entity("FBank.Domain.Entities.Transaction", b =>
                 {
-                    b.HasOne("FBank.Domain.Entities.Account", "AccountTo")
+                    b.HasOne("FBank.Domain.Entities.Account", "Account")
                         .WithMany("Transactions")
-                        .HasForeignKey("AccountToId")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AccountTo");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("FBank.Domain.Entities.Account", b =>

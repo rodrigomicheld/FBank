@@ -8,9 +8,9 @@ namespace FBank.Domain.Entities
         public virtual Client Client { get; set; }
         public Guid AgencyId { get; set; }
         public virtual Agency Agency { get; set; }
-        public AccountStatusEnum Status { get; set; }
+        public AccountStatus Status { get; set; }
         public decimal Balance { get; set; }
-        public virtual IEnumerable<TransactionBank> Transactions { get; set; }
+        public virtual IEnumerable<Transaction> Transactions { get; set; }
         public int Number { get; set; }
     }
 }

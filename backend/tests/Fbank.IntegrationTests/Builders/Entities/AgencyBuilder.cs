@@ -5,20 +5,27 @@ namespace Fbank.IntegrationTests.Builders.Entities
     public class AgencyBuilder
     {
         private string? _name;
-        public int? _code;
-        public Guid? _bankId;
+        private int? _code;
+        private Guid? _bankId;
+        private Guid? _agencyId;
        
         public Agency Build()
         {
             return new Agency
             {
-                Id = Guid.NewGuid(),
+                Id = _agencyId ?? Guid.NewGuid(),
                 Code = _code ?? 1,
                 Name = _name ?? "Agencia Test",
                 BankId = _bankId ?? Guid.NewGuid(),
                 CreateDateAt = DateTime.Now,
                 UpdateDateAt = DateTime.Now
             };
+        }
+
+        public AgencyBuilder WithId(Guid id)
+        {
+            _agencyId = id;
+            return this;
         }
 
         public AgencyBuilder WithName(string name)

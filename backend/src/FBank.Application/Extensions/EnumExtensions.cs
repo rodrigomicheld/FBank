@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace FBank.Infrastructure.Common
+namespace FBank.Application.Extensions
 {
     public static class EnumExtensions
     {

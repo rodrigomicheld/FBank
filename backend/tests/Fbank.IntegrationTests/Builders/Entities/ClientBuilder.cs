@@ -5,24 +5,28 @@ namespace Fbank.IntegrationTests.Builders.Entities
 {
     public class ClientBuilder
     {
+        private Guid _id;
         private string? _name;
-        public string? _document;
-        public PersonType? _personType;
-        public IList<Account> _accounts = new List<Account>();
-
+        private string? _document;
+        private PersonType? _personType;
+        
 
         public Client Build()
         {
             return new Client
             {
+                Id = _id,
                 Name = _name ?? "Cliente Test",
                 Document = _document ?? "12345678",
                 DocumentType = _personType ?? PersonType.Person,
-                Accounts = _accounts ?? new List<Account>()
-                {
-                  
-                }
+                Password = "12345678"
             };
+        }
+
+        public ClientBuilder WithId(Guid id)
+        {
+            _id = id;
+            return this;
         }
 
         public ClientBuilder WithName(string name)
@@ -40,12 +44,6 @@ namespace Fbank.IntegrationTests.Builders.Entities
         public ClientBuilder WithPersonType(PersonType personType)
         {
             _personType = personType;
-            return this;
-        }
-
-        public ClientBuilder WithAccounts(IEnumerable<Account> accounts)
-        {
-            _accounts = (IList<Account>)accounts;
             return this;
         }
     }

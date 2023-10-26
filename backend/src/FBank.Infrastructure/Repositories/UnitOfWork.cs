@@ -9,7 +9,7 @@
 //        private IBaseRepository<Client> clientRepository = null;
 //        private IBaseRepository<Bank> bankRepository = null;
 //        private IBaseRepository<Agency> agencyRepository = null;
-//        private IBaseRepository<TransactionBank> transactionRepository=null;
+//        private IBaseRepository<Transaction> transactionRepository=null;
         
 //        public UnitOfWork()
 //        {
@@ -56,13 +56,13 @@
 //            }
 //        }
 
-//        public IBaseRepository<TransactionBank> Transactions
+//        public IBaseRepository<Transaction> Transactions
 //        {
 //            get
 //            {
 //                if (transactionRepository == null)
 //                {
-//                    transactionRepository = new BaseRepository<TransactionBank>(_contexto);
+//                    transactionRepository = new BaseRepository<Transaction>(_contexto);
 //                }
 //                return transactionRepository;
 //            }

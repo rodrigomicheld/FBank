@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FBank.Application.Interfaces;
-using FBank.Application.Requests;
-using FBank.Application.Services;
+using FBank.Application.Requests.Transactions;
+using FBank.Application.Services.Transactions;
 using FBank.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -24,7 +24,7 @@ namespace FBank.UnitTests.Application.Queries
             _mockAccountRepository = Substitute.For<IAccountRepository>();
             _mockMediator = Substitute.For<IMediator>();
 
-            _mockTransactionRepository.SelectToId(Arg.Any<Guid>()).Returns(new TransactionBank());
+            _mockTransactionRepository.SelectToId(Arg.Any<Guid>()).Returns(new Transaction());
             _query = new DepositMoneyAccountRequest();
             _handler = new DepositMoneyAccountHandler(
                 _mockMediator,
@@ -37,7 +37,7 @@ namespace FBank.UnitTests.Application.Queries
         [Fact]
         public void Should_return_transaction_requested()
         {
-            _mockTransactionRepository.SelectToId(Arg.Any<Guid>()).Returns(new TransactionBank());
+            _mockTransactionRepository.SelectToId(Arg.Any<Guid>()).Returns(new Transaction());
             var response = _handler.Handle(_query, CancellationToken.None);
             Assert.NotNull(response);
         }

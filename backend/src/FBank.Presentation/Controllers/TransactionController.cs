@@ -1,5 +1,6 @@
 ﻿using FBank.Application.Dto;
 using FBank.Application.Requests;
+using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -36,11 +37,11 @@ namespace FBank.Presentation.Controllers
         [Route("DepositAccount")]
         public async Task<ActionResult<TransactionViewModel>> PostTransactionDeposit([FromBody] DepositMoneyAccountRequest request)
         {
-            var authorizationResult = CheckAccountClaim();
-            if (authorizationResult == null)
-            {
-                return Unauthorized("Unauthorized user");
-            }
+            //var authorizationResult = CheckAccountClaim();
+            //if (authorizationResult == null)
+            //{
+            //    return Unauthorized("Unauthorized user");
+            //}
 
             try
             {
