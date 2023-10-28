@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FBank.Infrastructure.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20231004003820_Popular-bank-agency")]
-    partial class Popularbankagency
+    [Migration("20231028160534_AddMigrationInicial")]
+    partial class AddMigrationInicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -34,29 +34,38 @@ namespace FBank.Infrastructure.Migrations
 
                     b.Property<Guid>("AgencyId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Agencia_id");
+                        .HasColumnName("agencia_id");
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("Decimal(21,9)")
-                        .HasColumnName("Balance");
+                        .HasColumnType("Decimal(21,2)")
+                        .HasColumnName("saldo");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Cliente_id");
+                        .HasColumnName("cliente_id");
 
                     b.Property<DateTime>("CreateDateAt")
                         .HasColumnType("datetime2")
                         .HasColumnName("criado_em");
 
-                    b.Property<int>("IdStatus")
+                    b.Property<int>("Number")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("Status_Id");
+                        .HasColumnName("numero");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Number"));
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("status");
 
                     b.Property<DateTime>("UpdateDateAt")
                         .HasColumnType("datetime2")
                         .HasColumnName("atualizado_em");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Number");
 
                     b.HasIndex("AgencyId");
 
@@ -150,7 +159,7 @@ namespace FBank.Infrastructure.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("documento");
 
-                    b.Property<int>("PersonType")
+                    b.Property<int>("DocumentType")
                         .HasColumnType("int")
                         .HasColumnName("tipo_documento");
 
@@ -158,6 +167,12 @@ namespace FBank.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("nome");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("senha");
 
                     b.Property<DateTime>("UpdateDateAt")
                         .HasColumnType("datetime2")
@@ -168,6 +183,48 @@ namespace FBank.Infrastructure.Migrations
                     b.HasAlternateKey("Document");
 
                     b.ToTable("Cliente", (string)null);
+                });
+
+            modelBuilder.Entity("FBank.Domain.Entities.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("conta_id");
+
+                    b.Property<Guid?>("AccountToId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("conta_destino_id");
+
+                    b.Property<DateTime>("CreateDateAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("criado_em");
+
+                    b.Property<int>("FlowType")
+                        .HasColumnType("int")
+                        .HasColumnName("fluxo");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("int")
+                        .HasColumnName("tipo_transacao");
+
+                    b.Property<DateTime>("UpdateDateAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("atualizado_em");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("Decimal(21,2)")
+                        .HasColumnName("valor");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Transacao", (string)null);
                 });
 
             modelBuilder.Entity("FBank.Domain.Entities.Account", b =>
@@ -196,6 +253,22 @@ namespace FBank.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Bank");
+                });
+
+            modelBuilder.Entity("FBank.Domain.Entities.Transaction", b =>
+                {
+                    b.HasOne("FBank.Domain.Entities.Account", "Account")
+                        .WithMany("Transactions")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("FBank.Domain.Entities.Account", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("FBank.Domain.Entities.Agency", b =>

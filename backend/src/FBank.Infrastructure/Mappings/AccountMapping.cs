@@ -43,6 +43,8 @@ namespace FBank.Infrastructure.Mappings
                 .IsRequired()
                 .HasColumnName("numero")
                 .UseIdentityColumn();
+
+            entityTypeBuilder.HasAlternateKey(p => p.Number);
         }
     }
 }

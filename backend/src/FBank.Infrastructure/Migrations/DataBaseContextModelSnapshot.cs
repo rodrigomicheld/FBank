@@ -17,7 +17,7 @@ namespace FBank.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -61,6 +61,8 @@ namespace FBank.Infrastructure.Migrations
                         .HasColumnName("atualizado_em");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Number");
 
                     b.HasIndex("AgencyId");
 
