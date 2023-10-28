@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NSubstitute;
+using System.Data.Entity.Core.Objects;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -79,11 +80,17 @@ namespace FBank.UnitTests.Presentation
 
             // Act
             var response =  _transactionController.PostTransactionWithDraw(request).Result;
+
+            TransactionViewModel transactionViewModel = new TransactionViewModel();
+            if (response.Result is OkObjectResult okResult)
+            {
+                transactionViewModel = okResult.Value as TransactionViewModel;
+            }
             // Assert
-            Assert.NotNull(response.Value);
-            Assert.Equal(Domain.Enums.TransactionType.WITHDRAW, response.Value.TransactionType);
-            Assert.Equal(mockResponse.DateTransaction, response.Value.DateTransaction);
-            Assert.Equal(10, response.Value.Amount);
+            
+            Assert.Equal(Domain.Enums.TransactionType.WITHDRAW, transactionViewModel.TransactionType);
+            Assert.Equal(mockResponse.DateTransaction, transactionViewModel.DateTransaction);
+            Assert.Equal(10, transactionViewModel.Amount);
         }
     }
 }
