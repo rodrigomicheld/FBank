@@ -21,14 +21,10 @@ namespace FBank.Application.Services
 
         public async Task<TransactionViewModel> Handle(WithDrawMoneyAccountRequest request, CancellationToken cancellationToken)
         {
-            return await WithDraw(request.AccountOrigin, request.Amount);
-
-        }
-
-        public async Task<TransactionViewModel> WithDraw(Guid accountOrigin, decimal amount)
-        {
             try
             {
+                Guid accountOrigin = request.AccountOrigin;
+                decimal amount = request.Amount;
                 var account = _unitOfWork.AccountRepository.SelectToId(accountOrigin);
 
                 await _mediator.Send(new UpdateBalanceAccountRequest()
@@ -41,7 +37,7 @@ namespace FBank.Application.Services
                 var transfer = new TransactionBank
                 {
                     Account = account,
-                    AccountFromId = accountOrigin,  
+                    AccountFromId = accountOrigin,
                     AccountToId = accountOrigin,
                     AccountId = accountOrigin,
                     FlowType = Domain.Enums.FlowType.SAIDA,

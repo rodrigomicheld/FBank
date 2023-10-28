@@ -62,7 +62,7 @@ namespace FBank.Application.Services
             {
                 _unitOfWork.Rollback();
                 _logger.LogInformation(ex.ToString());
-                throw new Exception("Erro ao efetuar Cadastro", ex);
+                throw ex;
             }
         }
     }
