@@ -108,6 +108,8 @@ namespace Fbank.IntegrationTests.Application.Queries
 
             Assert.Contains("Depósito", paginationResponse.Data.ElementAt(1).Description);
             Assert.Equal("100,00", paginationResponse.Data.ElementAt(1).Amount);
+
+            
         }
     }
 }
