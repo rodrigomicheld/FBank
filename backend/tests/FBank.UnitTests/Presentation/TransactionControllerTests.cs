@@ -1,17 +1,10 @@
-﻿using AutoMapper.Features;
-using FBank.Application.Requests;
+﻿using FBank.Application.Requests;
+using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
-using FBank.Domain.Entities;
 using FBank.Presentation.Controllers;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using NSubstitute;
-using System.Linq.Expressions;
-using System.Security.Claims;
-using System.Security.Principal;
 namespace FBank.UnitTests.Presentation
 {
     public class TransactionControllerTests
@@ -64,7 +57,7 @@ namespace FBank.UnitTests.Presentation
             var mockResponse = new TransactionViewModel
             {
                 Amount = 10,
-                TransactionType = Domain.Enums.TransactionType.SAQUE,
+                TransactionType = Domain.Enums.TransactionType.WITHDRAW,
                 DateTransaction = DateTime.Now
             };
 
@@ -77,7 +70,7 @@ namespace FBank.UnitTests.Presentation
 
             // Assert
             Assert.NotNull(response.Value);
-            Assert.Equal(Domain.Enums.TransactionType.SAQUE, response.Value.TransactionType);
+            Assert.Equal(Domain.Enums.TransactionType.WITHDRAW, response.Value.TransactionType);
             Assert.Equal(mockResponse.DateTransaction, response.Value.DateTransaction);
             Assert.Equal(10, response.Value.Amount);
         }

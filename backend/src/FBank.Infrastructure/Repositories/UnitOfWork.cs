@@ -11,15 +11,14 @@ namespace FBank.Infrastructure.Repositories
         private AgencyRepository _agencyRepository;
         private TransactionRepository _transactionRepository;
         private AccountRepository _accountRepository;
-        private string _errorMessage = string.Empty;
-        
+
         private DataBaseContext _context;
         public UnitOfWork(DataBaseContext context)
         {
             _context = context;
         }
-        public IBaseRepository<Client> ClientRepository 
-        { 
+        public IBaseRepository<Client> ClientRepository
+        {
             get
             {
                 if (_clientRepository == null)
@@ -27,9 +26,9 @@ namespace FBank.Infrastructure.Repositories
                     _clientRepository = new ClientRepository(_context);
                 }
                 return _clientRepository;
-            } 
+            }
         }
-        
+
         public IBaseRepository<Bank> BankRepository
         {
             get
@@ -52,7 +51,7 @@ namespace FBank.Infrastructure.Repositories
                 return _agencyRepository;
             }
         }
-        public IBaseRepository<TransactionBank> TransactionRepository
+        public IBaseRepository<Transaction> TransactionRepository
         {
             get
             {
@@ -93,25 +92,6 @@ namespace FBank.Infrastructure.Repositories
             }
             _context.Dispose();
         }
-        //public void Save()
-        //{
-        //    //try
-        //    //{
-        //        _context.SaveChanges();
-        //    //}
-        //    //catch (DbEntityValidationException dbEx)
-        //    //{
-        //    //    foreach (var validationErrors in dbEx.EntityValidationErrors)
-        //    //    {
-        //    //        foreach (var validationError in validationErrors.ValidationErrors)
-        //    //        {
-        //    //            _errorMessage = _errorMessage + $"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage} {Environment.NewLine}";
-        //    //        }
-        //    //    }
-        //    //    throw new Exception(_errorMessage, dbEx);
-        //    //}
-        //}
-
 
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)

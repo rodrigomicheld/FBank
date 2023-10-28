@@ -54,7 +54,7 @@ namespace FBank.UnitTests
                 Client = Client(),
                 Agency = Agency(),  
                 Number = 1,
-                Status = AccountStatusEnum.Active,
+                Status = AccountStatus.Active,
                 Balance = 100
             };
         }

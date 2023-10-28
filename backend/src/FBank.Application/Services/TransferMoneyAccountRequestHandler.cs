@@ -2,6 +2,7 @@
 using FBank.Application.Requests;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
+using FBank.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -18,8 +19,8 @@ namespace FBank.Application.Services
             ILogger<TransferMoneyAccountRequestHandler> logger)
         {
             _mediator = mediator;
-            _unitOfWork=unitOfWork;
-            _logger=logger;
+            _unitOfWork = unitOfWork;
+            _logger = logger;
         }
         public async Task<TransferViewModel> Handle(TransferMoneyAccountRequest request, CancellationToken cancellationToken)
         {
@@ -42,13 +43,12 @@ namespace FBank.Application.Services
                     throw new Exception($"Saldo insulficiente para realizar a trasferência, saldo atual {accountFrom.Balance}");
 
 
-                TransactionBank transactionFrom = new TransactionBank()
+                Transaction transactionFrom = new Transaction()
                 {
-                    AccountFromId = accountFrom.Id,
                     AccountToId = accountTo.Id,
-                    TransactionType = Domain.Enums.TransactionType.TRANSFERENCIA,
+                    TransactionType = TransactionType.TRANSFER,
                     Value = request.Value,
-                    FlowType = Domain.Enums.FlowType.SAIDA,
+                    FlowType = FlowType.OUTPUT,
                     AccountId = accountFrom.Id
                 };
 
@@ -61,13 +61,12 @@ namespace FBank.Application.Services
                     FlowType = transactionFrom.FlowType
                 });
 
-                TransactionBank transactionTo = new TransactionBank()
+                Transaction transactionTo = new Transaction()
                 {
-                    AccountFromId = accountFrom.Id,
                     AccountToId = accountTo.Id,
-                    TransactionType = Domain.Enums.TransactionType.TRANSFERENCIA,
+                    TransactionType = TransactionType.TRANSFER,
                     Value = request.Value,
-                    FlowType = Domain.Enums.FlowType.ENTRADA,
+                    FlowType = FlowType.INPUT,
                     AccountId = accountTo.Id
                 };
 

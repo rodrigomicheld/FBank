@@ -180,22 +180,18 @@ namespace FBank.Infrastructure.Migrations
                     b.ToTable("Cliente", (string)null);
                 });
 
-            modelBuilder.Entity("FBank.Domain.Entities.TransactionBank", b =>
+            modelBuilder.Entity("FBank.Domain.Entities.Transaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("AccountFromId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("conta_origem_id");
-
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("conta_id");
 
-                    b.Property<Guid>("AccountToId")
+                    b.Property<Guid?>("AccountToId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("conta_destino_id");
 
@@ -205,7 +201,7 @@ namespace FBank.Infrastructure.Migrations
 
                     b.Property<int>("FlowType")
                         .HasColumnType("int")
-                        .HasColumnName("flow_type");
+                        .HasColumnName("fluxo");
 
                     b.Property<int>("TransactionType")
                         .HasColumnType("int")
@@ -254,7 +250,7 @@ namespace FBank.Infrastructure.Migrations
                     b.Navigation("Bank");
                 });
 
-            modelBuilder.Entity("FBank.Domain.Entities.TransactionBank", b =>
+            modelBuilder.Entity("FBank.Domain.Entities.Transaction", b =>
                 {
                     b.HasOne("FBank.Domain.Entities.Account", "Account")
                         .WithMany("Transactions")

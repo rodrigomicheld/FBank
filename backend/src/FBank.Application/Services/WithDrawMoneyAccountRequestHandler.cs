@@ -14,9 +14,9 @@ namespace FBank.Application.Services
         private readonly ILogger<WithDrawMoneyAccountRequestHandler> _logger;
         public WithDrawMoneyAccountRequestHandler(IUnitOfWork unitOfWork, IMediator mediator, ILogger<WithDrawMoneyAccountRequestHandler> logger)
         {
-            _unitOfWork=unitOfWork;
-            _mediator=mediator;
-            _logger=logger;
+            _unitOfWork = unitOfWork;
+            _mediator = mediator;
+            _logger = logger;
         }
 
         public async Task<TransactionViewModel> Handle(WithDrawMoneyAccountRequest request, CancellationToken cancellationToken)
@@ -31,17 +31,16 @@ namespace FBank.Application.Services
                 {
                     AccountId = accountOrigin,
                     Value = amount,
-                    FlowType = Domain.Enums.FlowType.SAIDA
+                    FlowType = Domain.Enums.FlowType.OUTPUT
                 });
 
-                var transfer = new TransactionBank
+                var transfer = new Transaction
                 {
                     Account = account,
-                    AccountFromId = accountOrigin,
                     AccountToId = accountOrigin,
                     AccountId = accountOrigin,
-                    FlowType = Domain.Enums.FlowType.SAIDA,
-                    TransactionType = Domain.Enums.TransactionType.SAQUE,
+                    FlowType = Domain.Enums.FlowType.OUTPUT,
+                    TransactionType = Domain.Enums.TransactionType.WITHDRAW,
                     Value = amount,
                     CreateDateAt = DateTime.UtcNow,
                     UpdateDateAt = DateTime.UtcNow,
@@ -54,7 +53,7 @@ namespace FBank.Application.Services
                 {
                     Amount = amount,
                     DateTransaction = transfer.CreateDateAt,
-                    TransactionType = Domain.Enums.TransactionType.SAQUE,
+                    TransactionType = Domain.Enums.TransactionType.WITHDRAW,
                 };
             }
             catch (Exception ex)

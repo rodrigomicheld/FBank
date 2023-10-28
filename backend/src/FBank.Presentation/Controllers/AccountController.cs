@@ -25,7 +25,7 @@ namespace FBank.Presentation.Controllers
                 var mensage = await mediator.Send(new AccountStatusRequest
                 {
                     AccountNumber = authorizationResult.Value,
-                    AccountStatus = AccountStatusEnum.Active
+                    AccountStatus = AccountStatus.Active
                 });
 
                 return Ok(mensage);
@@ -50,7 +50,7 @@ namespace FBank.Presentation.Controllers
                 var mensage = await mediator.Send(new AccountStatusRequest
                 {
                     AccountNumber = authorizationResult.Value,
-                    AccountStatus = AccountStatusEnum.Inactive
+                    AccountStatus = AccountStatus.Inactive
                 });
 
                 return Ok(mensage);

@@ -1,7 +1,6 @@
 ﻿using FBank.Application.Interfaces;
 using FBank.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace FBank.Infrastructure.Repositories
@@ -23,7 +22,7 @@ namespace FBank.Infrastructure.Repositories
             {
                 dbSet.Attach(entity);
             }
-            
+
             dbSet.Remove(entity);
         }
 
@@ -58,6 +57,15 @@ namespace FBank.Infrastructure.Repositories
         public virtual T SelectOne(Expression<Func<T, bool>> filter = null)
         {
             return dbSet.Where(filter).FirstOrDefault();
+        }
+
+        public TColumn SelectOneColumn<TColumn>(Expression<Func<T, bool>> filter, Expression<Func<T, TColumn>> columnSelected)
+        {
+            return dbSet
+                .Where(filter)
+                .AsNoTracking()
+                .Select(columnSelected)
+                .FirstOrDefault();
         }
     }
 }

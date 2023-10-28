@@ -2,7 +2,7 @@
 
 namespace FBank.Domain.Enums
 {
-    public enum AccountStatusEnum
+    public enum AccountStatus
     {
 
         [Description("Ativo")]

@@ -1,25 +1,23 @@
-﻿using Azure.Core;
-using Fbank.IntegrationTests.Builders.Entities;
+﻿using Fbank.IntegrationTests.Builders.Entities;
 using FBank.Application.Requests;
+using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net;
-using System.Reflection.Metadata;
 
 namespace Fbank.IntegrationTests.Application.Requests
 {
     public class DepositMoneyAccountHandlerTests : ApplicationTestBase
     {
         public DepositMoneyAccountHandlerTests(WebApplicationFactory<Program> factory) : base(factory)
-        {           
+        {
         }
 
         private void PrepareScenarioToTest()
         {
-            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatusEnum.Active };
+            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Active };
 
             Guid bankId = Guid.NewGuid();
 
@@ -34,7 +32,7 @@ namespace Fbank.IntegrationTests.Application.Requests
             var account = new Account
             {
                 Id = Guid.NewGuid(),
-                Status = AccountStatusEnum.Inactive,
+                Status = AccountStatus.Inactive,
                 AgencyId = agency.Id,
                 ClientId = client.Id,
             };
@@ -47,8 +45,8 @@ namespace Fbank.IntegrationTests.Application.Requests
         {
             PrepareScenarioToTest();
 
-            var request = new DepositMoneyAccountRequest { AccountNumber = 1,Value=10 };
-            
+            var request = new DepositMoneyAccountRequest { Account = 1, Value = 10 };
+
             var response = await Handle<DepositMoneyAccountRequest, TransactionViewModel>(request);
 
             Assert.NotNull(response);
@@ -59,13 +57,13 @@ namespace Fbank.IntegrationTests.Application.Requests
         {
             PrepareScenarioToTest();
 
-            var request = new DepositMoneyAccountRequest { AccountNumber = 0, Value = 10 };
-            
+            var request = new DepositMoneyAccountRequest { Account = 0, Value = 10 };
+
             Func<Task> handle = async () => await Handle<DepositMoneyAccountRequest, TransactionViewModel>(request);
 
             await handle.Should().ThrowAsync<System.Exception>().WithMessage("Conta não encontrada");
         }
 
-        
+
     }
 }

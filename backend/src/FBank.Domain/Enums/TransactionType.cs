@@ -1,12 +1,17 @@
-﻿namespace FBank.Domain.Enums
+﻿using System.ComponentModel;
+
+namespace FBank.Domain.Enums
 {
     public enum TransactionType
     {
-
-        PAGAMENTO = 0,
-        TRANSFERENCIA = 1,
-        DEPOSITO = 2,
-        SAQUE = 3
+        [Description("Pagamento")]
+        PAYMENT = 0,
+        [Description("Transferência")]
+        TRANSFER = 1,
+        [Description("Depósito")]
+        DEPOSIT = 2,
+        [Description("Saque")]
+        WITHDRAW = 3
     }
 
 }

@@ -46,12 +46,12 @@ namespace FBank.Application.Services
 
                 var agency = _unitOfWork.AgencyRepository.SelectOne(x => x.Code == 1);
 
-                var account = new Account
-                {
-                    ClientId = client.Id,
-                    AgencyId = agency.Id,
-                    Status = AccountStatusEnum.Active,
-                };
+            var account = new Account
+            {
+                ClientId = client.Id,
+                AgencyId = agency.Id,
+                Status = AccountStatus.Active,
+            };
 
                 _unitOfWork.AccountRepository.Insert(account);
                 _unitOfWork.Commit();

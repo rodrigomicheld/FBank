@@ -39,7 +39,7 @@ namespace Fbank.IntegrationTests.Application.Requests
             var account = GetEntities<Account>();
             account.Should().HaveCount(1);
 
-            account.First().Status = AccountStatusEnum.Active;
+            account.First().Status = AccountStatus.Active;
             account.First().Number = 1;
             account.First().Balance = 0M;
             account.First().ClientId = client.First().Id;
@@ -71,7 +71,7 @@ namespace Fbank.IntegrationTests.Application.Requests
             var account = GetEntities<Account>();
             account.Should().HaveCount(1);
 
-            account.First().Status = AccountStatusEnum.Active;
+            account.First().Status = AccountStatus.Active;
             account.First().Number = 1;
             account.First().Balance = 0M;
             account.First().ClientId = client.First().Id;

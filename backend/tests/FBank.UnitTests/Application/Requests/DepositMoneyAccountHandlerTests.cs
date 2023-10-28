@@ -2,7 +2,9 @@
 using FBank.Application.Interfaces;
 using FBank.Application.Queries;
 using FBank.Application.Requests;
+using FBank.Application.Requests.Transactions;
 using FBank.Application.Services;
+using FBank.Application.Services.Transactions;
 using FBank.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -36,7 +38,7 @@ namespace FBank.UnitTests.Application.Requests
         [Fact]
         public void Should_return_transaction_requested()
         {
-            _mockUnitOfWork.TransactionRepository.SelectToId(Arg.Any<Guid>()).Returns(new TransactionBank());
+            _mockUnitOfWork.TransactionRepository.SelectToId(Arg.Any<Guid>()).Returns(new Transaction());
             var response = _handler.Handle(_query, CancellationToken.None);
             Assert.NotNull(response);
         }

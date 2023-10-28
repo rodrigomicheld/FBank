@@ -7,7 +7,7 @@ namespace FBank.Application.Interfaces
         public IBaseRepository<Client> ClientRepository { get; }
         public IBaseRepository<Bank> BankRepository { get; }
         public IBaseRepository<Agency> AgencyRepository { get; }
-        public IBaseRepository<TransactionBank> TransactionRepository { get; }
+        public IBaseRepository<Transaction> TransactionRepository { get; }
         public IBaseRepository<Account> AccountRepository { get; }
 
         void Commit();

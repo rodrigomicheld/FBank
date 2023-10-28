@@ -170,7 +170,7 @@ namespace FBank.Infrastructure.Migrations
                     b.ToTable("Cliente", (string)null);
                 });
 
-            modelBuilder.Entity("FBank.Domain.Entities.TransactionBank", b =>
+            modelBuilder.Entity("FBank.Domain.Entities.Transaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -232,7 +232,7 @@ namespace FBank.Infrastructure.Migrations
                     b.Navigation("Bank");
                 });
 
-            modelBuilder.Entity("FBank.Domain.Entities.TransactionBank", b =>
+            modelBuilder.Entity("FBank.Domain.Entities.Transaction", b =>
                 {
                     b.HasOne("FBank.Domain.Entities.Account", "AccountTo")
                         .WithMany("Transactions")

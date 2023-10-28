@@ -4,8 +4,6 @@ using FBank.Domain.Entities;
 using FBank.Domain.Enums;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net;
-using System.Reflection.Metadata;
 
 namespace Fbank.IntegrationTests.Application.Requests
 {
@@ -18,7 +16,7 @@ namespace Fbank.IntegrationTests.Application.Requests
         [Fact]
         public async Task Should_return_InvalidOperationException_when_account_not_exit()
         {
-            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatusEnum.Active };
+            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Active };
 
             Func<Task> handle = async () => await Handle<AccountStatusRequest, string>(request);
 
@@ -28,7 +26,7 @@ namespace Fbank.IntegrationTests.Application.Requests
         [Fact]
         public async Task Should_return_InvalidOperationException_when_account_already_has_this_status()
         {
-            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatusEnum.Active };
+            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Active };
             Guid bankId = Guid.NewGuid();
             
             InsertOne(new BankBuilder().WithCode(1).WithId(bankId).Build());
@@ -42,7 +40,7 @@ namespace Fbank.IntegrationTests.Application.Requests
             var account = new Account
             {
                 Id = Guid.NewGuid(),
-                Status = AccountStatusEnum.Active,
+                Status = AccountStatus.Active,
                 AgencyId = agency.Id,
                 ClientId = client.Id,
             };
@@ -57,7 +55,7 @@ namespace Fbank.IntegrationTests.Application.Requests
         [Fact]
         public async Task Should_update_account_status_active()
         {
-            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatusEnum.Active };
+            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Active };
 
             Guid bankId = Guid.NewGuid();
 
@@ -72,7 +70,7 @@ namespace Fbank.IntegrationTests.Application.Requests
             var account = new Account
             {
                 Id = Guid.NewGuid(),
-                Status = AccountStatusEnum.Inactive,
+                Status = AccountStatus.Inactive,
                 AgencyId = agency.Id,
                 ClientId = client.Id,
             };
@@ -87,7 +85,7 @@ namespace Fbank.IntegrationTests.Application.Requests
         [Fact]
         public async Task Should_update_account_status_inactive()
         {
-            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatusEnum.Inactive };
+            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Inactive };
 
             Guid bankId = Guid.NewGuid();
 
@@ -102,7 +100,7 @@ namespace Fbank.IntegrationTests.Application.Requests
             var account = new Account
             {
                 Id = Guid.NewGuid(),
-                Status = AccountStatusEnum.Active,
+                Status = AccountStatus.Active,
                 AgencyId = agency.Id,
                 ClientId = client.Id,
             };

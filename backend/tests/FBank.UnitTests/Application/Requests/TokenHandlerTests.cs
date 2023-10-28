@@ -67,8 +67,8 @@ namespace FBank.UnitTests.Application.Requests
                     ClientId = client.Id,
                     AgencyId = agency.Id,
                     Number = 2,
-                    Status = AccountStatusEnum.Active
-                }
+                    Status = AccountStatus.Active
+                } 
             };
 
             _mockUnitOfWork.Setup(s => s.ClientRepository.SelectOne(It.IsAny<Expression<Func<Client, bool>>>()))

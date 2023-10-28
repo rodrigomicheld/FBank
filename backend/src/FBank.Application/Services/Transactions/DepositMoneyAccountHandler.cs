@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using FBank.Application.Interfaces;
 using FBank.Application.Requests;
+using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
+using FBank.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System.Transactions;
 
-namespace FBank.Application.Services
+namespace FBank.Application.Services.Transactions
 {
     public class DepositMoneyAccountHandler : IRequestHandler<DepositMoneyAccountRequest, TransactionViewModel>
     {
@@ -63,13 +64,12 @@ namespace FBank.Application.Services
             }
         }
 
-        public TransactionBank CompleteDataDeposit(DepositMoneyAccountRequest request)
+        public Transaction CompleteDataDeposit(DepositMoneyAccountRequest request)
         {
-            var account = VerifyAccountExists(request.AccountNumber);
-            var transactionBank = new TransactionBank();
-            transactionBank.TransactionType = Domain.Enums.TransactionType.DEPOSITO;
-            transactionBank.FlowType = Domain.Enums.FlowType.ENTRADA;
-            transactionBank.AccountFromId = Guid.Empty;
+            var account = VerifyAccountExists(request.Account);
+            var transactionBank = new Transaction();
+            transactionBank.TransactionType = TransactionType.DEPOSIT;
+            transactionBank.FlowType = FlowType.INPUT;
             transactionBank.AccountToId= account.Id;
             transactionBank.AccountId = account.Id;
             transactionBank.Value= request.Value;

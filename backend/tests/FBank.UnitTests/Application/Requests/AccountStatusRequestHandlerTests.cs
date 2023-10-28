@@ -24,7 +24,7 @@ namespace FBank.UnitTests.Application.Requestsr
         [Fact]
         public void Should_return_InvalidOperationException_when_account_not_exit()
         {
-            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatusEnum.Active };
+            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Active };
 
             var handler = new AccountStatusRequestHandler(_mockLogger, _mockUnitOfWork.Object);
 
@@ -36,7 +36,7 @@ namespace FBank.UnitTests.Application.Requestsr
         [Fact]
         public void Should_return_InvalidOperationException_when_account_already_has_this_status()
         {
-            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatusEnum.Active };
+            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Active };
 
             var account = new Account
             {
@@ -58,13 +58,13 @@ namespace FBank.UnitTests.Application.Requestsr
         [Fact]
         public void Should_update_account_status_active()
         {
-            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatusEnum.Active };
+            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Active };
 
             var account = new Account
             {
                 Id = Guid.NewGuid(),
                 Number = request.AccountNumber,
-                Status = AccountStatusEnum.Inactive
+                Status = AccountStatus.Inactive
             };
 
             _mockUnitOfWork.Setup(s => s.AccountRepository.SelectOne(It.IsAny<Expression<Func<Account, bool>>>()))
@@ -80,13 +80,13 @@ namespace FBank.UnitTests.Application.Requestsr
         [Fact]
         public void Should_update_account_status_inactive()
         {
-            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatusEnum.Inactive };
+            var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Inactive };
 
             var account = new Account
             {
                 Id = Guid.NewGuid(),
                 Number = request.AccountNumber,
-                Status = AccountStatusEnum.Active
+                Status = AccountStatus.Active
             };
 
             _mockUnitOfWork.Setup(s => s.AccountRepository.SelectOne(It.IsAny<Expression<Func<Account, bool>>>())).Returns(account);

@@ -1,20 +1,13 @@
-﻿using AutoMapper;
-using FBank.Application.Interfaces;
+﻿using FBank.Application.Interfaces;
 using FBank.Application.Requests;
 using FBank.Application.Services;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
-using FBank.Infrastructure;
-using FBank.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
-using NSubstitute;
-using NSubstitute.ReturnsExtensions;
-using System.Linq.Expressions;
-using System.Security.Cryptography.Xml;
 
 namespace FBank.UnitTests.Application.Requests
 {
@@ -22,7 +15,7 @@ namespace FBank.UnitTests.Application.Requests
     {
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
         private readonly Mock<ILogger<WithDrawMoneyAccountRequestHandler>> _mockLogger;
-            public WithDrawMoneyAccountRequestHandlerTests()
+        public WithDrawMoneyAccountRequestHandlerTests()
         {
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockLogger = new Mock<ILogger<WithDrawMoneyAccountRequestHandler>>();
@@ -34,9 +27,9 @@ namespace FBank.UnitTests.Application.Requests
             // Arrange
             var _mockLoggerUpdateBalance = new Mock<ILogger<UpdateBalanceAccountRequestHandler>>();
             var serviceProvider = new ServiceCollection()
-                .AddTransient(_=> _mockUnitOfWork.Object) 
-                .AddTransient(_=> _mockLoggerUpdateBalance.Object) 
-                .AddTransient<IRequestHandler<UpdateBalanceAccountRequest, UpdateBalanceViewModel>, UpdateBalanceAccountRequestHandler>()
+                .AddTransient(_ => _mockUnitOfWork.Object)
+                .AddTransient(_ => _mockLoggerUpdateBalance.Object)
+                .AddTransient<IRequestHandler<UpdateBalanceAccountRequest, Unit>, UpdateBalanceAccountRequestHandler>()
                 .AddTransient<IMediator, Mediator>()
                 .BuildServiceProvider();
 
@@ -52,14 +45,14 @@ namespace FBank.UnitTests.Application.Requests
             var mockResponse = new TransactionViewModel
             {
                 Amount = 10,
-                TransactionType = Domain.Enums.TransactionType.SAQUE,
+                TransactionType = Domain.Enums.TransactionType.WITHDRAW,
                 DateTransaction = DateTime.Now
             };
 
             _mockUnitOfWork.Setup(s => s.AccountRepository.SelectToId(It.IsAny<Guid>()))
                     .Returns(FakeData.Account());
 
-            _mockUnitOfWork.Setup(s => s.TransactionRepository.Insert(It.IsAny<TransactionBank>()));
+            _mockUnitOfWork.Setup(s => s.TransactionRepository.Insert(It.IsAny<Transaction>()));
 
             var handler = new WithDrawMoneyAccountRequestHandler(_mockUnitOfWork.Object, mediator, _mockLogger.Object);
 
@@ -76,7 +69,7 @@ namespace FBank.UnitTests.Application.Requests
             var serviceProvider = new ServiceCollection()
                 .AddTransient(_ => _mockUnitOfWork.Object)
                 .AddTransient(_ => _mockLoggerUpdateBalance.Object)
-                .AddTransient<IRequestHandler<UpdateBalanceAccountRequest, UpdateBalanceViewModel>, UpdateBalanceAccountRequestHandler>()
+                .AddTransient<IRequestHandler<UpdateBalanceAccountRequest, Unit>, UpdateBalanceAccountRequestHandler>()
                 .AddTransient<IMediator, Mediator>()
                 .BuildServiceProvider();
 
@@ -92,21 +85,21 @@ namespace FBank.UnitTests.Application.Requests
             var mockResponse = new TransactionViewModel
             {
                 Amount = 10,
-                TransactionType = Domain.Enums.TransactionType.SAQUE,
+                TransactionType = Domain.Enums.TransactionType.WITHDRAW,
                 DateTransaction = DateTime.Now
             };
 
             _mockUnitOfWork.Setup(s => s.AccountRepository.SelectToId(It.IsAny<Guid>()))
                     .Returns(FakeData.Account());
 
-            _mockUnitOfWork.Setup(s => s.TransactionRepository.Insert(It.IsAny<TransactionBank>()));
+            _mockUnitOfWork.Setup(s => s.TransactionRepository.Insert(It.IsAny<Transaction>()));
 
             var handler = new WithDrawMoneyAccountRequestHandler(_mockUnitOfWork.Object, mediator, _mockLogger.Object);
 
             var response = await handler.Handle(request, CancellationToken.None);
 
             Assert.Equal(10, response.Amount);
-            Assert.Equal(TransactionType.SAQUE, response.TransactionType);
+            Assert.Equal(TransactionType.WITHDRAW, response.TransactionType);
         }
     }
 }
