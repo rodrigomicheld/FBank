@@ -4,7 +4,6 @@ using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace FBank.Presentation.Controllers
 {
@@ -15,18 +14,20 @@ namespace FBank.Presentation.Controllers
         }
 
         [HttpPost("WithDraw")]
-        public async Task<ActionResult<TransactionViewModel>> PostTransactionWithDraw([FromBody] WithDrawMoneyAccountRequest request)
+        public async Task<ActionResult<TransactionViewModel>> PostTransactionWithDraw([FromBody] ValueDto dto)
         {
             var authorizationResult = CheckAccountClaim();
             if (authorizationResult == null)
-            {
                 return Unauthorized("Unauthorized user");
-            }
-
 
             try
             {
-                return Ok(await mediator.Send(request));
+                return Ok(await mediator.Send(new WithDrawMoneyAccountRequest 
+                { 
+                    AccountNumber = authorizationResult.Value,
+                    Amount = dto.Value
+
+                }));
             }
             catch (Exception ex)
             {
@@ -36,17 +37,20 @@ namespace FBank.Presentation.Controllers
 
         [HttpPost]
         [Route("DepositAccount")]
-        public async Task<ActionResult<TransactionViewModel>> PostTransactionDeposit([FromBody] DepositMoneyAccountRequest request)
+        public async Task<ActionResult<TransactionViewModel>> PostTransactionDeposit([FromBody] ValueDto dto)
         {
-            //var authorizationResult = CheckAccountClaim();
-            //if (authorizationResult == null)
-            //{
-            //    return Unauthorized("Unauthorized user");
-            //}
+            var authorizationResult = CheckAccountClaim();
+            if (authorizationResult == null)
+                return Unauthorized("Unauthorized user");
 
             try
             {
-                return Ok(await mediator.Send(request)); 
+                return Ok(await mediator.Send( new DepositMoneyAccountRequest
+                {
+                    AccountNumber = authorizationResult.Value,
+                    AgencyCode = 1,
+                    Value = dto.Value
+                })); 
             }
             catch (Exception ex)
             {
@@ -60,9 +64,7 @@ namespace FBank.Presentation.Controllers
         {
             var authorizationResult = CheckAccountClaim();
             if (authorizationResult == null)
-            {
                 return Unauthorized("Unauthorized user");
-            }
 
             try
             {
@@ -84,21 +86,15 @@ namespace FBank.Presentation.Controllers
             var user = HttpContext.User;
 
             if (!user.Identity.IsAuthenticated)
-            {
                 return null;
-            }
 
             var documentClaim = user.Claims.FirstOrDefault(c => c.Type == "Account");
 
             if (documentClaim == null)
-            {
                 return null;
-            }
 
             if (int.TryParse(documentClaim.Value, out int accountValue))
-            {
                 return accountValue;
-            }
 
             return null;
         }

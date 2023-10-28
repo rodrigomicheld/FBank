@@ -1,7 +1,7 @@
 ﻿using FBank.Application.ViewMoldels;
 using MediatR;
 
-namespace FBank.Application.Requests
+namespace FBank.Application.Requests.Transactions
 {
     public class TransferMoneyAccountRequest : IRequest<TransferViewModel>
     {

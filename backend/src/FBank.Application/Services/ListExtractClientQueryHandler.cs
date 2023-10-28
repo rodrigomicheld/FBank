@@ -33,7 +33,6 @@ namespace FBank.Application.Services
             var paginationResponse = await _transactionRepository.SelectManyWithFilterToList(query.FilterClient);
 
             var viewModels = new List<ClientExtractViewModel>();
-            DateTime? dateBase = null;
             foreach (var extractClient in paginationResponse.Data)
             {
                 viewModels.Add(new ClientExtractViewModel
@@ -47,19 +46,14 @@ namespace FBank.Application.Services
             return new PaginationResponse<ClientExtractViewModel>(viewModels, paginationResponse.TotalItems, paginationResponse.CurrentPage, query.FilterClient._size);
         }
 
-        private string GetBalanceAccount(Guid idAccountOrigin)
-        {
-            return _accountRepository.SelectOneColumn(c => c.Id == idAccountOrigin, c => c.Balance).ToString();
-        }
-
         private string GetDescriptionTransaction(ClientExtractToListDto extractClient = null)
         {
             switch (extractClient?.TransactionType)
             {
                 case TransactionType.TRANSFER:
                     var accountDestination = _accountRepository.SelectOneColumn(x => x.Id == extractClient.IdAccountDestination, x => x.Client.Name);
-                    return $"{extractClient.IdTransaction.ToString().Substring(0, 7)} {EnumExtensions.GetDescription(extractClient.TransactionType)} {accountDestination.Substring(0, 7)}";
 
+                    return $"{extractClient.IdTransaction.ToString().Substring(0, 7)} {EnumExtensions.GetDescription(extractClient.TransactionType)} {accountDestination}";
                 case TransactionType.WITHDRAW:
                     return $"{extractClient.IdTransaction.ToString().Substring(0, 7)} {EnumExtensions.GetDescription(extractClient.TransactionType)}";
 

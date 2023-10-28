@@ -1,17 +1,10 @@
-﻿using FBank.Application.Requests;
+﻿using Fbank.IntegrationTests.Builders.Entities;
+using FBank.Application.Queries;
+using FBank.Application.Requests;
+using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
-using FBank.Domain.Enums;
-using Fbank.IntegrationTests.Builders.Entities;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FBank.Application.Queries;
-using FBank.Application.ViewMoldels;
-using FBank.Infrastructure;
 
 namespace Fbank.IntegrationTests.Application.Queries
 {

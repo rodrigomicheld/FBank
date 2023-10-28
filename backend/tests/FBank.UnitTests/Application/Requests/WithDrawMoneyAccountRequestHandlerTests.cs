@@ -1,5 +1,5 @@
 ﻿using FBank.Application.Interfaces;
-using FBank.Application.Requests;
+using FBank.Application.Requests.Transactions;
 using FBank.Application.Services;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Linq.Expressions;
 
 namespace FBank.UnitTests.Application.Requests
 {
@@ -24,7 +25,6 @@ namespace FBank.UnitTests.Application.Requests
         [Fact]
         public async void Should_Return_Exception_When_Balance_Is_Less_Than_Withdrawal_Amount()
         {
-            // Arrange
             var _mockLoggerUpdateBalance = new Mock<ILogger<UpdateBalanceAccountRequestHandler>>();
             var serviceProvider = new ServiceCollection()
                 .AddTransient(_ => _mockUnitOfWork.Object)
@@ -35,10 +35,9 @@ namespace FBank.UnitTests.Application.Requests
 
             var mediator = serviceProvider.GetRequiredService<IMediator>();
 
-            var accountId = new Guid();
             var request = new WithDrawMoneyAccountRequest
             {
-                AccountOrigin = accountId,
+                AccountNumber = 1,
                 Amount = 110
             };
 
@@ -51,13 +50,14 @@ namespace FBank.UnitTests.Application.Requests
 
             _mockUnitOfWork.Setup(s => s.AccountRepository.SelectToId(It.IsAny<Guid>()))
                     .Returns(FakeData.Account());
+            _mockUnitOfWork.Setup(s => s.AccountRepository.SelectOne(It.IsAny<Expression<Func<Account, bool>>>())).Returns(FakeData.Account());
 
             _mockUnitOfWork.Setup(s => s.TransactionRepository.Insert(It.IsAny<Transaction>()));
 
             var handler = new WithDrawMoneyAccountRequestHandler(_mockUnitOfWork.Object, mediator, _mockLogger.Object);
 
             var ex = await Assert.ThrowsAsync<Exception>(() => handler.Handle(request, CancellationToken.None));
-            Assert.Contains("Saldo insuficiente", ex.Message);
+            Assert.Contains("Insufficient balance", ex.Message);
         }
 
         [Fact]
@@ -74,10 +74,9 @@ namespace FBank.UnitTests.Application.Requests
 
             var mediator = serviceProvider.GetRequiredService<IMediator>();
 
-            var accountId = new Guid();
             var request = new WithDrawMoneyAccountRequest
             {
-                AccountOrigin = accountId,
+                AccountNumber = 1,
                 Amount = 10
             };
 
@@ -88,9 +87,8 @@ namespace FBank.UnitTests.Application.Requests
                 DateTransaction = DateTime.Now
             };
 
-            _mockUnitOfWork.Setup(s => s.AccountRepository.SelectToId(It.IsAny<Guid>()))
-                    .Returns(FakeData.Account());
-
+            _mockUnitOfWork.Setup(s => s.AccountRepository.SelectOne(It.IsAny<Expression<Func<Account, bool>>>())).Returns(FakeData.Account());
+            _mockUnitOfWork.Setup(s => s.AccountRepository.SelectToId(It.IsAny<Guid>())).Returns(FakeData.Account());
             _mockUnitOfWork.Setup(s => s.TransactionRepository.Insert(It.IsAny<Transaction>()));
 
             var handler = new WithDrawMoneyAccountRequestHandler(_mockUnitOfWork.Object, mediator, _mockLogger.Object);

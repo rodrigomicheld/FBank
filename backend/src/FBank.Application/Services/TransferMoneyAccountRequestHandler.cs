@@ -1,5 +1,6 @@
 ﻿using FBank.Application.Interfaces;
 using FBank.Application.Requests;
+using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
@@ -30,17 +31,17 @@ namespace FBank.Application.Services
                 var accountFrom = _unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumberFrom);
                 var accountTo = _unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumberTo);
                 if (accountFrom == null)
-                    errors.Add("Conta Origem Não encontrada");
+                    errors.Add("Account not found");
                 if (accountTo == null)
-                    errors.Add("Conta Destino Não encontrada");
+                    errors.Add("Destination account not found");
                 if (request.Value <= 0)
-                    errors.Add("Valor da transferência não pode menor ou igual a zero");
+                    errors.Add("Transfer amount cannot be less than or equal to zero");
 
 
                 if (errors.Count > 0)
-                    throw new Exception($"Erro ao Realizar Transferência, erros : {String.Join(",", errors)}");
+                    throw new Exception($"Error Performing Transfer, errors : {String.Join(",", errors)}");
                 if ((accountFrom.Balance - request.Value) < 0)
-                    throw new Exception($"Saldo insulficiente para realizar a trasferência, saldo atual {accountFrom.Balance}");
+                    throw new Exception($"Insufficient balance to make the transfer, current balance {accountFrom.Balance}");
 
 
                 Transaction transactionFrom = new Transaction()
@@ -53,7 +54,7 @@ namespace FBank.Application.Services
                 };
 
                 _unitOfWork.TransactionRepository.Insert(transactionFrom);
-                //update balance of AccountFrom
+
                 await _mediator.Send(new UpdateBalanceAccountRequest()
                 {
                     AccountId = accountFrom.Id,
@@ -72,7 +73,7 @@ namespace FBank.Application.Services
 
 
                 _unitOfWork.TransactionRepository.Insert(transactionTo);
-                //update balance of to
+
                 await _mediator.Send(new UpdateBalanceAccountRequest()
                 {
                     AccountId = accountTo.Id,
@@ -86,7 +87,7 @@ namespace FBank.Application.Services
             {
                 _unitOfWork.Rollback();
                 _logger.LogInformation(ex.ToString());
-                throw ex;
+                throw;
             }
         }
 

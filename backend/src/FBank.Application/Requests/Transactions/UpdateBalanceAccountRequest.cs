@@ -1,7 +1,7 @@
 ﻿using FBank.Domain.Enums;
 using MediatR;
 
-namespace FBank.Application.Requests
+namespace FBank.Application.Requests.Transactions
 {
     public class UpdateBalanceAccountRequest : IRequest<Unit>
     {

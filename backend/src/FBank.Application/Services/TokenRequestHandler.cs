@@ -1,6 +1,5 @@
 ﻿using FBank.Application.Interfaces;
 using FBank.Application.Requests;
-using FBank.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

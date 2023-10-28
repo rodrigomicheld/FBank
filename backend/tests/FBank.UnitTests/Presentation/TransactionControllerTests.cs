@@ -1,19 +1,10 @@
-﻿using AutoMapper.Features;
-using FBank.Application.Requests;
+﻿using FBank.Application.Dto;
 using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
-using FBank.Domain.Entities;
 using FBank.Presentation.Controllers;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using NSubstitute;
-using System.Data.Entity.Core.Objects;
-using System.Linq.Expressions;
-using System.Security.Claims;
-using System.Security.Principal;
 namespace FBank.UnitTests.Presentation
 {
     public class TransactionControllerTests
@@ -33,14 +24,14 @@ namespace FBank.UnitTests.Presentation
             _mockMediator.Setup(obj => obj.Send(It
                                 .IsAny<DepositMoneyAccountRequest>(), new CancellationToken()))
                                 .ReturnsAsync(new TransactionViewModel());
-            var response = _transactionController.PostTransactionDeposit(It.IsAny<DepositMoneyAccountRequest>());
+            var response = _transactionController.PostTransactionDeposit(It.IsAny<ValueDto>());
             Assert.NotNull(response);
         }
 
         [Fact]
         public void Should_return_bad_request_when_transaction_does_not_didAsync()
         {
-            var depositMoneyAccountRequest = new DepositMoneyAccountRequest();
+            var depositMoneyAccountRequest = new ValueDto();
             var result = _mockMediator.Setup(obj => obj.Send(It.IsAny<DepositMoneyAccountRequest>(), new CancellationToken())).Throws<Exception>();
 
             _transactionController.ControllerContext = new ControllerContext();
@@ -56,15 +47,12 @@ namespace FBank.UnitTests.Presentation
         [Fact]
         public async void Should_Make_The_WithdrawalAsync()
         {
-            // Arrange
             _transactionController.ControllerContext = new ControllerContext();
             _transactionController.ControllerContext.HttpContext = FakeData.ContextRequestWithLogin();
 
-            var accountId = new Guid();
-            var request = new WithDrawMoneyAccountRequest
+            var request = new ValueDto
             {
-                AccountOrigin = accountId,
-                Amount = 10
+                Value = 10
             };
 
             var mockResponse = new TransactionViewModel
@@ -78,15 +66,13 @@ namespace FBank.UnitTests.Presentation
                                .IsAny<WithDrawMoneyAccountRequest>(), new CancellationToken()))
                                .ReturnsAsync(mockResponse);
 
-            // Act
-            var response =  _transactionController.PostTransactionWithDraw(request).Result;
+            var response = await _transactionController.PostTransactionWithDraw(request);
 
             TransactionViewModel transactionViewModel = new TransactionViewModel();
             if (response.Result is OkObjectResult okResult)
             {
                 transactionViewModel = okResult.Value as TransactionViewModel;
             }
-            // Assert
             
             Assert.Equal(Domain.Enums.TransactionType.WITHDRAW, transactionViewModel.TransactionType);
             Assert.Equal(mockResponse.DateTransaction, transactionViewModel.DateTransaction);

@@ -103,13 +103,11 @@ namespace Fbank.IntegrationTests.Application.Queries
 
             paginationResponse.TotalItems.Should().Be(2);
 
-            Assert.Contains("Transferência", paginationResponse.Data.ElementAt(1).Description);
-            Assert.Equal("10,00", paginationResponse.Data.ElementAt(1).Amount);
+            paginationResponse.Data.Where(x=> x.Description.Contains("Transferência")).Count().Should().Be(1);
+            paginationResponse.Data.Where(x=> x.Description.Contains("Transferência")).Select(x=> x.Amount).First().Should().Be("10,00");
 
-            Assert.Contains("Depósito", paginationResponse.Data.ElementAt(0).Description);
-            Assert.Equal("100,00", paginationResponse.Data.ElementAt(0).Amount);
-
-            
+            paginationResponse.Data.Where(x => x.Description.Contains("Depósito")).Count().Should().Be(1);
+            paginationResponse.Data.Where(x => x.Description.Contains("Depósito")).Select(x => x.Amount).First().Should().Be("100,00");
         }
     }
 }

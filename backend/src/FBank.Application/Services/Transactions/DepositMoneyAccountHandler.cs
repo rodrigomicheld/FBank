@@ -33,16 +33,18 @@ namespace FBank.Application.Services.Transactions
         {
             try
             {
-                //Todo: Trocar esta verificação, por uma rotina de validação, quando a rotina de verifica se uma conta existe estiver pronta
-                //Todo: Incluir método para verificar se a conta existe
                 if (!VerifyValueDeposit(request.Value))
                 {
                     var transactionViewModel = new TransactionViewModel();
-                    //transactionViewModel.Id = Guid.Empty;
                     return await Task.FromResult(transactionViewModel);
                 }
 
-                var transactionBank = CompleteDataDeposit(request);
+                var account = _unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumber);
+
+                if (account == null)
+                    throw new InvalidOperationException($"Account not found");
+
+                var transactionBank = CompleteDataDeposit(request, account);
                 _unitOfWork.TransactionRepository.Insert(transactionBank);
                 var transactionReturn = _unitOfWork.TransactionRepository.SelectToId(transactionBank.Id);
 
@@ -60,13 +62,12 @@ namespace FBank.Application.Services.Transactions
             {
                 _unitOfWork.Rollback();
                 _logger.LogInformation(ex.ToString());
-                throw new Exception("Erro ao efetuar deposito", ex);
+                throw;
             }
         }
 
-        public Transaction CompleteDataDeposit(DepositMoneyAccountRequest request)
+        public Transaction CompleteDataDeposit(DepositMoneyAccountRequest request, Account account)
         {
-            var account = VerifyAccountExists(request.Account);
             var transactionBank = new Transaction();
             transactionBank.TransactionType = TransactionType.DEPOSIT;
             transactionBank.FlowType = FlowType.INPUT;
@@ -82,13 +83,6 @@ namespace FBank.Application.Services.Transactions
                 return true;
             else
                 return false;
-        }
-        public Account VerifyAccountExists(int accountNumber)
-        {
-            var account = _unitOfWork.AccountRepository.SelectOne(x => x.Number == accountNumber);
-            if (account == null)
-                throw new Exception($"Conta não encontrada");
-            return account;
         }
     }
 }

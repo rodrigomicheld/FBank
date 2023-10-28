@@ -2,7 +2,6 @@
 using FBank.Application.ViewMoldels;
 using FBank.Presentation.Controllers;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace FBank.UnitTests.Presentation
