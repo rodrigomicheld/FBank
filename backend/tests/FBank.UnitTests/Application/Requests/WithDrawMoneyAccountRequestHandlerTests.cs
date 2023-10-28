@@ -57,8 +57,7 @@ namespace FBank.UnitTests.Application.Requests
             var handler = new WithDrawMoneyAccountRequestHandler(_mockUnitOfWork.Object, mediator, _mockLogger.Object);
 
             var ex = await Assert.ThrowsAsync<Exception>(() => handler.Handle(request, CancellationToken.None));
-            Assert.Contains("Erro ao alterar saldo", ex.Message);
-            Assert.Contains("Saldo insuficiente", ex.InnerException.Message);
+            Assert.Contains("Saldo insuficiente", ex.Message);
         }
 
         [Fact]
