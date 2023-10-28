@@ -11,7 +11,7 @@ namespace FBank.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Senha",
+                name: "senha",
                 table: "Cliente",
                 type: "nvarchar(50)",
                 maxLength: 50,
@@ -23,7 +23,7 @@ namespace FBank.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Senha",
+                name: "senha",
                 table: "Cliente");
         }
     }

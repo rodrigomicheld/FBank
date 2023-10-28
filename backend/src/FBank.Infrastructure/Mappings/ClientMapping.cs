@@ -25,7 +25,7 @@ namespace FBank.Infrastructure.Mappings
 
             entityTypeBuilder.Property(p => p.Password)
                 .IsRequired()
-                .HasColumnName("Senha")
+                .HasColumnName("senha")
                 .HasMaxLength(50);
 
             entityTypeBuilder.HasAlternateKey(p => p.Document);    

@@ -22,7 +22,7 @@ namespace FBank.Presentation.Controllers
                     Password = tokenRequest.Password
                 });
 
-                return Ok("Token: " + token);
+                return Ok("{\"token\": \""+token+"\"}");
             }
             catch (Exception ex)
             {

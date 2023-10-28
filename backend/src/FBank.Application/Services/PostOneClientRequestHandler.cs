@@ -10,55 +10,60 @@ namespace FBank.Application.Services
 {
     public class PostOneClientRequestHandler : IRequestHandler<PostOneClientRequest, string>
     {
-        private readonly IClientRepository _clientRepository;
-        private readonly IAgencyRepository _agencyRepository;
-        private readonly IAccountRepository _accountRepository;
         private readonly ILogger<PostOneClientRequestHandler> _logger;
-
-        public PostOneClientRequestHandler(IClientRepository clientRepository, IAgencyRepository agencyRepository, IAccountRepository accountRepository, ILogger<PostOneClientRequestHandler> logger)
+        private readonly IUnitOfWork _unitOfWork;
+        public PostOneClientRequestHandler(ILogger<PostOneClientRequestHandler> logger, IUnitOfWork unitOfWork)
         {
-            _clientRepository = clientRepository;
-            _agencyRepository = agencyRepository;
-            _accountRepository = accountRepository;
-            _logger = logger;
+            _logger=logger;
+            _unitOfWork=unitOfWork;
         }
 
         public Task<string> Handle(PostOneClientRequest request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Cadastrando o cliente: {request.Document}");
-
-            var typeDocument = CpfCnpj.ValidTypeDocument(request.Document);
-
-            if (typeDocument == PersonType.None)
-                throw new ArgumentException("Invalid document!");
-
-            var client = _clientRepository.SelectOne(x => x.Document == request.Document);
-
-            if (client != null)
-                throw new InvalidOperationException("Client already!");
-
-            client = new Client
+            try
             {
-                Document = request.Document,
-                Name = request.Name,
-                DocumentType = typeDocument,
-                Password = request.Password,
-            };
+                _logger.LogInformation($"Cadastrando o cliente: {request.Document}");
 
-            _clientRepository.Insert(client);
+                var typeDocument = CpfCnpj.ValidTypeDocument(request.Document);
 
-            var agency = _agencyRepository.SelectOne(x => x.Code == 1);
+                if (typeDocument == PersonType.None)
+                    throw new ArgumentException("Invalid document!");
 
-            var account = new Account
+                var client = _unitOfWork.ClientRepository.SelectOne(x => x.Document == request.Document);
+
+                if (client != null)
+                    throw new InvalidOperationException("Client already!");
+
+                client = new Client
+                {
+                    Document = request.Document,
+                    Name = request.Name,
+                    DocumentType = typeDocument,
+                    Password = request.Password,
+                };
+
+                _unitOfWork.ClientRepository.Insert(client);
+
+                var agency = _unitOfWork.AgencyRepository.SelectOne(x => x.Code == 1);
+
+                var account = new Account
+                {
+                    ClientId = client.Id,
+                    AgencyId = agency.Id,
+                    Status = AccountStatusEnum.Active,
+                };
+
+                _unitOfWork.AccountRepository.Insert(account);
+                _unitOfWork.Commit();
+
+                return Task.FromResult($"Agency: {agency.Code} - Account: {account.Number}");
+            }
+            catch (Exception ex)
             {
-                ClientId = client.Id,
-                AgencyId = agency.Id,
-                Status = AccountStatusEnum.Active,
-            };
-
-            _accountRepository.Insert(account);
-
-            return Task.FromResult($"Agency: {agency.Code} - Account: {account.Number}");
+                _unitOfWork.Rollback();
+                _logger.LogInformation(ex.ToString());
+                throw ex;
+            }
         }
     }
 }

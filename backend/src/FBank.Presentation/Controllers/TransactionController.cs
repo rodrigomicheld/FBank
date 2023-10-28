@@ -3,6 +3,7 @@ using FBank.Application.ViewMoldels;
 using FBank.Presentation.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace FBank.Presentation.Controllers
 {
@@ -12,8 +13,8 @@ namespace FBank.Presentation.Controllers
         {
         }
 
-        [HttpPost]        
-        public async Task<ActionResult<ClientViewModel>> PostTransactionWithDraw([FromBody] WithDrawMoneyAccountRequest request)
+        [HttpPost("WithDraw")]
+        public async Task<ActionResult<TransactionViewModel>> PostTransactionWithDraw([FromBody] WithDrawMoneyAccountRequest request)
         {
             var authorizationResult = CheckAccountClaim();
             if (authorizationResult == null)

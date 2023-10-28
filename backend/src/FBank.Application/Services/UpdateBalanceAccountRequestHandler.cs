@@ -3,45 +3,41 @@ using FBank.Application.Requests;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Enums;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace FBank.Application.Services
 {
     public class UpdateBalanceAccountRequestHandler : IRequestHandler<UpdateBalanceAccountRequest, UpdateBalanceViewModel>
-    {        
-        private readonly IAccountRepository _accountRepository;
-
-        public UpdateBalanceAccountRequestHandler(IAccountRepository accountRepository)
+    {
+        IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+        public UpdateBalanceAccountRequestHandler(IUnitOfWork unitOfWork, ILogger<UpdateBalanceAccountRequestHandler> logger)
         {
-            _accountRepository = accountRepository;
+            _unitOfWork=unitOfWork;
+            _logger=logger;
         }
 
         public async Task<UpdateBalanceViewModel> Handle(UpdateBalanceAccountRequest request, CancellationToken cancellationToken)
         {
-            try
-            {
-                //var account = request.Account;
-                var accountUpdated = _accountRepository.SelectToId(request.AccountId);
-                List<string> errors = new List<string>();
-                if (accountUpdated == null)
-                    errors.Add("Conta não encontrada");               
-                if (request.Value <= 0)
-                    errors.Add("Valor a ser atualizao não pode menor ou igual a zero");
+            var accountUpdated = _unitOfWork.AccountRepository.SelectToId(request.AccountId);
+            List<string> errors = new List<string>();
+            if (accountUpdated == null)
+                errors.Add("Conta não encontrada");
+            if (request.Value <= 0)
+                errors.Add("Valor a ser atualizao não pode menor ou igual a zero");
+
+            if (request.FlowType.GetHashCode() == FlowType.SAIDA.GetHashCode() && request.Value > accountUpdated.Balance)
+                errors.Add("Saldo insuficiente");
+
+            if (errors.Count > 0)
+                throw new Exception($"Erro ao atualizar Saldo, erros : {String.Join(",", errors)}");
 
 
-                if (errors.Count > 0)
-                    throw new Exception($"Erro ao atualizar Saldo, erros : {String.Join(",", errors)}");
-               
-                accountUpdated.Balance = accountUpdated.Balance +
-                                         ((request.FlowType.GetHashCode() == FlowType.SAIDA.GetHashCode()) ? (request.Value * -1)
-                                         : request.Value);
-                
-                _accountRepository.Update(accountUpdated);
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            return new UpdateBalanceViewModel();       
+            accountUpdated.Balance = accountUpdated.Balance +
+                                     ((request.FlowType.GetHashCode() == FlowType.SAIDA.GetHashCode()) ? (request.Value * -1)
+                                     : request.Value);
+
+            return new UpdateBalanceViewModel();
         }
     }
 }
