@@ -6,6 +6,7 @@ using FBank.Domain.Enums;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using System.Linq.Expressions;
 
 namespace FBank.UnitTests.Application.Requestsr
@@ -25,6 +26,9 @@ namespace FBank.UnitTests.Application.Requestsr
         public void Should_return_InvalidOperationException_when_account_not_exit()
         {
             var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Active };
+            Account account = null;
+            _mockUnitOfWork.Setup(s => s.AccountRepository.SelectOne(It.IsAny<Expression<Func<Account, bool>>>()))
+                    .Returns(account);
 
             var handler = new AccountStatusRequestHandler(_mockLogger, _mockUnitOfWork.Object);
 

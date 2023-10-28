@@ -1,10 +1,19 @@
-﻿using FBank.Application.Requests;
+﻿using AutoMapper.Features;
+using FBank.Application.Requests;
 using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
+using FBank.Domain.Entities;
 using FBank.Presentation.Controllers;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using NSubstitute;
+using System.Data.Entity.Core.Objects;
+using System.Linq.Expressions;
+using System.Security.Claims;
+using System.Security.Principal;
 namespace FBank.UnitTests.Presentation
 {
     public class TransactionControllerTests
@@ -33,6 +42,10 @@ namespace FBank.UnitTests.Presentation
         {
             var depositMoneyAccountRequest = new DepositMoneyAccountRequest();
             var result = _mockMediator.Setup(obj => obj.Send(It.IsAny<DepositMoneyAccountRequest>(), new CancellationToken())).Throws<Exception>();
+
+            _transactionController.ControllerContext = new ControllerContext();
+            _transactionController.ControllerContext.HttpContext = FakeData.ContextRequestWithLogin();
+
             var response = _transactionController.PostTransactionDeposit(depositMoneyAccountRequest).Result;
             var resultado = response?.Result;
 
@@ -66,13 +79,18 @@ namespace FBank.UnitTests.Presentation
                                .ReturnsAsync(mockResponse);
 
             // Act
-            var response = await _transactionController.PostTransactionWithDraw(request);
+            var response =  _transactionController.PostTransactionWithDraw(request).Result;
 
+            TransactionViewModel transactionViewModel = new TransactionViewModel();
+            if (response.Result is OkObjectResult okResult)
+            {
+                transactionViewModel = okResult.Value as TransactionViewModel;
+            }
             // Assert
-            Assert.NotNull(response.Value);
-            Assert.Equal(Domain.Enums.TransactionType.WITHDRAW, response.Value.TransactionType);
-            Assert.Equal(mockResponse.DateTransaction, response.Value.DateTransaction);
-            Assert.Equal(10, response.Value.Amount);
+            
+            Assert.Equal(Domain.Enums.TransactionType.WITHDRAW, transactionViewModel.TransactionType);
+            Assert.Equal(mockResponse.DateTransaction, transactionViewModel.DateTransaction);
+            Assert.Equal(10, transactionViewModel.Amount);
         }
     }
 }
