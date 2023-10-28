@@ -1,5 +1,6 @@
 ﻿using AutoMapper.Features;
 using FBank.Application.Requests;
+using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
 using FBank.Presentation.Controllers;
@@ -68,7 +69,7 @@ namespace FBank.UnitTests.Presentation
             var mockResponse = new TransactionViewModel
             {
                 Amount = 10,
-                TransactionType = Domain.Enums.TransactionType.SAQUE,
+                TransactionType = Domain.Enums.TransactionType.WITHDRAW,
                 DateTransaction = DateTime.Now
             };
 
@@ -79,8 +80,8 @@ namespace FBank.UnitTests.Presentation
             // Act
             var response =  _transactionController.PostTransactionWithDraw(request).Result;
             // Assert
-            Assert.NotNull(result.Value);
-            Assert.Equal(Domain.Enums.TransactionType.SAQUE, response.Value.TransactionType);
+            Assert.NotNull(response.Value);
+            Assert.Equal(Domain.Enums.TransactionType.WITHDRAW, response.Value.TransactionType);
             Assert.Equal(mockResponse.DateTransaction, response.Value.DateTransaction);
             Assert.Equal(10, response.Value.Amount);
         }
