@@ -1,11 +1,9 @@
-﻿using FBank.Application.ViewMoldels;
-using FBank.Domain.Entities;
-using FBank.Domain.Enums;
+﻿using FBank.Domain.Enums;
 using MediatR;
 
 namespace FBank.Application.Requests
 {
-    public class UpdateBalanceAccountRequest : IRequest<UpdateBalanceViewModel>
+    public class UpdateBalanceAccountRequest : IRequest<Unit>
     {
         public Guid AccountId { get; set; }
         public decimal Value { get; set; }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FBank.Infrastructure.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20231017011224_AddPassowrdClient")]
+    [Migration("20231020190441_AddPassowrdClient")]
     partial class AddPassowrdClient
     {
         /// <inheritdoc />
@@ -170,7 +170,7 @@ namespace FBank.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnName("Senha");
+                        .HasColumnName("senha");
 
                     b.Property<DateTime>("UpdateDateAt")
                         .HasColumnType("datetime2")

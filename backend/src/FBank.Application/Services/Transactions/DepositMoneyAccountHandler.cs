@@ -12,70 +12,68 @@ namespace FBank.Application.Services.Transactions
 {
     public class DepositMoneyAccountHandler : IRequestHandler<DepositMoneyAccountRequest, TransactionViewModel>
     {
-        private readonly ITransactionRepository _transactionRepository;
-        private readonly IAccountRepository _accountRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<DepositMoneyAccountHandler> _logger;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public DepositMoneyAccountHandler(
             IMediator mediator,
-            ITransactionRepository iTransactionRepository,
-            IAccountRepository accountRepository,
-                ILogger<DepositMoneyAccountHandler> logger,
-                IMapper mapper)
+            ILogger<DepositMoneyAccountHandler> logger,
+            IMapper mapper,
+            IUnitOfWork unitOfWork)
         {
             _mediator = mediator;
-            _transactionRepository = iTransactionRepository;
             _logger = logger;
             _mapper = mapper;
-            _accountRepository = accountRepository;
-        }
-
-        public DepositMoneyAccountHandler(IMediator mockMediator, ITransactionRepository mockTransactionRepository, ILogger<DepositMoneyAccountHandler> logger, IMapper mapper)
-        {
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<TransactionViewModel> Handle(DepositMoneyAccountRequest request, CancellationToken cancellationToken)
         {
-            //Todo: Trocar esta verificação, por uma rotina de validação, quando a rotina de verifica se uma conta existe estiver pronta
-            //Todo: Incluir método para verificar se a conta existe
-            if (!VerifyValueDeposit(request.Value))
+            try
             {
-                _logger.LogError($"Deposito na Agência/conta: {request.Agency}/{request.Account} não realizado. Valor informado inválido {request.Value} ");
-                throw new InvalidOperationException($"Valor Informado inválido: R${request.Value}");
+                //Todo: Trocar esta verificação, por uma rotina de validação, quando a rotina de verifica se uma conta existe estiver pronta
+                //Todo: Incluir método para verificar se a conta existe
+                if (!VerifyValueDeposit(request.Value))
+                {
+                    var transactionViewModel = new TransactionViewModel();
+                    //transactionViewModel.Id = Guid.Empty;
+                    return await Task.FromResult(transactionViewModel);
+                }
+
+                var transactionBank = CompleteDataDeposit(request);
+                _unitOfWork.TransactionRepository.Insert(transactionBank);
+                var transactionReturn = _unitOfWork.TransactionRepository.SelectToId(transactionBank.Id);
+
+                await _mediator.Send(new UpdateBalanceAccountRequest()
+                {
+                    AccountId = transactionBank.AccountId,
+                    Value = transactionBank.Value,
+                    FlowType = transactionBank.FlowType
+                });
+                _unitOfWork.Commit();
+
+                var mappedResult = _mapper.Map<TransactionViewModel>(transactionReturn);
+                return await Task.FromResult(mappedResult);
+            }catch(Exception ex)
+            {
+                _unitOfWork.Rollback();
+                _logger.LogInformation(ex.ToString());
+                throw new Exception("Erro ao efetuar deposito", ex);
             }
-
-            var transactionBank = CompleteDataDeposit(request);
-
-            _transactionRepository.Insert(transactionBank);
-
-            var transactionReturn = _transactionRepository.SelectToId(transactionBank.Id);
-
-            await _mediator.Send(new UpdateBalanceAccountRequest()
-            {
-                AccountId = (Guid)transactionBank.AccountId,
-                Value = transactionBank.Value,
-                FlowType = transactionBank.FlowType
-            });
-            
-            var mappedResult = _mapper.Map<TransactionViewModel>(transactionReturn);
-            
-            return await Task.FromResult(mappedResult);
         }
 
         public Transaction CompleteDataDeposit(DepositMoneyAccountRequest request)
         {
-            var account = VerifyAccountExists(request.Account, request.Agency);
-
-            return new Transaction()
-            {
-                TransactionType = TransactionType.DEPOSIT,
-                FlowType = FlowType.INPUT,
-                AccountToId = null,
-                AccountId = account.Id,
-                Value = request.Value
-            };
+            var account = VerifyAccountExists(request.Account);
+            var transactionBank = new Transaction();
+            transactionBank.TransactionType = TransactionType.DEPOSIT;
+            transactionBank.FlowType = FlowType.INPUT;
+            transactionBank.AccountToId= account.Id;
+            transactionBank.AccountId = account.Id;
+            transactionBank.Value= request.Value;
+            return transactionBank;
         }
 
         public bool VerifyValueDeposit(decimal valueDeposit)
@@ -85,10 +83,9 @@ namespace FBank.Application.Services.Transactions
             else
                 return false;
         }
-        public Account VerifyAccountExists(int accountNumber, int agency)
+        public Account VerifyAccountExists(int accountNumber)
         {
-            var account = _accountRepository.SelectOne(x => x.Number == accountNumber && x.Agency.Code == agency);
-
+            var account = _unitOfWork.AccountRepository.SelectOne(x => x.Number == accountNumber);
             if (account == null)
                 throw new Exception($"Conta não encontrada");
             return account;

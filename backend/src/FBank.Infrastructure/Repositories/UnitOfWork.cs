@@ -1,89 +1,115 @@
-﻿//using FBank.Application.Interfaces;
-//using FBank.Domain.Entities;
+﻿using FBank.Application.Interfaces;
+using FBank.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
-//namespace FBank.Infrastructure.Repositories
-//{
-//    public class UnitOfWork : IUnitOfWork, IDisposable
-//    {
-//        private DataBaseContext _contexto = null;
-//        private IBaseRepository<Client> clientRepository = null;
-//        private IBaseRepository<Bank> bankRepository = null;
-//        private IBaseRepository<Agency> agencyRepository = null;
-//        private IBaseRepository<Transaction> transactionRepository=null;
-        
-//        public UnitOfWork()
-//        {
-//            _contexto = new DataBaseContext();
-//        }
-//        public void Commit()
-//        {
-//            _contexto.SaveChanges();
-//        }
+namespace FBank.Infrastructure.Repositories
+{
+    public class UnitOfWork : IUnitOfWork
+    {
+        private ClientRepository _clientRepository;
+        private BankRepository _bankRepository;
+        private AgencyRepository _agencyRepository;
+        private TransactionRepository _transactionRepository;
+        private AccountRepository _accountRepository;
 
-//        public IBaseRepository<Client> Clients
-//        {
-//            get
-//            {
-//                if (clientRepository == null)
-//                {
-//                    clientRepository = new BaseRepository<Client>(_contexto);
-//                }
-//                return clientRepository;
-//            }
-//        }
+        private DataBaseContext _context;
+        public UnitOfWork(DataBaseContext context)
+        {
+            _context = context;
+        }
+        public IBaseRepository<Client> ClientRepository
+        {
+            get
+            {
+                if (_clientRepository == null)
+                {
+                    _clientRepository = new ClientRepository(_context);
+                }
+                return _clientRepository;
+            }
+        }
 
-//        public IBaseRepository<Bank> Banks
-//        {
-//            get
-//            {
-//                if (bankRepository == null)
-//                {
-//                    bankRepository = new BaseRepository<Bank>(_contexto);
-//                }
-//                return bankRepository;
-//            }
-//        }
+        public IBaseRepository<Bank> BankRepository
+        {
+            get
+            {
+                if (_bankRepository == null)
+                {
+                    _bankRepository = new BankRepository(_context);
+                }
+                return _bankRepository;
+            }
+        }
+        public IBaseRepository<Agency> AgencyRepository
+        {
+            get
+            {
+                if (_agencyRepository == null)
+                {
+                    _agencyRepository = new AgencyRepository(_context);
+                }
+                return _agencyRepository;
+            }
+        }
+        public IBaseRepository<Transaction> TransactionRepository
+        {
+            get
+            {
+                if (_transactionRepository == null)
+                {
+                    _transactionRepository = new TransactionRepository(_context);
+                }
+                return _transactionRepository;
+            }
+        }
+        public IBaseRepository<Account> AccountRepository
+        {
+            get
+            {
+                if (_accountRepository == null)
+                {
+                    _accountRepository = new AccountRepository(_context);
+                }
+                return _accountRepository;
+            }
+        }
 
-//        public IBaseRepository<Agency> Agencies
-//        {
-//            get
-//            {
-//                if (agencyRepository == null)
-//                {
-//                    agencyRepository = new BaseRepository<Agency>(_contexto);
-//                }
-//                return agencyRepository;
-//            }
-//        }
+        public void Commit()
+        {
+            _context.SaveChanges();
+        }
+        public void Rollback()
+        {
+            foreach (var entry in _context.ChangeTracker.Entries())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Modified://??
+                    case EntityState.Added:
+                        entry.State = EntityState.Detached;
+                        break;
+                }
+            }
+            _context.Dispose();
+        }
 
-//        public IBaseRepository<Transaction> Transactions
-//        {
-//            get
-//            {
-//                if (transactionRepository == null)
-//                {
-//                    transactionRepository = new BaseRepository<Transaction>(_contexto);
-//                }
-//                return transactionRepository;
-//            }
-//        }
+        private bool disposed = false;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-//        private bool disposed = false;
-//        protected virtual void Dispose(bool disposing)
-//        {
-//            if (!this.disposed)
-//            {
-//                if (disposing)
-//                {
-//                    _contexto.Dispose();
-//                }
-//            }
-//            this.disposed = true;
-//        }
-//        public void Dispose()
-//        {
-//            Dispose(true);
-//            GC.SuppressFinalize(this);
-//        }
-//    }
-//}
+    }
+}

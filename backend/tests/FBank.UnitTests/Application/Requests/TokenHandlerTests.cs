@@ -4,6 +4,7 @@ using FBank.Application.Services;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
 using Microsoft.Extensions.Logging;
+using Moq;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using System.Linq.Expressions;
@@ -13,16 +14,15 @@ namespace FBank.UnitTests.Application.Requests
     public class TokenHandlerTests
     {
 
-        private readonly IClientRepository _mockClientRepository;
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
         private readonly ILogger<TokenRequestHandler> _mockLogger;
         private readonly ITokenService _mockTokenService;
 
 
         public TokenHandlerTests()
         {
-            _mockClientRepository = Substitute.For<IClientRepository>();
 
-            _mockClientRepository = Substitute.For<IClientRepository>();
+            _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockLogger = Substitute.For<ILogger<TokenRequestHandler>>();
             _mockTokenService = Substitute.For<ITokenService>();
         }
@@ -31,10 +31,10 @@ namespace FBank.UnitTests.Application.Requests
         public void Should_return_ArgumentException_when_client_invalid()
         {
             var query = new TokenRequest { NumberAgency = 1, NumberAccount = 2, Password = "test" };
+            _mockUnitOfWork.Setup(s => s.ClientRepository.SelectOne(It.IsAny<Expression<Func<Client, bool>>>()))
+                .ReturnsNull();
 
-            _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).ReturnsNull();
-
-            var handler = new TokenRequestHandler(_mockClientRepository, _mockLogger, _mockTokenService);
+            var handler = new TokenRequestHandler(_mockUnitOfWork.Object, _mockLogger, _mockTokenService);
 
             Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(query, CancellationToken.None));
         }
@@ -71,9 +71,10 @@ namespace FBank.UnitTests.Application.Requests
                 } 
             };
 
-            _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).Returns(client);
+            _mockUnitOfWork.Setup(s => s.ClientRepository.SelectOne(It.IsAny<Expression<Func<Client, bool>>>()))
+                .Returns(client);
 
-            var handler = new TokenRequestHandler(_mockClientRepository, _mockLogger, _mockTokenService);
+            var handler = new TokenRequestHandler(_mockUnitOfWork.Object, _mockLogger, _mockTokenService);
 
             var response = handler.Handle(query, CancellationToken.None);
 

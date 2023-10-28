@@ -23,7 +23,7 @@ namespace FBank.Infrastructure.Repositories
 
             var query = GetExtractClientWithFilter(filterClient);
 
-            return await Entity
+            return await dbSet
                 .Where(query)
                 .Select(x => new ClientExtractToListDto
                 {

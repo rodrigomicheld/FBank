@@ -2,7 +2,6 @@
 using FBank.Application.Extensions;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
-using System.ComponentModel;
 
 namespace FBank.Application.Mappers
 {
@@ -14,7 +13,7 @@ namespace FBank.Application.Mappers
                 .ForMember(to => to.Id, map => map.MapFrom(from => from.Id))
                 .ForMember(to => to.Name, map => map.MapFrom(from => from.Name))
                 .ForMember(to => to.Document, map => map.MapFrom(from => from.Document))
-                .ForMember(to => to.PersonType, map => map.MapFrom(from =>  EnumExtensions.GetDescription( from.DocumentType)))
+                .ForMember(to => to.PersonType, map => map.MapFrom(from => EnumExtensions.GetDescription(from.DocumentType)))
                 .ForMember(to => to.Accounts, map => map.MapFrom(from => from.Accounts));
 
 
@@ -30,18 +29,10 @@ namespace FBank.Application.Mappers
                 .ForMember(to => to.Number, map => map.MapFrom(from => from.Code));
 
             CreateMap<Transaction, TransactionViewModel>()
-                .ForMember(to => to.Id, map => map.MapFrom(from => from.Id));
+                .ForMember(to => to.DateTransaction, map => map.MapFrom(f => f.CreateDateAt))
+                .ForMember(to => to.Amount, map => map.MapFrom(f => f.Value))
+                .ForMember(to => to.TransactionType, map => map.MapFrom(f => f.TransactionType))
+                .ReverseMap();
         }
-
-        //public static string GetDescription(Enum @enum)
-        //{
-        //    var description = @enum.GetType().GetField(@enum.ToString());
-
-        //    var attributes = (DescriptionAttribute[])description.GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-        //    if (attributes != null && attributes.Length > 0) return attributes[0].Description;
-            
-        //    return @enum.ToString();
-        //}
     }
 }

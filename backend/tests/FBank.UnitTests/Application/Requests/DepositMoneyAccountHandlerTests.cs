@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using FBank.Application.Interfaces;
+using FBank.Application.Queries;
+using FBank.Application.Requests;
 using FBank.Application.Requests.Transactions;
+using FBank.Application.Services;
 using FBank.Application.Services.Transactions;
 using FBank.Domain.Entities;
 using MediatR;
@@ -12,32 +15,30 @@ namespace FBank.UnitTests.Application.Requests
 {
     public class DepositMoneyAccountHandlerTests
     {
-        private readonly ITransactionRepository _mockTransactionRepository;
-        private readonly IAccountRepository _mockAccountRepository;
         private readonly DepositMoneyAccountRequest _query;
         private readonly DepositMoneyAccountHandler _handler;
         private readonly IMediator _mockMediator;
-
+        private readonly IUnitOfWork _mockUnitOfWork;
+        private readonly ILogger<DepositMoneyAccountHandler> _logger;   
         public DepositMoneyAccountHandlerTests()
         {
-            _mockTransactionRepository = Substitute.For<ITransactionRepository>();
-            _mockAccountRepository = Substitute.For<IAccountRepository>();
+            _mockUnitOfWork = Substitute.For<IUnitOfWork>();
             _mockMediator = Substitute.For<IMediator>();
-
-            _mockTransactionRepository.SelectToId(Arg.Any<Guid>()).Returns(new Transaction());
+            
+            _logger = Substitute.For<ILogger<DepositMoneyAccountHandler>>();    
             _query = new DepositMoneyAccountRequest();
             _handler = new DepositMoneyAccountHandler(
                 _mockMediator,
-                _mockTransactionRepository,
-                _mockAccountRepository,
-                Substitute.For<ILogger<DepositMoneyAccountHandler>>(),
-                Substitute.For<IMapper>());
+                _logger,
+                Substitute.For<IMapper>(),
+                _mockUnitOfWork
+                );
         }
 
         [Fact]
         public void Should_return_transaction_requested()
         {
-            _mockTransactionRepository.SelectToId(Arg.Any<Guid>()).Returns(new Transaction());
+            _mockUnitOfWork.TransactionRepository.SelectToId(Arg.Any<Guid>()).Returns(new Transaction());
             var response = _handler.Handle(_query, CancellationToken.None);
             Assert.NotNull(response);
         }
@@ -45,7 +46,7 @@ namespace FBank.UnitTests.Application.Requests
         [Fact]
         public void Should_return_NullReferenceException_when_transaction_not_found()
         {
-            _mockTransactionRepository.SelectToId(Arg.Any<Guid>()).Throws(new NullReferenceException());
+            _mockUnitOfWork.TransactionRepository.SelectToId(Arg.Any<Guid>()).Throws(new NullReferenceException());
             Assert.ThrowsAsync<NullReferenceException>(() => _handler.Handle(_query, CancellationToken.None));
         }
 

@@ -167,7 +167,7 @@ namespace FBank.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnName("Senha");
+                        .HasColumnName("senha");
 
                     b.Property<DateTime>("UpdateDateAt")
                         .HasColumnType("datetime2")

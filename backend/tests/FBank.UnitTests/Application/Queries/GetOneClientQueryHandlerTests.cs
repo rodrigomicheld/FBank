@@ -4,6 +4,7 @@ using FBank.Application.Queries;
 using FBank.Application.Services;
 using FBank.Domain.Entities;
 using Microsoft.Extensions.Logging;
+using Moq;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using System.Linq.Expressions;
@@ -12,20 +13,19 @@ namespace FBank.UnitTests.Application.Queries
 {
     public class GetOneClientQueryHandlerTests
     {
-        
-        private readonly IClientRepository _mockClientRepository;
+
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
         private readonly GetOneClientQuery _query;
         private readonly GetOneClientQueryHandler _handler;
         
 
         public GetOneClientQueryHandlerTests()
         {
-            _mockClientRepository = Substitute.For<IClientRepository>();
-
-            _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).Returns(new Client()); ;
+            _mockUnitOfWork = new Mock<IUnitOfWork>();
+             _mockUnitOfWork.Setup(s => s.ClientRepository.SelectOne(It.IsAny<Expression<Func<Client, bool>>>())).Returns(new Client());
             _query = new GetOneClientQuery();
             _handler = new GetOneClientQueryHandler(
-                _mockClientRepository,
+                _mockUnitOfWork.Object,
                 Substitute.For<ILogger<GetOneClientQueryHandler>>(),
                 Substitute.For<IMapper>());     
         }
@@ -41,7 +41,7 @@ namespace FBank.UnitTests.Application.Queries
         [Fact]
         public void Should_return_NullReferenceException_when_client_not_found()
         {
-            _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).Throws(new NullReferenceException());
+            _mockUnitOfWork.Setup(s => s.ClientRepository.SelectOne(It.IsAny<Expression<Func<Client, bool>>>())).Throws(new NullReferenceException());
             Assert.ThrowsAsync<NullReferenceException>(() => _handler.Handle(_query, CancellationToken.None));
         }
     }

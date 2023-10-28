@@ -12,29 +12,20 @@ namespace FBank.UnitTests.Application.Requests
 {
     public class PostOneClientRequestHandlerTests
     {
-
-        private readonly IClientRepository _mockClientRepository;
-        private readonly IAgencyRepository _mockAgencyRepository;
-        private readonly IAccountRepository _mockAccountRepository;
         private readonly ILogger<PostOneClientRequestHandler> _mockLogger;
-
+        private readonly IUnitOfWork _unitOfWork;
 
         public PostOneClientRequestHandlerTests()
         {
-            _mockClientRepository = Substitute.For<IClientRepository>();
-
-            _mockClientRepository = Substitute.For<IClientRepository>();
-            _mockAgencyRepository = Substitute.For<IAgencyRepository>();
-            _mockAccountRepository = Substitute.For<IAccountRepository>();
             _mockLogger = Substitute.For<ILogger<PostOneClientRequestHandler>>();
+            _unitOfWork = Substitute.For<IUnitOfWork>();
         }
 
         [Fact]
         public void Should_return_ArgumentException_when_document_invalid()
         {
             var query = new PostOneClientRequest { Document = "1234", Name = "test" };
-
-            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockAgencyRepository, _mockAccountRepository, _mockLogger);
+            var handler = new PostOneClientRequestHandler(_mockLogger, _unitOfWork);
 
             Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(query, CancellationToken.None));
         }
@@ -50,14 +41,14 @@ namespace FBank.UnitTests.Application.Requests
                 Name = "Agency test"
             };
 
-            _mockClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).ReturnsNull();
-            _mockAgencyRepository.SelectOne(Arg.Any<Expression<Func<Agency, bool>>>()).Returns(agency);
+            _unitOfWork.ClientRepository.SelectOne(Arg.Any<Expression<Func<Client, bool>>>()).ReturnsNull();
+            _unitOfWork.AgencyRepository.SelectOne(Arg.Any<Expression<Func<Agency, bool>>>()).Returns(agency);
 
-            var handler = new PostOneClientRequestHandler(_mockClientRepository, _mockAgencyRepository, _mockAccountRepository, _mockLogger);
+            var handler = new PostOneClientRequestHandler(_mockLogger, _unitOfWork);
 
             var response = handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(response);
-        }       
+        }
     }
 }

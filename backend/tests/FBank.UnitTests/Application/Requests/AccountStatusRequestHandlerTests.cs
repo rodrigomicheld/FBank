@@ -4,6 +4,7 @@ using FBank.Application.Services;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
 using Microsoft.Extensions.Logging;
+using Moq;
 using NSubstitute;
 using System.Linq.Expressions;
 
@@ -12,13 +13,12 @@ namespace FBank.UnitTests.Application.Requestsr
     public class AccountStatusRequestHandlerTests
     {
         private readonly ILogger<AccountStatusRequestHandler> _mockLogger;
-        private readonly IAccountRepository _mockAccountRepository;
-
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
 
         public AccountStatusRequestHandlerTests()
         {
             _mockLogger = Substitute.For<ILogger<AccountStatusRequestHandler>>();
-            _mockAccountRepository = Substitute.For<IAccountRepository>();
+            _mockUnitOfWork = new Mock<IUnitOfWork>();
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace FBank.UnitTests.Application.Requestsr
         {
             var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Active };
 
-            var handler = new AccountStatusRequestHandler(_mockLogger, _mockAccountRepository);
+            var handler = new AccountStatusRequestHandler(_mockLogger, _mockUnitOfWork.Object);
 
             var exception = Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(request, CancellationToken.None)).Result;
 
@@ -45,9 +45,10 @@ namespace FBank.UnitTests.Application.Requestsr
                 Status = request.AccountStatus
             };
 
-            _mockAccountRepository.SelectOne(Arg.Any<Expression<Func<Account, bool>>>()).Returns(account);
+            _mockUnitOfWork.Setup(s => s.AccountRepository.SelectOne(It.IsAny<Expression<Func<Account, bool>>>()))
+                    .Returns(account);
 
-            var handler = new AccountStatusRequestHandler(_mockLogger, _mockAccountRepository);
+            var handler = new AccountStatusRequestHandler(_mockLogger, _mockUnitOfWork.Object);
 
             var exception = Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(request, CancellationToken.None)).Result;
 
@@ -66,9 +67,10 @@ namespace FBank.UnitTests.Application.Requestsr
                 Status = AccountStatus.Inactive
             };
 
-            _mockAccountRepository.SelectOne(Arg.Any<Expression<Func<Account, bool>>>()).Returns(account);
+            _mockUnitOfWork.Setup(s => s.AccountRepository.SelectOne(It.IsAny<Expression<Func<Account, bool>>>()))
+                    .Returns(account);
 
-            var handler = new AccountStatusRequestHandler(_mockLogger, _mockAccountRepository);
+            var handler = new AccountStatusRequestHandler(_mockLogger, _mockUnitOfWork.Object);
 
             var response = handler.Handle(request, CancellationToken.None).Result;
 
@@ -87,9 +89,9 @@ namespace FBank.UnitTests.Application.Requestsr
                 Status = AccountStatus.Active
             };
 
-            _mockAccountRepository.SelectOne(Arg.Any<Expression<Func<Account, bool>>>()).Returns(account);
+            _mockUnitOfWork.Setup(s => s.AccountRepository.SelectOne(It.IsAny<Expression<Func<Account, bool>>>())).Returns(account);
 
-            var handler = new AccountStatusRequestHandler(_mockLogger, _mockAccountRepository);
+            var handler = new AccountStatusRequestHandler(_mockLogger, _mockUnitOfWork.Object);
 
             var response = handler.Handle(request, CancellationToken.None).Result;
 
