@@ -22,7 +22,7 @@ namespace Fbank.IntegrationTests.Application.Queries
         [InlineData(1, 20)]
         [InlineData(3, 20)]
         [InlineData(2, 50)]
-        public async Task Deve_fazer_a_paginacao_das_transacoesAsync(int page, int pageSize)
+        public async Task Should_paginate_transactions(int page, int pageSize)
         {
             Guid clientId = Guid.NewGuid();
             Guid bankId = Guid.NewGuid();
@@ -61,7 +61,7 @@ namespace Fbank.IntegrationTests.Application.Queries
         }
 
         [Fact]
-        public async Task Deve_exibir_extrato_das_transacoes_do_client()
+        public async Task Should_list_transaction_of_client()
         {
             Guid clientId = Guid.NewGuid();
             Guid clientIdTo = Guid.NewGuid();
@@ -103,11 +103,11 @@ namespace Fbank.IntegrationTests.Application.Queries
 
             paginationResponse.TotalItems.Should().Be(2);
 
-            Assert.Contains("Transferência", paginationResponse.Data.ElementAt(0).Description);
-            Assert.Equal("10,00", paginationResponse.Data.ElementAt(0).Amount);
+            Assert.Contains("Transferência", paginationResponse.Data.ElementAt(1).Description);
+            Assert.Equal("10,00", paginationResponse.Data.ElementAt(1).Amount);
 
-            Assert.Contains("Depósito", paginationResponse.Data.ElementAt(1).Description);
-            Assert.Equal("100,00", paginationResponse.Data.ElementAt(1).Amount);
+            Assert.Contains("Depósito", paginationResponse.Data.ElementAt(0).Description);
+            Assert.Equal("100,00", paginationResponse.Data.ElementAt(0).Amount);
 
             
         }
