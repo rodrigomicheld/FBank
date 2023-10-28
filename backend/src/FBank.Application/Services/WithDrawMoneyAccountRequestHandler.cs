@@ -1,5 +1,5 @@
 ﻿using FBank.Application.Interfaces;
-using FBank.Application.Requests;
+using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
 using MediatR;
@@ -23,13 +23,14 @@ namespace FBank.Application.Services
         {
             try
             {
-                Guid accountOrigin = request.AccountOrigin;
                 decimal amount = request.Amount;
-                var account = _unitOfWork.AccountRepository.SelectToId(accountOrigin);
+                var account = _unitOfWork.AccountRepository.SelectOne(x=> x.Number == request.AccountNumber);
+                if (account == null)
+                    throw new InvalidOperationException("Account not found!");
 
                 await _mediator.Send(new UpdateBalanceAccountRequest()
                 {
-                    AccountId = accountOrigin,
+                    AccountId = account.Id,
                     Value = amount,
                     FlowType = Domain.Enums.FlowType.OUTPUT
                 });
@@ -37,8 +38,8 @@ namespace FBank.Application.Services
                 var transfer = new Transaction
                 {
                     Account = account,
-                    AccountToId = accountOrigin,
-                    AccountId = accountOrigin,
+                    AccountToId = account.Id,
+                    AccountId = account.Id,
                     FlowType = Domain.Enums.FlowType.OUTPUT,
                     TransactionType = Domain.Enums.TransactionType.WITHDRAW,
                     Value = amount,
@@ -60,7 +61,7 @@ namespace FBank.Application.Services
             {
                 _unitOfWork.Rollback();
                 _logger.LogInformation(ex.ToString());
-                throw ex;
+                throw;
             }
         }
     }

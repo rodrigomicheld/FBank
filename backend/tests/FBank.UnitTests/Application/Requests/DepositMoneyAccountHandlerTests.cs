@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using FBank.Application.Interfaces;
-using FBank.Application.Queries;
-using FBank.Application.Requests;
 using FBank.Application.Requests.Transactions;
-using FBank.Application.Services;
 using FBank.Application.Services.Transactions;
 using FBank.Domain.Entities;
 using MediatR;

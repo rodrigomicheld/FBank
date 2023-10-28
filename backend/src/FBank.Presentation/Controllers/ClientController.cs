@@ -19,9 +19,7 @@ namespace FBank.Presentation.Controllers
         {
             var authorizationResult = CheckDocumentClaim(document);
             if (authorizationResult != null)
-            {
                 return authorizationResult;
-            }
 
             try
             {
@@ -53,34 +51,17 @@ namespace FBank.Presentation.Controllers
             }
         }
 
-        [HttpGet("extract-account")]
-        public async Task<ActionResult<PaginationResponse<ClientExtractViewModel>>> GetListExtract([FromQuery] FilterClient filterClient)
-        {
-            try
-            {
-                return await mediator.Send(new ListExtractClientQuery { FilterClient = filterClient });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         private ActionResult CheckDocumentClaim(string document)
         {
             var user = HttpContext.User;
 
             if (!user.Identity.IsAuthenticated)
-            {
                 return Unauthorized("Unauthorized user");
-            }
 
             var documentClaim = user.Claims.FirstOrDefault(c => c.Type == "Document");
 
             if (documentClaim == null || documentClaim.Value != RemoveDocumentMask(document))
-            {
                 return Unauthorized("User does not have permission.");
-            }
 
             return null;
         }

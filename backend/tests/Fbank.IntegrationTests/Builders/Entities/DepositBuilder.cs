@@ -10,7 +10,7 @@ namespace Fbank.IntegrationTests.Builders.Entities
         {
             return new DepositMoneyAccountRequest
             {
-                Account = _accountNumber ?? 0,
+                AccountNumber = _accountNumber ?? 0,
                 Value = _value ?? 0
             };
         }

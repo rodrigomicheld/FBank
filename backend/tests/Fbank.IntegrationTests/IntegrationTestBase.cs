@@ -33,7 +33,6 @@ namespace Fbank.IntegrationTests
         }
         public void Dispose()
         {
-            _dataBaseContext.Database.EnsureDeleted();
             _dataBaseContext.Dispose();
             _serviceScope.Dispose();
         }

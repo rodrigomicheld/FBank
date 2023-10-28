@@ -1,5 +1,5 @@
 ﻿using FBank.Application.Interfaces;
-using FBank.Application.Requests;
+using FBank.Application.Requests.Transactions;
 using FBank.Domain.Enums;
 using MediatR;
 
@@ -18,15 +18,15 @@ namespace FBank.Application.Services
             var accountUpdated = _unitOfWork.AccountRepository.SelectToId(request.AccountId);
             List<string> errors = new List<string>();
             if (accountUpdated == null)
-                errors.Add("Conta não encontrada");
+                errors.Add("Account not found");
             if (request.Value <= 0)
-                errors.Add("Valor a ser atualizao não pode menor ou igual a zero");
+                errors.Add("Value to be updated cannot be less than or equal to zero");
 
             if (request.FlowType.GetHashCode() == FlowType.OUTPUT.GetHashCode() && request.Value > accountUpdated.Balance)
-                errors.Add("Saldo insuficiente");
+                errors.Add("Insufficient balance");
 
             if (errors.Count > 0)
-                throw new Exception($"Erro ao atualizar Saldo, erros : {String.Join(",", errors)}");
+                throw new Exception($"Error updating Balance, errors : {String.Join(",", errors)}");
 
             accountUpdated.Balance = accountUpdated.Balance +
                                     ((request.FlowType.GetHashCode() == FlowType.OUTPUT.GetHashCode()) ? (request.Value * -1)

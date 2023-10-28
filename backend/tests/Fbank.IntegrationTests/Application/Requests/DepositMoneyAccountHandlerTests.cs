@@ -45,7 +45,7 @@ namespace Fbank.IntegrationTests.Application.Requests
         {
             PrepareScenarioToTest();
 
-            var request = new DepositMoneyAccountRequest { Account = 1, Value = 10 };
+            var request = new DepositMoneyAccountRequest { AccountNumber = 1, Value = 10 };
 
             var response = await Handle<DepositMoneyAccountRequest, TransactionViewModel>(request);
 
@@ -57,13 +57,11 @@ namespace Fbank.IntegrationTests.Application.Requests
         {
             PrepareScenarioToTest();
 
-            var request = new DepositMoneyAccountRequest { Account = 0, Value = 10 };
+            var request = new DepositMoneyAccountRequest { AccountNumber = 0, Value = 10 };
 
             Func<Task> handle = async () => await Handle<DepositMoneyAccountRequest, TransactionViewModel>(request);
 
-            await handle.Should().ThrowAsync<Exception>().WithMessage("Conta não encontrada");
+            await handle.Should().ThrowAsync<InvalidOperationException>().WithMessage("Account not found");
         }
-
-
     }
 }
