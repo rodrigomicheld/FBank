@@ -61,7 +61,7 @@ namespace Fbank.IntegrationTests.Application.Requests
 
             Func<Task> handle = async () => await Handle<DepositMoneyAccountRequest, TransactionViewModel>(request);
 
-            await handle.Should().ThrowAsync<System.Exception>().WithMessage("Conta não encontrada");
+            await handle.Should().ThrowAsync<Exception>().WithMessage("Conta não encontrada");
         }
 
 
