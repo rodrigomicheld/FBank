@@ -36,9 +36,7 @@ namespace FBank.Application.Services
         }
 
         public async Task<TransactionViewModel> Handle(DepositMoneyAccountRequest request, CancellationToken cancellationToken)
-        {
-            //Todo: Trocar esta verificação, por uma rotina de validação, quando a rotina de verifica se uma conta existe estiver pronta
-            //Todo: Incluir método para verificar se a conta existe
+        {            
             if (!VerifyValueDeposit(request.Value)) 
             {
                 var transactionViewModel = new TransactionViewModel();
