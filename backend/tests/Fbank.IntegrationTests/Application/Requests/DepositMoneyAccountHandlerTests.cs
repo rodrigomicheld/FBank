@@ -11,10 +11,6 @@ namespace Fbank.IntegrationTests.Application.Requests
 {
     public class DepositMoneyAccountHandlerTests : ApplicationTestBase
     {
-        public DepositMoneyAccountHandlerTests(WebApplicationFactory<Program> factory) : base(factory)
-        {
-        }
-
         private void PrepareScenarioToTest()
         {
             var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Active };

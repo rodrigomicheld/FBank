@@ -1,36 +1,43 @@
 ﻿using FBank.Infrastructure;
 using MediatR;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fbank.IntegrationTests
 {
-    public class IntegrationTestBase : IClassFixture<WebApplicationFactory<Program>>, IDisposable
+    public class IntegrationTestBase : IDisposable
     {
-        private readonly WebApplicationFactory<Program> _factory;
         private readonly DataBaseContext _dataBaseContext;
-        private readonly IMediator _mediator;
         private readonly IServiceScope _serviceScope;
         private readonly IServiceProvider _serviceProvider;
+        protected readonly IServiceCollection _servicesCollection;
+        protected readonly IMediator _mediator;
 
-        public WebApplicationFactory<Program> Factory => _factory;
-        public DataBaseContext DataBaseContext => _dataBaseContext;
         public IMediator Mediator => _mediator;
-        public IServiceProvider ServiceProvider => _serviceProvider;
+        public DataBaseContext DataBaseContext => _dataBaseContext;
         public IServiceScope ServiceScope => _serviceScope;
+        public IServiceProvider ServiceProvider => _serviceProvider;
 
-        public IntegrationTestBase(WebApplicationFactory<Program> factory)
+
+        public IntegrationTestBase()
         {
-            Environment.SetEnvironmentVariable("FBANK_DB_NAME", "true");
+            _servicesCollection = TestServiceCollectionFactory.BuildIntegrationTestInfrastructure();
 
-            _factory = factory;
-            _serviceScope = factory.Services.GetService<IServiceScopeFactory>()!.CreateScope()!;
+            _serviceProvider = GetServiceProvider(_servicesCollection);
+
+            _serviceScope = _serviceProvider.GetService<IServiceScopeFactory>()!.CreateScope()!;
             _dataBaseContext = _serviceScope.ServiceProvider.GetRequiredService<DataBaseContext>()!;
             _mediator = _serviceScope.ServiceProvider.GetService<IMediator>()!;
 
             _dataBaseContext.Database.EnsureDeleted();
             _dataBaseContext.Database.EnsureCreated();
         }
+
+        public static IServiceProvider GetServiceProvider(IServiceCollection serviceCollection)
+        {
+            var defaultServiceProviderFactory = new DefaultServiceProviderFactory(new ServiceProviderOptions());
+            return defaultServiceProviderFactory.CreateServiceProvider(serviceCollection);
+        }
+
         public void Dispose()
         {
             _dataBaseContext.Dispose();

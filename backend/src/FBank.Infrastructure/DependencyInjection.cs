@@ -8,7 +8,7 @@ namespace FBank.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, bool sqlServerTest = false)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IClientRepository, ClientRepository>();
@@ -17,9 +17,7 @@ namespace FBank.Infrastructure
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
 
-            var dbName = Environment.GetEnvironmentVariable("FBANK_DB_NAME") ?? "false";
-
-            if (bool.Parse(dbName) is false)
+            if (sqlServerTest is false)
                 AddSqlServer(services, configuration);
             else
                 AddSqlServerTest(services, configuration);
@@ -36,8 +34,12 @@ namespace FBank.Infrastructure
 
         private static void AddSqlServerTest(this IServiceCollection services, IConfiguration configuration)
         {
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            connectionString = connectionString.Replace("DataBase=fbank", "DataBase=fbank-teste");
+
             services.AddDbContext<DataBaseContext>(options => {
-                options.UseSqlServer(configuration.GetConnectionString("TestConnection"));
+                options.UseSqlServer(connectionString,
+                    builder => { builder.MigrationsAssembly(typeof(DataBaseContext).Assembly.GetName().Name); });
             });
         }
     }
