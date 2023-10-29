@@ -5,7 +5,7 @@ using FBank.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace FBank.Application.Services
+namespace FBank.Application.Services.Transactions
 {
     public class WithDrawMoneyAccountRequestHandler : IRequestHandler<WithDrawMoneyAccountRequest, TransactionViewModel>
     {
@@ -24,7 +24,7 @@ namespace FBank.Application.Services
             try
             {
                 decimal amount = request.Amount;
-                var account = _unitOfWork.AccountRepository.SelectOne(x=> x.Number == request.AccountNumber);
+                var account = _unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumber);
                 if (account == null)
                     throw new InvalidOperationException("Account not found!");
 
@@ -48,7 +48,6 @@ namespace FBank.Application.Services
                 };
 
                 _unitOfWork.TransactionRepository.Insert(transfer);
-                _unitOfWork.Commit();
 
                 return new TransactionViewModel
                 {
@@ -59,7 +58,6 @@ namespace FBank.Application.Services
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.LogInformation(ex.ToString());
                 throw;
             }

@@ -3,7 +3,7 @@ using FBank.Application.Requests.Transactions;
 using FBank.Domain.Enums;
 using MediatR;
 
-namespace FBank.Application.Services
+namespace FBank.Application.Services.Transactions
 {
     public class UpdateBalanceAccountRequestHandler : IRequestHandler<UpdateBalanceAccountRequest, Unit>
     {
@@ -26,10 +26,10 @@ namespace FBank.Application.Services
                 errors.Add("Insufficient balance");
 
             if (errors.Count > 0)
-                throw new Exception($"Error updating Balance, errors : {String.Join(",", errors)}");
+                throw new Exception($"Error updating Balance, errors : {string.Join(",", errors)}");
 
             accountUpdated.Balance = accountUpdated.Balance +
-                                    ((request.FlowType.GetHashCode() == FlowType.OUTPUT.GetHashCode()) ? (request.Value * -1)
+                                    (request.FlowType.GetHashCode() == FlowType.OUTPUT.GetHashCode() ? request.Value * -1
                                     : request.Value);
 
             _unitOfWork.AccountRepository.Update(accountUpdated);

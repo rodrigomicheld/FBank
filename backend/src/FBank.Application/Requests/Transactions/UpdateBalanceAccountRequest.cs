@@ -1,9 +1,10 @@
-﻿using FBank.Domain.Enums;
+﻿using FBank.Application.Interfaces;
+using FBank.Domain.Enums;
 using MediatR;
 
 namespace FBank.Application.Requests.Transactions
 {
-    public class UpdateBalanceAccountRequest : IRequest<Unit>
+    public class UpdateBalanceAccountRequest : IRequest<Unit>, IPersistable
     {
         public Guid AccountId { get; set; }
         public decimal Value { get; set; }

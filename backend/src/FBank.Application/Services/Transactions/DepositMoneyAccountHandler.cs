@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FBank.Application.Interfaces;
-using FBank.Application.Requests;
 using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
@@ -54,13 +53,11 @@ namespace FBank.Application.Services.Transactions
                     Value = transactionBank.Value,
                     FlowType = transactionBank.FlowType
                 });
-                _unitOfWork.Commit();
 
                 var mappedResult = _mapper.Map<TransactionViewModel>(transactionReturn);
                 return await Task.FromResult(mappedResult);
             }catch(Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.LogInformation(ex.ToString());
                 throw;
             }

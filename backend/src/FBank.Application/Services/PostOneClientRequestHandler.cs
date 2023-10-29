@@ -54,15 +54,15 @@ namespace FBank.Application.Services
             };
 
                 _unitOfWork.AccountRepository.Insert(account);
-                _unitOfWork.Commit();
 
-                return Task.FromResult($"Agency: {agency.Code} - Account: {account.Number}");
+                var accountNumber = (_unitOfWork.AccountRepository.SelectNumberMax() ?? 0) + 1;
+
+                return Task.FromResult($"Agency: {agency.Code} - Account: {accountNumber}");
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.LogInformation(ex.ToString());
-                throw ex;
+                throw;
             }
         }
     }

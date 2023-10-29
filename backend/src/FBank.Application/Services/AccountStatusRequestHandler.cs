@@ -32,7 +32,6 @@ namespace FBank.Application.Services
 
             account.Status = request.AccountStatus;
             _unitOfWork.AccountRepository.Update(account);
-            _unitOfWork.Commit();
 
             return await Task.FromResult($"Account {account.Status} is successfully.");
         }

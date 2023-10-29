@@ -7,7 +7,7 @@ using FBank.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace FBank.Application.Services
+namespace FBank.Application.Services.Transactions
 {
     public class TransferMoneyAccountRequestHandler : IRequestHandler<TransferMoneyAccountRequest, TransferViewModel>
     {
@@ -39,8 +39,8 @@ namespace FBank.Application.Services
 
 
                 if (errors.Count > 0)
-                    throw new Exception($"Error Performing Transfer, errors : {String.Join(",", errors)}");
-                if ((accountFrom.Balance - request.Value) < 0)
+                    throw new Exception($"Error Performing Transfer, errors : {string.Join(",", errors)}");
+                if (accountFrom.Balance - request.Value < 0)
                     throw new Exception($"Insufficient balance to make the transfer, current balance {accountFrom.Balance}");
 
 
@@ -80,12 +80,11 @@ namespace FBank.Application.Services
                     Value = transactionTo.Value,
                     FlowType = transactionTo.FlowType
                 });
-                _unitOfWork.Commit();
+
                 return new TransferViewModel();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.LogInformation(ex.ToString());
                 throw;
             }
