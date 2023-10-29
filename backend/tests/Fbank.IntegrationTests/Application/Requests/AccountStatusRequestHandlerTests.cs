@@ -9,9 +9,6 @@ namespace Fbank.IntegrationTests.Application.Requests
 {
     public class AccountStatusRequestHandlerTests : ApplicationTestBase
     {
-        public AccountStatusRequestHandlerTests(WebApplicationFactory<Program> factory) : base(factory)
-        {
-        }
 
         [Fact]
         public async Task Should_return_InvalidOperationException_when_account_not_exit()

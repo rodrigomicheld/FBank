@@ -1,18 +1,15 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fbank.IntegrationTests.Application
 {
     public abstract class ApplicationTestBase : IntegrationTestBase
     {
-        protected ApplicationTestBase(WebApplicationFactory<Program> factory) : base(factory)
-        {
-        }
 
         protected Task Handle<TRequest>(TRequest request)
             where TRequest : IRequest<Unit> => Handle<TRequest, Unit>(request);      
-        
+
         protected async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
             where TRequest: IRequest<TResponse>
         {

@@ -9,10 +9,6 @@ namespace Fbank.IntegrationTests.Application.Requests
 {
     public class PostOneClientRequestHandlerTests : ApplicationTestBase
     {
-        public PostOneClientRequestHandlerTests(WebApplicationFactory<Program> factory) : base(factory)
-        {
-        }
-
         [Fact]
         public async Task Should_insert_client_correctly()
         {

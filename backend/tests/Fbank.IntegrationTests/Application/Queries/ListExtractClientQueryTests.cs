@@ -11,10 +11,6 @@ namespace Fbank.IntegrationTests.Application.Queries
 {
     public class ListExtractClientQueryTests : ApplicationTestBase
     {
-        public ListExtractClientQueryTests(WebApplicationFactory<Program> factory) : base(factory)
-        {
-        }
-
         [Theory]
         [InlineData(1, 10)]
         [InlineData(2, 10)]

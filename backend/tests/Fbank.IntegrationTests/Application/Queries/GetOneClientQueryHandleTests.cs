@@ -10,9 +10,6 @@ namespace Fbank.IntegrationTests.Application.Queries
 {
     public class GetOneClientQueryHandleTests : ApplicationTestBase
     {
-        public GetOneClientQueryHandleTests(WebApplicationFactory<Program> factory) : base(factory)
-        {
-        }
 
         [Fact]
         public async Task Shoud_return_exception_when_client_not_found()
