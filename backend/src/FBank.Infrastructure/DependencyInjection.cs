@@ -38,8 +38,7 @@ namespace FBank.Infrastructure
             connectionString = connectionString.Replace("DataBase=fbank", "DataBase=fbank-teste");
 
             services.AddDbContext<DataBaseContext>(options => {
-                options.UseSqlServer(connectionString,
-                    builder => { builder.MigrationsAssembly(typeof(DataBaseContext).Assembly.GetName().Name); });
+                options.UseSqlServer(connectionString);
             });
         }
     }
