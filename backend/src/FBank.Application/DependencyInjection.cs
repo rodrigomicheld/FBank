@@ -1,4 +1,6 @@
-﻿using FBank.Application.Mappers;
+﻿using FBank.Application.Behavior;
+using FBank.Application.Mappers;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -10,6 +12,7 @@ namespace FBank.Application
         {
             services.AddMediatR(x=> x.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
             services.AddAutoMapper (typeof(BaseEntityToViewModelMapping));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
 
             return services;
         }

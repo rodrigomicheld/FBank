@@ -1,5 +1,4 @@
 ﻿using FBank.Application.Interfaces;
-using FBank.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FBank.Infrastructure.Repositories
@@ -17,7 +16,7 @@ namespace FBank.Infrastructure.Repositories
         {
             _context = context;
         }
-        public IBaseRepository<Client> ClientRepository
+        public IClientRepository ClientRepository
         {
             get
             {
@@ -29,7 +28,7 @@ namespace FBank.Infrastructure.Repositories
             }
         }
 
-        public IBaseRepository<Bank> BankRepository
+        public IBankRepository BankRepository
         {
             get
             {
@@ -40,7 +39,7 @@ namespace FBank.Infrastructure.Repositories
                 return _bankRepository;
             }
         }
-        public IBaseRepository<Agency> AgencyRepository
+        public IAgencyRepository AgencyRepository
         {
             get
             {
@@ -51,7 +50,7 @@ namespace FBank.Infrastructure.Repositories
                 return _agencyRepository;
             }
         }
-        public IBaseRepository<Transaction> TransactionRepository
+        public ITransactionRepository TransactionRepository
         {
             get
             {
@@ -62,7 +61,7 @@ namespace FBank.Infrastructure.Repositories
                 return _transactionRepository;
             }
         }
-        public IBaseRepository<Account> AccountRepository
+        public IAccountRepository AccountRepository
         {
             get
             {
@@ -110,6 +109,5 @@ namespace FBank.Infrastructure.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
     }
 }

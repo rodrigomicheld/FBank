@@ -1,14 +1,12 @@
-﻿using FBank.Domain.Entities;
-
-namespace FBank.Application.Interfaces
+﻿namespace FBank.Application.Interfaces
 {
     public interface IUnitOfWork
     {
-        public IBaseRepository<Client> ClientRepository { get; }
-        public IBaseRepository<Bank> BankRepository { get; }
-        public IBaseRepository<Agency> AgencyRepository { get; }
-        public IBaseRepository<Transaction> TransactionRepository { get; }
-        public IBaseRepository<Account> AccountRepository { get; }
+        public IClientRepository ClientRepository { get; }
+        public IBankRepository BankRepository { get; }
+        public IAgencyRepository AgencyRepository { get; }
+        public ITransactionRepository TransactionRepository { get; }
+        public IAccountRepository AccountRepository { get; }
 
         void Commit();
         void Rollback();

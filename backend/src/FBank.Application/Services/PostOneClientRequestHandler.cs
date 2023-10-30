@@ -14,37 +14,35 @@ namespace FBank.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         public PostOneClientRequestHandler(ILogger<PostOneClientRequestHandler> logger, IUnitOfWork unitOfWork)
         {
-            _logger=logger;
-            _unitOfWork=unitOfWork;
+            _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         public Task<string> Handle(PostOneClientRequest request, CancellationToken cancellationToken)
         {
-            try
+            _logger.LogInformation($"Cadastrando o cliente: {request.Document}");
+
+            var typeDocument = CpfCnpj.ValidTypeDocument(request.Document);
+
+            if (typeDocument == PersonType.None)
+                throw new ArgumentException("Invalid document!");
+
+            var client = _unitOfWork.ClientRepository.SelectOne(x => x.Document == request.Document);
+
+            if (client != null)
+                throw new InvalidOperationException("Client already!");
+
+            client = new Client
             {
-                _logger.LogInformation($"Cadastrando o cliente: {request.Document}");
+                Document = request.Document,
+                Name = request.Name,
+                DocumentType = typeDocument,
+                Password = request.Password,
+            };
 
-                var typeDocument = CpfCnpj.ValidTypeDocument(request.Document);
+            _unitOfWork.ClientRepository.Insert(client);
 
-                if (typeDocument == PersonType.None)
-                    throw new ArgumentException("Invalid document!");
-
-                var client = _unitOfWork.ClientRepository.SelectOne(x => x.Document == request.Document);
-
-                if (client != null)
-                    throw new InvalidOperationException("Client already!");
-
-                client = new Client
-                {
-                    Document = request.Document,
-                    Name = request.Name,
-                    DocumentType = typeDocument,
-                    Password = request.Password,
-                };
-
-                _unitOfWork.ClientRepository.Insert(client);
-
-                var agency = _unitOfWork.AgencyRepository.SelectOne(x => x.Code == 1);
+            var agency = _unitOfWork.AgencyRepository.SelectOne(x => x.Code == 1);
 
             var account = new Account
             {
@@ -53,17 +51,12 @@ namespace FBank.Application.Services
                 Status = AccountStatus.Active,
             };
 
-                _unitOfWork.AccountRepository.Insert(account);
-                _unitOfWork.Commit();
+            _unitOfWork.AccountRepository.Insert(account);
 
-                return Task.FromResult($"Agency: {agency.Code} - Account: {account.Number}");
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.LogInformation(ex.ToString());
-                throw ex;
-            }
+            var accountNumber = (_unitOfWork.AccountRepository.SelectNumberMax() ?? 0) + 1;
+
+            return Task.FromResult($"Agency: {agency.Code} - Account: {accountNumber}");
+
         }
     }
 }

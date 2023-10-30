@@ -23,5 +23,11 @@ namespace FBank.Infrastructure.Repositories
             return query.Where(filter).FirstOrDefault();
         }
 
+        public int? SelectNumberMax()
+        {
+            IQueryable<Account> query = context.Accounts;
+
+            return query.Max(e => (int?)e.Number);
+        }
     }
 }

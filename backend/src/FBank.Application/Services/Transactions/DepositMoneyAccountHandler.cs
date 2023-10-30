@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FBank.Application.Interfaces;
-using FBank.Application.Requests;
 using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
@@ -31,39 +30,30 @@ namespace FBank.Application.Services.Transactions
 
         public async Task<TransactionViewModel> Handle(DepositMoneyAccountRequest request, CancellationToken cancellationToken)
         {
-            try
+            if (!VerifyValueDeposit(request.Value))
             {
-                if (!VerifyValueDeposit(request.Value))
-                {
-                    var transactionViewModel = new TransactionViewModel();
-                    return await Task.FromResult(transactionViewModel);
-                }
-
-                var account = _unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumber);
-
-                if (account == null)
-                    throw new InvalidOperationException($"Account not found");
-
-                var transactionBank = CompleteDataDeposit(request, account);
-                _unitOfWork.TransactionRepository.Insert(transactionBank);
-                var transactionReturn = _unitOfWork.TransactionRepository.SelectToId(transactionBank.Id);
-
-                await _mediator.Send(new UpdateBalanceAccountRequest()
-                {
-                    AccountId = transactionBank.AccountId,
-                    Value = transactionBank.Value,
-                    FlowType = transactionBank.FlowType
-                });
-                _unitOfWork.Commit();
-
-                var mappedResult = _mapper.Map<TransactionViewModel>(transactionReturn);
-                return await Task.FromResult(mappedResult);
-            }catch(Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.LogInformation(ex.ToString());
-                throw;
+                var transactionViewModel = new TransactionViewModel();
+                return await Task.FromResult(transactionViewModel);
             }
+
+            var account = _unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumber);
+
+            if (account == null)
+                throw new InvalidOperationException($"Account not found");
+
+            var transactionBank = CompleteDataDeposit(request, account);
+            _unitOfWork.TransactionRepository.Insert(transactionBank);
+            var transactionReturn = _unitOfWork.TransactionRepository.SelectToId(transactionBank.Id);
+
+            await _mediator.Send(new UpdateBalanceAccountRequest()
+            {
+                AccountId = transactionBank.AccountId,
+                Value = transactionBank.Value,
+                FlowType = transactionBank.FlowType
+            });
+
+            var mappedResult = _mapper.Map<TransactionViewModel>(transactionReturn);
+            return await Task.FromResult(mappedResult);
         }
 
         public Transaction CompleteDataDeposit(DepositMoneyAccountRequest request, Account account)
@@ -71,9 +61,9 @@ namespace FBank.Application.Services.Transactions
             var transactionBank = new Transaction();
             transactionBank.TransactionType = TransactionType.DEPOSIT;
             transactionBank.FlowType = FlowType.INPUT;
-            transactionBank.AccountToId= account.Id;
+            transactionBank.AccountToId = account.Id;
             transactionBank.AccountId = account.Id;
-            transactionBank.Value= request.Value;
+            transactionBank.Value = request.Value;
             return transactionBank;
         }
 

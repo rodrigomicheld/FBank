@@ -1,6 +1,6 @@
 ﻿using FBank.Application.Interfaces;
 using FBank.Application.Requests.Transactions;
-using FBank.Application.Services;
+using FBank.Application.Services.Transactions;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
