@@ -1,6 +1,6 @@
 ﻿namespace FBank.Application.Dto
 {
-    public class ValueDto
+    public class AmountDto
     {
         public decimal Value { get; set; }
     }

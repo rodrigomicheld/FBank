@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using FBank.Application.Interfaces;
-using FBank.Application.Queries;
+using FBank.Application.Queries.Accounts;
 using FBank.Application.ViewMoldels;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace FBank.Application.Services
+namespace FBank.Application.Services.Accounts
 {
     public class GetOneClientQueryHandler : IRequestHandler<GetOneClientQuery, ClientViewModel>
     {
@@ -18,21 +18,21 @@ namespace FBank.Application.Services
             _unitOfWork = unitOfWork;
             _logger = logger;
             _mapper = mapper;
-            _unitOfWork=unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         public Task<ClientViewModel> Handle(GetOneClientQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Listando o cliente Documento: {request.Document}");
-                       
-             var queryResult =_unitOfWork.ClientRepository.SelectOne(x=> x.Document == request.Document);
-           
+
+            var queryResult = _unitOfWork.ClientRepository.SelectOne(x => x.Document == request.Document);
+
             if (queryResult == null)
                 throw new NullReferenceException("Client not found!");
-            
+
             var mappedResult = _mapper.Map<ClientViewModel>(queryResult);
 
-            return Task.FromResult(mappedResult); 
+            return Task.FromResult(mappedResult);
         }
     }
 }

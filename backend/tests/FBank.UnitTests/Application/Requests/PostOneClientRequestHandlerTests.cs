@@ -1,8 +1,7 @@
 ﻿using FBank.Application.Interfaces;
-using FBank.Application.Requests;
-using FBank.Application.Services;
+using FBank.Application.Requests.Accounts;
+using FBank.Application.Services.Accounts;
 using FBank.Domain.Entities;
-using FBank.Domain.Enums;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;

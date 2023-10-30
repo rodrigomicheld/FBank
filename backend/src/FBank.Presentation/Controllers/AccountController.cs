@@ -1,8 +1,8 @@
-﻿using FBank.Application.Queries;
-using FBank.Application.Requests;
+﻿using FBank.Application.Queries.Accounts;
+using FBank.Application.Requests.Accounts;
 using FBank.Application.ViewMoldels;
-using FBank.Domain.Common.Filters;
 using FBank.Domain.Common;
+using FBank.Domain.Common.Filters;
 using FBank.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +13,43 @@ namespace FBank.Presentation.Controllers
     {
         public AccountController(IMediator mediator) : base(mediator)
         {
+        }
+
+        [HttpGet("client")]
+        public async Task<ActionResult<ClientViewModel>> GetOneAsync([FromQuery] string document)
+        {
+            var authorizationResult = CheckDocumentClaim(document);
+            if (authorizationResult != null)
+                return authorizationResult;
+
+            try
+            {
+                return await mediator.Send(new GetOneClientQuery { Document = RemoveDocumentMask(document) });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("client")]
+        public async Task<IActionResult> RegisterAsync([FromBody] PostOneClientRequest client)
+        {
+            try
+            {
+                var account = await mediator.Send(new PostOneClientRequest
+                {
+                    Document = RemoveDocumentMask(client.Document),
+                    Name = client.Name,
+                    Password = client.Password
+                });
+
+                return Ok($"Account successfully registered. {account}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("active-account")]
@@ -116,6 +153,26 @@ namespace FBank.Presentation.Controllers
                 return accountValue;
 
             return null;
+        }
+
+        private ActionResult CheckDocumentClaim(string document)
+        {
+            var user = HttpContext.User;
+
+            if (!user.Identity.IsAuthenticated)
+                return Unauthorized("Unauthorized user");
+
+            var documentClaim = user.Claims.FirstOrDefault(c => c.Type == "Document");
+
+            if (documentClaim == null || documentClaim.Value != RemoveDocumentMask(document))
+                return Unauthorized("User does not have permission.");
+
+            return null;
+        }
+
+        private string RemoveDocumentMask(string document)
+        {
+            return document.Trim().Replace(".", "").Replace("-", "").Replace("/", "");
         }
     }
 }

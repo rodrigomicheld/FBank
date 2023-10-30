@@ -1,6 +1,6 @@
 ﻿using Fbank.IntegrationTests.Builders.Entities;
-using FBank.Application.Queries;
-using FBank.Application.Requests;
+using FBank.Application.Queries.Accounts;
+using FBank.Application.Requests.Accounts;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
 using FluentAssertions;

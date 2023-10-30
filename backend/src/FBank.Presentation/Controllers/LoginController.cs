@@ -1,4 +1,4 @@
-﻿using FBank.Application.Requests;
+﻿using FBank.Application.Requests.Token;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

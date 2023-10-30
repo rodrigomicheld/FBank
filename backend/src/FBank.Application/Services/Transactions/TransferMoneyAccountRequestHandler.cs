@@ -6,10 +6,11 @@ using FBank.Domain.Entities;
 using FBank.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Security.Principal;
 
 namespace FBank.Application.Services.Transactions
 {
-    public class TransferMoneyAccountRequestHandler : IRequestHandler<TransferMoneyAccountRequest, TransferViewModel>
+    public class TransferMoneyAccountRequestHandler : IRequestHandler<TransferMoneyAccountRequest, string>
     {
         private readonly IUnitOfWork _unitOfWork;
         protected IMediator _mediator;
@@ -23,8 +24,10 @@ namespace FBank.Application.Services.Transactions
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
-        public async Task<TransferViewModel> Handle(TransferMoneyAccountRequest request, CancellationToken cancellationToken)
+        public async Task<string> Handle(TransferMoneyAccountRequest request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation($"Transferindo valor {request.Value} da conta: {request.AccountNumberFrom}");
+
             List<string> errors = new List<string>();
             var accountFrom = _unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumberFrom);
             var accountTo = _unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumberTo);
@@ -34,7 +37,10 @@ namespace FBank.Application.Services.Transactions
                 errors.Add("Destination account not found");
             if (request.Value <= 0)
                 errors.Add("Transfer amount cannot be less than or equal to zero");
-
+            if (accountTo.Status == AccountStatus.Inactive)
+                throw new InvalidOperationException($"Account to is Inactive!");
+            if (accountFrom.Status == AccountStatus.Inactive)
+                throw new InvalidOperationException($"Account from is Inactive!");
 
             if (errors.Count > 0)
                 throw new Exception($"Error Performing Transfer, errors : {string.Join(",", errors)}");
@@ -79,7 +85,7 @@ namespace FBank.Application.Services.Transactions
                 FlowType = transactionTo.FlowType
             });
 
-            return new TransferViewModel();
+            return "Successful transfer";
         }
     }
 }

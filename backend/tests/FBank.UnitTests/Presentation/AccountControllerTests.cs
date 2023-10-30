@@ -1,4 +1,4 @@
-﻿using FBank.Application.Queries;
+﻿using FBank.Application.Queries.Accounts;
 using FBank.Application.ViewMoldels;
 using FBank.Presentation.Controllers;
 using MediatR;
@@ -6,15 +6,15 @@ using Moq;
 
 namespace FBank.UnitTests.Presentation
 {
-    public class ClientControllerTests
+    public class AccountControllerTests
     {
         private Mock<IMediator> _mockMediator;
-        private ClientController _clientController;
+        private AccountController _accountController;
 
-        public ClientControllerTests()
+        public AccountControllerTests()
         {
             _mockMediator = new Mock<IMediator>();
-            _clientController = new ClientController(_mockMediator.Object);
+            _accountController = new AccountController(_mockMediator.Object);
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace FBank.UnitTests.Presentation
         {
             _mockMediator.Setup(obj => obj.Send(It.IsAny<GetOneClientQuery>(), new CancellationToken())).ReturnsAsync(new ClientViewModel());
 
-            var response = _clientController.GetOneAsync(It.IsAny<string>());
+            var response = _accountController.GetOneAsync(It.IsAny<string>());
             
             Assert.NotNull(response);      
         }

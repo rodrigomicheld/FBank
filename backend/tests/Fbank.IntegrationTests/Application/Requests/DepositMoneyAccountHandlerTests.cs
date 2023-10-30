@@ -1,11 +1,10 @@
 ﻿using Fbank.IntegrationTests.Builders.Entities;
-using FBank.Application.Requests;
+using FBank.Application.Requests.Accounts;
 using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Fbank.IntegrationTests.Application.Requests
 {
@@ -28,7 +27,7 @@ namespace Fbank.IntegrationTests.Application.Requests
             var account = new Account
             {
                 Id = Guid.NewGuid(),
-                Status = AccountStatus.Inactive,
+                Status = AccountStatus.Active,
                 AgencyId = agency.Id,
                 ClientId = client.Id,
             };

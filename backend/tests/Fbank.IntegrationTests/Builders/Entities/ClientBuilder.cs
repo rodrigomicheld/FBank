@@ -6,8 +6,8 @@ namespace Fbank.IntegrationTests.Builders.Entities
     public class ClientBuilder
     {
         private Guid _id;
-        private string? _name;
-        private string? _document;
+        private string _name;
+        private string _document;
         private PersonType? _personType;
         
 

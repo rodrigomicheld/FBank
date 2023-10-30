@@ -1,12 +1,12 @@
 ﻿using FBank.Application.Interfaces;
-using FBank.Application.Requests;
+using FBank.Application.Requests.Accounts;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
 using FBank.Domain.Validators;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace FBank.Application.Services
+namespace FBank.Application.Services.Accounts
 {
     public class PostOneClientRequestHandler : IRequestHandler<PostOneClientRequest, string>
     {

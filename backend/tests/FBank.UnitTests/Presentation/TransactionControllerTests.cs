@@ -24,14 +24,14 @@ namespace FBank.UnitTests.Presentation
             _mockMediator.Setup(obj => obj.Send(It
                                 .IsAny<DepositMoneyAccountRequest>(), new CancellationToken()))
                                 .ReturnsAsync(new TransactionViewModel());
-            var response = _transactionController.PostTransactionDeposit(It.IsAny<ValueDto>());
+            var response = _transactionController.PostTransactionDeposit(It.IsAny<AmountDto>());
             Assert.NotNull(response);
         }
 
         [Fact]
         public void Should_return_bad_request_when_transaction_does_not_didAsync()
         {
-            var depositMoneyAccountRequest = new ValueDto();
+            var depositMoneyAccountRequest = new AmountDto();
             var result = _mockMediator.Setup(obj => obj.Send(It.IsAny<DepositMoneyAccountRequest>(), new CancellationToken())).Throws<Exception>();
 
             _transactionController.ControllerContext = new ControllerContext();
@@ -50,7 +50,7 @@ namespace FBank.UnitTests.Presentation
             _transactionController.ControllerContext = new ControllerContext();
             _transactionController.ControllerContext.HttpContext = FakeData.ContextRequestWithLogin();
 
-            var request = new ValueDto
+            var request = new AmountDto
             {
                 Value = 10
             };

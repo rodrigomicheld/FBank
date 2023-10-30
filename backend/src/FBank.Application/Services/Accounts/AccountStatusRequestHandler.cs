@@ -1,9 +1,9 @@
 ﻿using FBank.Application.Interfaces;
-using FBank.Application.Requests;
+using FBank.Application.Requests.Accounts;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace FBank.Application.Services
+namespace FBank.Application.Services.Accounts
 {
     public class AccountStatusRequestHandler : IRequestHandler<AccountStatusRequest, string>
     {
@@ -22,7 +22,7 @@ namespace FBank.Application.Services
         {
             _logger.LogInformation($"Atualizando status da conta: {request.AccountNumber} - Status: {request.AccountStatus}");
 
-            var account =_unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumber);
+            var account = _unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumber);
 
             if (account == null)
                 throw new InvalidOperationException("Account does not exist!");

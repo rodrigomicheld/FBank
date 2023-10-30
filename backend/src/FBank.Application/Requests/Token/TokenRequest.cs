@@ -1,7 +1,7 @@
 ﻿using FBank.Application.Interfaces;
 using MediatR;
 
-namespace FBank.Application.Requests
+namespace FBank.Application.Requests.Token
 {
     public class TokenRequest : IRequest<string>, IPersistable
     {

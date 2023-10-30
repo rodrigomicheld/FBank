@@ -4,7 +4,7 @@ namespace Fbank.IntegrationTests.Builders.Entities
 {
     public class BankBuilder
     {
-        private string? _name;
+        private string _name;
         public int? _code;
         public Guid? _id;
        

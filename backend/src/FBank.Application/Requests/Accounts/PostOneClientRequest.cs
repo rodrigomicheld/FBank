@@ -1,7 +1,7 @@
 ﻿using FBank.Application.Interfaces;
 using MediatR;
 
-namespace FBank.Application.Requests
+namespace FBank.Application.Requests.Accounts
 {
     public class PostOneClientRequest : IRequest<string>, IPersistable
     {

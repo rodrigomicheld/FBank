@@ -1,5 +1,5 @@
 ﻿using Fbank.IntegrationTests.Builders.Entities;
-using FBank.Application.Requests;
+using FBank.Application.Requests.Accounts;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
 using FluentAssertions;
