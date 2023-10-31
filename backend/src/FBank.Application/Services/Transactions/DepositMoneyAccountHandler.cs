@@ -49,13 +49,19 @@ namespace FBank.Application.Services.Transactions
             var transactionBank = CompleteDataDeposit(request, account);
             _unitOfWork.TransactionRepository.Insert(transactionBank);
             var transactionReturn = _unitOfWork.TransactionRepository.SelectToId(transactionBank.Id);
-
-            await _mediator.Send(new UpdateBalanceAccountRequest()
+            try
             {
-                AccountId = transactionBank.AccountId,
-                Value = transactionBank.Value,
-                FlowType = transactionBank.FlowType
-            });
+                await _mediator.Send(new UpdateBalanceAccountRequest()
+                {
+                    AccountId = transactionBank.AccountId,
+                    Value = transactionBank.Value,
+                    FlowType = transactionBank.FlowType
+                });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             var mappedResult = _mapper.Map<TransactionViewModel>(transactionReturn);
             return await Task.FromResult(mappedResult);

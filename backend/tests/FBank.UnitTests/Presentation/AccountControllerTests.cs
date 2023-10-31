@@ -22,7 +22,7 @@ namespace FBank.UnitTests.Presentation
         {
             _mockMediator.Setup(obj => obj.Send(It.IsAny<GetOneClientQuery>(), new CancellationToken())).ReturnsAsync(new ClientViewModel());
 
-            var response = _accountController.GetOneAsync(It.IsAny<string>());
+            var response = _accountController.GetOneAsync();
             
             Assert.NotNull(response);      
         }

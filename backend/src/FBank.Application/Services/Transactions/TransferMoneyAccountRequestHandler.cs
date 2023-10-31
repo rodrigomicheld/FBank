@@ -32,12 +32,14 @@ namespace FBank.Application.Services.Transactions
                 errors.Add("Account not found");
             if (accountTo == null)
                 errors.Add("Destination account not found");
+            if (accountTo == accountFrom)
+                errors.Add("Transfer to the same account is not permitted");
             if (request.Value <= 0)
                 errors.Add("Transfer amount cannot be less than or equal to zero");
             if (accountTo.Status == AccountStatus.Inactive)
-                throw new InvalidOperationException($"Account to is Inactive!");
+                errors.Add($"Account to is Inactive");
             if (accountFrom.Status == AccountStatus.Inactive)
-                throw new InvalidOperationException($"Account from is Inactive!");
+                errors.Add($"Account from is Inactive");
 
             if (errors.Count > 0)
                 throw new Exception($"Error Performing Transfer, errors : {string.Join(",", errors)}");
@@ -55,13 +57,19 @@ namespace FBank.Application.Services.Transactions
             };
 
             _unitOfWork.TransactionRepository.Insert(transactionFrom);
-
-            await _mediator.Send(new UpdateBalanceAccountRequest()
+            try
             {
-                AccountId = accountFrom.Id,
-                Value = transactionFrom.Value,
-                FlowType = transactionFrom.FlowType
-            });
+                await _mediator.Send(new UpdateBalanceAccountRequest()
+                {
+                    AccountId = accountFrom.Id,
+                    Value = transactionFrom.Value,
+                    FlowType = transactionFrom.FlowType
+                });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             Transaction transactionTo = new Transaction()
             {
@@ -75,12 +83,19 @@ namespace FBank.Application.Services.Transactions
 
             _unitOfWork.TransactionRepository.Insert(transactionTo);
 
-            await _mediator.Send(new UpdateBalanceAccountRequest()
+            try
             {
-                AccountId = accountTo.Id,
-                Value = transactionTo.Value,
-                FlowType = transactionTo.FlowType
-            });
+                await _mediator.Send(new UpdateBalanceAccountRequest()
+                {
+                    AccountId = accountTo.Id,
+                    Value = transactionTo.Value,
+                    FlowType = transactionTo.FlowType
+                });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             return "Successful transfer";
         }
