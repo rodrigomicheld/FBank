@@ -57,13 +57,19 @@ namespace FBank.Application.Services.Transactions
             };
 
             _unitOfWork.TransactionRepository.Insert(transactionFrom);
-
-            await _mediator.Send(new UpdateBalanceAccountRequest()
+            try
             {
-                AccountId = accountFrom.Id,
-                Value = transactionFrom.Value,
-                FlowType = transactionFrom.FlowType
-            });
+                await _mediator.Send(new UpdateBalanceAccountRequest()
+                {
+                    AccountId = accountFrom.Id,
+                    Value = transactionFrom.Value,
+                    FlowType = transactionFrom.FlowType
+                });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             Transaction transactionTo = new Transaction()
             {
@@ -77,12 +83,19 @@ namespace FBank.Application.Services.Transactions
 
             _unitOfWork.TransactionRepository.Insert(transactionTo);
 
-            await _mediator.Send(new UpdateBalanceAccountRequest()
+            try
             {
-                AccountId = accountTo.Id,
-                Value = transactionTo.Value,
-                FlowType = transactionTo.FlowType
-            });
+                await _mediator.Send(new UpdateBalanceAccountRequest()
+                {
+                    AccountId = accountTo.Id,
+                    Value = transactionTo.Value,
+                    FlowType = transactionTo.FlowType
+                });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             return "Successful transfer";
         }

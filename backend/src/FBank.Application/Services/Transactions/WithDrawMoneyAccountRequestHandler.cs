@@ -22,7 +22,8 @@ namespace FBank.Application.Services.Transactions
 
         public async Task<TransactionViewModel> Handle(WithDrawMoneyAccountRequest request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Sacando valor {request.Amount} da conta: {request.AccountNumber}");
+
+                _logger.LogInformation($"Sacando valor {request.Amount} da conta: {request.AccountNumber}");
 
             decimal amount = request.Amount;
             var account = _unitOfWork.AccountRepository.SelectOne(x => x.Number == request.AccountNumber);
@@ -30,13 +31,19 @@ namespace FBank.Application.Services.Transactions
                 throw new InvalidOperationException("Account not found!");
             if (account.Status == AccountStatus.Inactive)
                 throw new InvalidOperationException($"Account is Inactive!");
-
-            await _mediator.Send(new UpdateBalanceAccountRequest()
+            try
             {
-                AccountId = account.Id,
-                Value = amount,
-                FlowType = FlowType.OUTPUT
-            });
+                await _mediator.Send(new UpdateBalanceAccountRequest()
+                {
+                    AccountId = account.Id,
+                    Value = amount,
+                    FlowType = FlowType.OUTPUT
+                });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             var transfer = new Transaction
             {
@@ -57,7 +64,7 @@ namespace FBank.Application.Services.Transactions
                 Amount = amount,
                 DateTransaction = transfer.CreateDateAt,
                 TransactionType = Domain.Enums.TransactionType.WITHDRAW,
-            };
+            };            
         }
     }
 }
