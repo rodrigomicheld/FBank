@@ -16,15 +16,15 @@ namespace FBank.Presentation.Controllers
         }
 
         [HttpGet("client")]
-        public async Task<ActionResult<ClientViewModel>> GetOneAsync([FromQuery] string document)
+        public async Task<ActionResult<ClientViewModel>> GetOneAsync()
         {
-            var authorizationResult = CheckDocumentClaim(document);
-            if (authorizationResult != null)
-                return authorizationResult;
+            var authorizationResult = CheckDocumentClaim();
+            if (authorizationResult == null)
+                return Unauthorized("Unauthorized user");
 
             try
             {
-                return await mediator.Send(new GetOneClientQuery { Document = RemoveDocumentMask(document) });
+                return await mediator.Send(new GetOneClientQuery { Document = authorizationResult });
             }
             catch (Exception ex)
             {
@@ -104,12 +104,12 @@ namespace FBank.Presentation.Controllers
             var authorizationResult = CheckAccountClaim();
             if (authorizationResult == null)
                 return Unauthorized("Unauthorized user");
-
+            
 
             var filter = new FilterClient
             {
-                InitialDate = filterClient.InitialDate,
-                FinalDate = filterClient.FinalDate,
+                InitialDate = new DateTime(filterClient.InitialDate.Year, filterClient.InitialDate.Month, filterClient.InitialDate.Day, 00, 00, 00, 000),
+                FinalDate = new DateTime(filterClient.FinalDate.Year, filterClient.FinalDate.Month, filterClient.FinalDate.Day, 23, 59, 59, 999),
                 NumberAccount = authorizationResult.Value,
                 NumberAgency = 1,
                 FlowType = filterClient.FlowType,
@@ -117,12 +117,6 @@ namespace FBank.Presentation.Controllers
                 _size = filterClient._size,
                 _order = filterClient._order
             };
-
-
-            if (authorizationResult == null)
-            {
-                return Unauthorized("Unauthorized user");
-            }
 
             try
             {
@@ -144,30 +138,30 @@ namespace FBank.Presentation.Controllers
             if (!user.Identity.IsAuthenticated)
                 return null;
 
-            var documentClaim = user.Claims.FirstOrDefault(c => c.Type == "Account");
+            var accountClaim = user.Claims.FirstOrDefault(c => c.Type == "Account");
 
-            if (documentClaim == null)
+            if (accountClaim == null)
                 return null;
 
-            if (int.TryParse(documentClaim.Value, out int accountValue))
+            if (int.TryParse(accountClaim.Value, out int accountValue))
                 return accountValue;
 
             return null;
         }
 
-        private ActionResult CheckDocumentClaim(string document)
+        private string CheckDocumentClaim()
         {
             var user = HttpContext.User;
 
             if (!user.Identity.IsAuthenticated)
-                return Unauthorized("Unauthorized user");
+                return null;
 
             var documentClaim = user.Claims.FirstOrDefault(c => c.Type == "Document");
 
-            if (documentClaim == null || documentClaim.Value != RemoveDocumentMask(document))
-                return Unauthorized("User does not have permission.");
+            if (documentClaim == null)
+                return null;
 
-            return null;
+            return documentClaim.Value;
         }
 
         private string RemoveDocumentMask(string document)
