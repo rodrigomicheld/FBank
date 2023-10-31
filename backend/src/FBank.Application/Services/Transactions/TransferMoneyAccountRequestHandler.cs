@@ -32,12 +32,14 @@ namespace FBank.Application.Services.Transactions
                 errors.Add("Account not found");
             if (accountTo == null)
                 errors.Add("Destination account not found");
+            if (accountTo == accountFrom)
+                errors.Add("Transfer to the same account is not permitted");
             if (request.Value <= 0)
                 errors.Add("Transfer amount cannot be less than or equal to zero");
             if (accountTo.Status == AccountStatus.Inactive)
-                throw new InvalidOperationException($"Account to is Inactive!");
+                errors.Add($"Account to is Inactive");
             if (accountFrom.Status == AccountStatus.Inactive)
-                throw new InvalidOperationException($"Account from is Inactive!");
+                errors.Add($"Account from is Inactive");
 
             if (errors.Count > 0)
                 throw new Exception($"Error Performing Transfer, errors : {string.Join(",", errors)}");
