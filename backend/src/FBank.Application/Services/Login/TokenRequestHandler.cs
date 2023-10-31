@@ -1,9 +1,9 @@
 ﻿using FBank.Application.Interfaces;
-using FBank.Application.Requests.Token;
+using FBank.Application.Requests.Login;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace FBank.Application.Services.Token
+namespace FBank.Application.Services.Login
 {
     public class TokenRequestHandler : IRequestHandler<TokenRequest, string>
     {

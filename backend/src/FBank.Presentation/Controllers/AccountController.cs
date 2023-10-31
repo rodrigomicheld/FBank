@@ -52,7 +52,7 @@ namespace FBank.Presentation.Controllers
             }
         }
 
-        [HttpPut("active-account")]
+        [HttpPut("active")]
         public async Task<IActionResult> ActiveAsync()
         {
             var authorizationResult = CheckAccountClaim();
@@ -75,7 +75,7 @@ namespace FBank.Presentation.Controllers
             }
         }
 
-        [HttpPut("inactive-account")]
+        [HttpPut("inactive")]
         public async Task<IActionResult> InactiveAsync()
         {
             var authorizationResult = CheckAccountClaim();
@@ -98,7 +98,7 @@ namespace FBank.Presentation.Controllers
             }
         }
 
-        [HttpGet("extract-account")]
+        [HttpGet("extract")]
         public async Task<ActionResult<PaginationResponse<ClientExtractViewModel>>> GetListExtract([FromQuery] FilterClientDto filterClient)
         {
             var authorizationResult = CheckAccountClaim();

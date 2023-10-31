@@ -1,4 +1,4 @@
-﻿using FBank.Application.Requests.Token;
+﻿using FBank.Application.Requests.Login;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
 using Microsoft.AspNetCore.Http;
