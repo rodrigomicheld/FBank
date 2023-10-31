@@ -1,4 +1,4 @@
-![image](https://github.com/rodrigomicheld/FBank/assets/45425275/08ca4fd9-d119-40cc-ab0d-36da99909ca1)
+![image](https://github.com/rodrigomicheld/FBank/assets/52136656/25c0abb8-0ed8-4656-aebe-4c22b72347b7)
 # **Levantamento de Requisitos**
 O Documento do levantamento de requisitos está salvo em:
 * **FBank\documments\Levantamento_de_Requisitos-FBANK.docx**
