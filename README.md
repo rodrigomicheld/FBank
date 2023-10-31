@@ -1,4 +1,4 @@
-![image](https://github.com/rodrigomicheld/FBank/assets/45425275/08ca4fd9-d119-40cc-ab0d-36da99909ca1)
+![image](https://github.com/rodrigomicheld/FBank/assets/52136656/7cfb8d1b-3eb4-43ad-a030-b4f14729f0f7)
 # **Passo a passo para executar a API**
 ### **Subir banco de dados**
 Para subir o banco de dados Sql Server do FBank, você poderá executar o arquivo docker no diretório:
