@@ -1,4 +1,7 @@
 ![image](https://github.com/rodrigomicheld/FBank/assets/45425275/08ca4fd9-d119-40cc-ab0d-36da99909ca1)
+# **Levantamento de Requisitos**
+O Documento do levantamento de requisitos está salvo em:
+* **FBank\documments\Levantamento_de_Requisitos-FBANK.docx**
 # **Passo a passo para executar a API**
 ### **Subir banco de dados**
 Para subir o banco de dados Sql Server do FBank, você poderá executar o arquivo docker no diretório:
