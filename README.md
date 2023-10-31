@@ -34,8 +34,6 @@ Acessar o endpoint POST WithDraw passando:
 ![withDraw](https://github.com/rodrigomicheld/FBank/assets/45425275/2ef88e96-a67b-4c91-bcab-c79f7b8900bd) 
 Saque será realizado na conta logada.
 ### **Listar informações do cliente**
-Acessar o endpoint GET Client passando:
-* Documento
 ![getClient](https://github.com/rodrigomicheld/FBank/assets/45425275/01eacebf-cb86-42a6-b4a7-f72aa34f383b)
 Nesse endpoint é possível visualizar dados do cliente e da conta.
 ### **Exibir extrato das movimentações**
