@@ -3,7 +3,7 @@ using FBank.Domain.Common;
 using FBank.Domain.Common.Filters;
 using MediatR;
 
-namespace FBank.Application.Queries
+namespace FBank.Application.Queries.Accounts
 {
     public class ListExtractClientQuery : IRequest<PaginationResponse<ClientExtractViewModel>>
     {

@@ -1,9 +1,9 @@
 ﻿using FBank.Application.Interfaces;
-using FBank.Application.Requests;
+using FBank.Application.Requests.Login;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace FBank.Application.Services
+namespace FBank.Application.Services.Login
 {
     public class TokenRequestHandler : IRequestHandler<TokenRequest, string>
     {
@@ -15,7 +15,7 @@ namespace FBank.Application.Services
         {
             _logger = logger;
             _tokenService = tokenService;
-            _unitOfWork=unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<string> Handle(TokenRequest request, CancellationToken cancellationToken)
@@ -23,7 +23,7 @@ namespace FBank.Application.Services
             _logger.LogInformation($"Autenticando cliente da conta: {request.NumberAccount}");
 
             var client = _unitOfWork.ClientRepository.SelectOne(
-                         x => x.Accounts.Any(account => account.Number == request.NumberAccount && account.Agency.Code == request.NumberAgency) && 
+                         x => x.Accounts.Any(account => account.Number == request.NumberAccount && account.Agency.Code == request.NumberAgency) &&
                          x.Password == request.Password);
 
             if (client == null)

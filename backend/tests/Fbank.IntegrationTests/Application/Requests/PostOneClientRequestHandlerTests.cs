@@ -1,9 +1,9 @@
-﻿using FBank.Application.Requests;
-using FBank.Domain.Entities;
+﻿using FBank.Domain.Entities;
 using Microsoft.AspNetCore.Mvc.Testing;
 using FluentAssertions;
 using FBank.Domain.Enums;
 using Fbank.IntegrationTests.Builders.Entities;
+using FBank.Application.Requests.Accounts;
 
 namespace Fbank.IntegrationTests.Application.Requests
 {

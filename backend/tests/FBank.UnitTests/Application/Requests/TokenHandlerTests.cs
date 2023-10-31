@@ -1,6 +1,6 @@
 ﻿using FBank.Application.Interfaces;
-using FBank.Application.Requests;
-using FBank.Application.Services;
+using FBank.Application.Requests.Login;
+using FBank.Application.Services.Login;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
 using Microsoft.Extensions.Logging;

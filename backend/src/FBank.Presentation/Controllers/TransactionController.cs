@@ -1,5 +1,4 @@
 ﻿using FBank.Application.Dto;
-using FBank.Application.Requests;
 using FBank.Application.Requests.Transactions;
 using FBank.Application.ViewMoldels;
 using MediatR;
@@ -14,7 +13,7 @@ namespace FBank.Presentation.Controllers
         }
 
         [HttpPost("WithDraw")]
-        public async Task<ActionResult<TransactionViewModel>> PostTransactionWithDraw([FromBody] ValueDto dto)
+        public async Task<ActionResult<TransactionViewModel>> PostTransactionWithDraw([FromBody] AmountDto dto)
         {
             var authorizationResult = CheckAccountClaim();
             if (authorizationResult == null)
@@ -37,7 +36,7 @@ namespace FBank.Presentation.Controllers
 
         [HttpPost]
         [Route("DepositAccount")]
-        public async Task<ActionResult<TransactionViewModel>> PostTransactionDeposit([FromBody] ValueDto dto)
+        public async Task<ActionResult<TransactionViewModel>> PostTransactionDeposit([FromBody] AmountDto dto)
         {
             var authorizationResult = CheckAccountClaim();
             if (authorizationResult == null)
@@ -60,7 +59,7 @@ namespace FBank.Presentation.Controllers
 
 
         [HttpPost("Transfer")]
-        public async Task<ActionResult<TransferViewModel>> PostTransactionTransfer([FromBody] TransferMoneyAccountDto dto)
+        public async Task<ActionResult<string>> PostTransactionTransfer([FromBody] TransferMoneyAccountDto dto)
         {
             var authorizationResult = CheckAccountClaim();
             if (authorizationResult == null)

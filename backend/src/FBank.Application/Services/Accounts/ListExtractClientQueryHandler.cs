@@ -1,14 +1,14 @@
 ﻿using FBank.Application.Dto;
 using FBank.Application.Extensions;
 using FBank.Application.Interfaces;
-using FBank.Application.Queries;
+using FBank.Application.Queries.Accounts;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Common;
 using FBank.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace FBank.Application.Services
+namespace FBank.Application.Services.Accounts
 {
     public class ListExtractClientQueryHandler : IRequestHandler<ListExtractClientQuery, PaginationResponse<ClientExtractViewModel>>
     {

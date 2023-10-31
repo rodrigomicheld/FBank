@@ -1,5 +1,5 @@
 ﻿using Fbank.IntegrationTests.Builders.Entities;
-using FBank.Application.Queries;
+using FBank.Application.Queries.Accounts;
 using FBank.Application.ViewMoldels;
 using FBank.Domain.Common;
 using FBank.Domain.Common.Filters;

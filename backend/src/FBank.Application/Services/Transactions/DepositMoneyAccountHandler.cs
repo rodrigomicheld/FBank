@@ -30,6 +30,8 @@ namespace FBank.Application.Services.Transactions
 
         public async Task<TransactionViewModel> Handle(DepositMoneyAccountRequest request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation($"Depositando valor {request.Value} na conta: {request.AccountNumber}");
+
             if (!VerifyValueDeposit(request.Value))
             {
                 var transactionViewModel = new TransactionViewModel();
@@ -40,6 +42,9 @@ namespace FBank.Application.Services.Transactions
 
             if (account == null)
                 throw new InvalidOperationException($"Account not found");
+
+            if (account.Status == AccountStatus.Inactive)
+                throw new InvalidOperationException($"Account is Inactive!");
 
             var transactionBank = CompleteDataDeposit(request, account);
             _unitOfWork.TransactionRepository.Insert(transactionBank);

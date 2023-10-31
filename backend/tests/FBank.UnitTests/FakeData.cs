@@ -1,18 +1,8 @@
-﻿using FBank.Application.Interfaces;
-using FBank.Application.Requests;
-using FBank.Application.Services;
+﻿using FBank.Application.Requests.Login;
 using FBank.Domain.Entities;
 using FBank.Domain.Enums;
-using FBank.Presentation.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Primitives;
 using Moq;
-using NSubstitute;
-using System.Linq.Expressions;
-using System.Net;
 using System.Security.Claims;
 
 namespace FBank.UnitTests

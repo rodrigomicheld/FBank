@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FBank.Application.Interfaces;
-using FBank.Application.Queries;
-using FBank.Application.Services;
+using FBank.Application.Queries.Accounts;
+using FBank.Application.Services.Accounts;
 using FBank.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using Moq;
