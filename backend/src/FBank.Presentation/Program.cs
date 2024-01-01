@@ -4,9 +4,15 @@ using FBank.Infrastructure;
 using FBank.Presentation.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+
+var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+var logger = loggerFactory.CreateLogger<Program>();
+
+logger.LogInformation("Starting application...");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,17 +81,17 @@ var dbContext = scope.ServiceProvider.GetRequiredService<DataBaseContext>();
 dbContext.Database.Migrate();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+logger.LogInformation("Application started successfully.");
 
 app.Run();
 public partial class Program { }
