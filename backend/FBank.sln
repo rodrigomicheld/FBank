@@ -33,6 +33,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1-Data", "4.1-Data", "{D6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fbank.IntegrationTests", "tests\Fbank.IntegrationTests\Fbank.IntegrationTests.csproj", "{37CD4577-1361-4B27-9198-58A370545CDE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-Function", "5-Function", "{E04309AA-7BAE-4B18-A0D9-FFE0311261EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBank.Function", "src\FBank.Function\FBank.Function.csproj", "{7396C5BD-623B-4E62-970E-B044139B5CB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,10 @@ Global
 		{37CD4577-1361-4B27-9198-58A370545CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37CD4577-1361-4B27-9198-58A370545CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37CD4577-1361-4B27-9198-58A370545CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7396C5BD-623B-4E62-970E-B044139B5CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7396C5BD-623B-4E62-970E-B044139B5CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7396C5BD-623B-4E62-970E-B044139B5CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7396C5BD-623B-4E62-970E-B044139B5CB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +87,8 @@ Global
 		{547AA02E-CF6E-40BE-8407-49FA0728C2D2} = {1582253F-4B8B-41CA-931D-FB4A1323B0DB}
 		{D6ED2E1A-E64C-47C6-9B19-1D58F4CA6547} = {547AA02E-CF6E-40BE-8407-49FA0728C2D2}
 		{37CD4577-1361-4B27-9198-58A370545CDE} = {6B932AE9-4240-446C-81BC-43F4799ABF53}
+		{E04309AA-7BAE-4B18-A0D9-FFE0311261EB} = {1582253F-4B8B-41CA-931D-FB4A1323B0DB}
+		{7396C5BD-623B-4E62-970E-B044139B5CB4} = {E04309AA-7BAE-4B18-A0D9-FFE0311261EB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8E439A6B-DF52-47B0-BB40-5EB54C35D09E}
