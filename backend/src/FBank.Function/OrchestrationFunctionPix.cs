@@ -29,7 +29,7 @@ namespace FBank.Function
             string instanceId = await client.ScheduleNewOrchestrationInstanceAsync(
                 nameof(OrchestrationFunctionPix), pixTransferOperation);
 
-            logger.LogInformation($"Iniciada orquestra??o de solicita??o de Pix com ID = '{instanceId}'.");
+            logger.LogInformation($"Iniciada orquestração de solicitação de Pix com ID = '{instanceId}'.");
 
             return client.CreateCheckStatusResponse(req, instanceId);
         }
@@ -40,7 +40,7 @@ namespace FBank.Function
                 [OrchestrationTrigger] TaskOrchestrationContext context)
         {
             ILogger logger = context.CreateReplaySafeLogger(nameof(OrchestrationFunctionPix));
-            logger.LogInformation("Iniciada valida??o para transferencia do Pix.");
+            logger.LogInformation("Iniciada validação para transferencia do Pix.");
 
             var pixTransferOperation = context.GetInput<PixTransferOperation>();
 
@@ -103,7 +103,7 @@ namespace FBank.Function
         [Function("PixEntity")]
         public static string PixEntity([ActivityTrigger] PixTransferOperation pixTransferOperation, FunctionContext executionContext)
         {
-            ILogger logger = executionContext.GetLogger("PixBlob");
+            ILogger logger = executionContext.GetLogger("PixEntity");
 
             TableClient tableClient = new TableClient(Environment.GetEnvironmentVariable("AzureWebJobsStorage"), "PixTransferencia");
             tableClient.CreateIfNotExistsAsync();
@@ -117,7 +117,7 @@ namespace FBank.Function
                 {"value",pixTransferOperation.Value}
             };
             tableClient.AddEntityAsync(tableEntity);
-            logger.LogInformation("Added Entity with order ID {0}", pixId);
+            logger.LogInformation("Incluido Pix na tabela ID {0}", pixId);
 
             return $"Incluido Pix na tabela com sucesso!";
         }
