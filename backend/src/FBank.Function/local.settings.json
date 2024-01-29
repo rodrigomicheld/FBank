@@ -1,0 +1,15 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "SeuStorage",
+    "AzureWebJobs.HttpExample.Disabled": "true",
+    "WEBSITE_RUN_FROM_PACKAGE": 1,
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "FBankAPI": "https://localhost:44377/api/fbank"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "*",
+    "CORSCredentials": false
+  }
+}
