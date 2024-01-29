@@ -1,12 +1,11 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=storagedurableaula;AccountKey=PywUsHVsIzmNo/n5wtzl/8YYzgB6tK1Tw9YS3cMyLsgkNQl7pCeFrcvH+RiWDQL2DBwBbSSItaSx+AStzJ/EeQ==;EndpointSuffix=core.windows.net",
+    "AzureWebJobsStorage": "SeuStorage",
     "AzureWebJobs.HttpExample.Disabled": "true",
     "WEBSITE_RUN_FROM_PACKAGE": 1,
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "FBankAPI": "https://fbank.azurewebsites.net/api/fbank"
-    //"FBankAPI": "https://localhost:44377/api/fbank"
+    "FBankAPI": "https://localhost:44377/api/fbank"
   },
   "Host": {
     "LocalHttpPort": 7071,
