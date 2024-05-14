@@ -8,6 +8,3 @@ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
 dotnet tool install -g dotnet-reportgenerator-globaltool
 
 
-Oculos*306090
-Escola+154590
-bdd
