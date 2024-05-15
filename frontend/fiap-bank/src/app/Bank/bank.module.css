@@ -1,0 +1,6 @@
+.bankContainer{
+    margin: 58px;
+    height: 100vh;
+    display: flex;
+    gap: 28px;
+}
