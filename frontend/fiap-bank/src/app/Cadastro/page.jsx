@@ -5,13 +5,16 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import styles from './cadastro.module.css';
 import useCadastro from '@/Hooks/useCadastro';
+import { useState } from 'react';
+import { ModalMessage } from '../components/ModalMessage';
 
 export default function Cadastro (){
 
-    const { formData,handleChange,registrarCadastro } = useCadastro();
+    const { formData, modalData, handleChange,registrarCadastro } = useCadastro();    
 
-    
+
     return(<div className={styles.cadastroPanel}>
+        <ModalMessage props={modalData}  />
         <h1>Cadastro</h1>
         <br/>
         <br/>
@@ -25,19 +28,20 @@ export default function Cadastro (){
                         value={formData.Nome}
                         onChange={handleChange}   />
                     </Row>
+                   
                     <Row >
-                        <Form.Label>e-mail</Form.Label>
-                        <Form.Control type="text" placeholder="Insira o CPF" 
-                        name='Cpf'
-                        value={formData.Cpf}
-                        onChange={handleChange}/>
-                    </Row>
-                    <Row >
-                        <Form.Label>CPF</Form.Label>
+                        <Form.Label>Email</Form.Label>
                         <Form.Control type="email" placeholder="Insira o  email"
                          name='Email'
                          value={formData.Email}
                          onChange={handleChange} />
+                    </Row>
+                    <Row >
+                        <Form.Label>CPF</Form.Label>
+                        <Form.Control type="text" placeholder="Insira o CPF" 
+                        name='Cpf'
+                        value={formData.Cpf}
+                        onChange={handleChange}/>
                     </Row>
                     <Row>
                         <Form.Label>senha</Form.Label>
