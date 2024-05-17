@@ -16,7 +16,7 @@ namespace Fbank.IntegrationTests
             services.AddSingleton(_ => mockConfiguration);
             var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
 
-            configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").AddEnvironmentVariables().Build();
 
             services.AddAplication();
             services.AddInfrastructure(configuration, true);
