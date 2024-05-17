@@ -1,4 +1,4 @@
-﻿using Fbank.IntegrationTests.Builders.Entities;
+﻿using IntegrationTests.Builders.Entities;
 using Application.Requests.Accounts;
 using Application.Requests.Transactions;
 using Application.ViewMoldels;
@@ -6,7 +6,7 @@ using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
 
-namespace Fbank.IntegrationTests.Application.Requests
+namespace IntegrationTests.Application.Requests
 {
     public class DepositMoneyAccountHandlerTests : ApplicationTestBase
     {

@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using FluentAssertions;
 using Domain.Enums;
-using Fbank.IntegrationTests.Builders.Entities;
+using IntegrationTests.Builders.Entities;
 using Application.Requests.Accounts;
 
-namespace Fbank.IntegrationTests.Application.Requests
+namespace IntegrationTests.Application.Requests
 {
     public class PostOneClientRequestHandlerTests : ApplicationTestBase
     {

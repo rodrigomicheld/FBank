@@ -1,11 +1,11 @@
-﻿using Fbank.IntegrationTests.Builders.Entities;
+﻿using IntegrationTests.Builders.Entities;
 using Application.Requests.Accounts;
 using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace Fbank.IntegrationTests.Application.Requests
+namespace IntegrationTests.Application.Requests
 {
     public class AccountStatusRequestHandlerTests : ApplicationTestBase
     {
