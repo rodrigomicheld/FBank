@@ -4,7 +4,9 @@ body{
   margin:0;
   min-height: 100vh;
 }
-
+li{
+  list-style: none;
+}
 .app-container{
   /* width: 1200px; */
   margin:58px;

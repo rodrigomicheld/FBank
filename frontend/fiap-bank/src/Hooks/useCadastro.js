@@ -59,7 +59,7 @@ const useCadastro = ()=>{
                 });                
             }
         });
-        //todo: send data to register user
+        
 
     }
 

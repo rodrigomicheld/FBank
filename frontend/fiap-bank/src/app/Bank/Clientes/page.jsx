@@ -13,7 +13,7 @@ export default function Clientes() {
         Saldo:"0",
 
     }]
-    return(<div className={styles.clienteComponent}>            
+    return(<div className={styles.clienteComponent}>
             <InputGroup className="mb-3">
                 <Form.Control
                     placeholder="Digite o cliente para pesquisar"                    
