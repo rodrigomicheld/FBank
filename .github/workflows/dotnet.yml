@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-test:
 
     runs-on: ubuntu-latest
     
@@ -30,9 +30,11 @@ jobs:
       run: dotnet restore backend/FBank.sln
     - name: Build
       run: dotnet build backend/FBank.sln --no-restore
-    - name: Test
+    - name: Unit Tests
+      run: dotnet test backend/tests/UnitTests/UnitTests.csproj --no-build --verbosity normal
+    - name: Integrantion Tests
       env:
         ConnectionStrings__DefaultConnection: "Server=127.0.0.1,1433;TrustServerCertificate=true;Database=fbank;User Id=sa;Password=Fbank2023;"
       run: |
         export LANG=pt_BR.UTF-8
-        dotnet test backend/FBank.sln --no-build --verbosity normal
+        dotnet test backend/tests/IntegrationTests/IntegrationTests.csproj --no-build --verbosity normal

@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fbank.IntegrationTests
+namespace IntegrationTests
 {
     public class IntegrationTestBase : IDisposable
     {
