@@ -3,7 +3,6 @@ using Application.Requests.Accounts;
 using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace IntegrationTests.Application.Requests
 {

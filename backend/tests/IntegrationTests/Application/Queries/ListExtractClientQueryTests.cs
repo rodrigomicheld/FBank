@@ -5,7 +5,6 @@ using Domain.Common;
 using Domain.Common.Filters;
 using Domain.Enums;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace IntegrationTests.Application.Queries
 {
