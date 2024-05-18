@@ -43,6 +43,6 @@ const useCliente = ()=>{
         });
     }
 
-    return {userData}
+    return {userData,getCurrentUserData}
 }
 export default useCliente;

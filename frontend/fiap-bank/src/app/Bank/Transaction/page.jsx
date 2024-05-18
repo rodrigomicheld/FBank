@@ -14,7 +14,7 @@ export default function Transaction (){
    
     return(<div >
         <ModalMessage props={modalData}  />
-        <h1>Realização transação</h1>
+        <h1>Realizar Operação</h1>
         <br/>
         <br/>
         <Row>
@@ -30,6 +30,7 @@ export default function Transaction (){
                             <option value="0">Selecione o Tipo</option>
                             <option value="1">Depósito</option>
                             <option value="2">Saque</option>
+                            <option value="3">Transferência</option>
                         </Form.Select>
                         
                     </Row>

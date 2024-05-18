@@ -4,14 +4,18 @@ import styles from './bankHeader.module.css';
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import useUtils from '@/Hooks/useUtils';
-export const BankHeader = () =>{
+import { useEffect } from 'react';
+export const BankHeader = (props) =>{
     const router = useRouter();
     const { deleteCookie } = useUtils();
-    const { userData } = useCliente();
+    const { userData,getCurrentUserData } = useCliente();
     const logOut = ()=>{
         deleteCookie("fiapBankCookie");
         router.push("../Login");
     }
+    useEffect(()=>{
+        getCurrentUserData();
+    },[props?.userDataUpdated])
     return(
         <div className={styles.bankHeader}>
             <div className={styles.bankHeaderLogo}>
@@ -35,7 +39,7 @@ export const BankHeader = () =>{
                 </ul>
             </div>
             <div className={styles.userPanelBalance}>
-                <span>Saldo : {userData.balance}</span>
+                <span>Saldo : R$ {userData.balance}</span>
             </div>
 
             <div className={styles.userSettingsPanel}>

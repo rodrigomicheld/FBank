@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import useAuthentication from '@/Hooks/useAuthentication';
 import Link from 'next/link';
+import Image from 'next/image';
 
 
 export default function Login(){
@@ -15,7 +16,15 @@ export default function Login(){
 
     return (
         <div className={`${styles.containerLogin}`}>  
-            <Container className={`justify-content-md-center ${styles.formLogin}`}>            
+            <Container className={`justify-content-md-center ${styles.formLogin}`}>
+                <div className={styles.bankHeaderLogo}>                    
+                        <Image 
+                            src={'/fiapbanklogo.png'}
+                            alt="Home"
+                            height={80}
+                            width={120}
+                        />                    
+                </div>
                 <div id="divFormLogin">
                     <Row>
                         <Col md={{ span: 4, offset: 4 }}>
@@ -31,7 +40,7 @@ export default function Login(){
                     </Row>
                     <Row>
                         <Col md={{ span: 4, offset: 4 }}>
-                            <Form.Label >Password</Form.Label>
+                            <Form.Label >Senha</Form.Label>
                             <Form.Control
                                 type="password"
                                 name="password"                                

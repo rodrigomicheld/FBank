@@ -15,7 +15,10 @@ const useExtract = ()=>{
             if(response.ok){
                 const result = await response.json();
                 console.log("Successo ao obter extrato do usuário");
-                setUserExtract(result.data);  
+                const extract = result.data.map( x=>{
+                    return {...x,"description":x.description.split(" ")[1]}
+                });
+                setUserExtract(extract);  
             }else{
                 return response.text().then((text) =>{    
                     console.log("Error ao obter dados usuário:", text);                 

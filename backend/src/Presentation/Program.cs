@@ -45,7 +45,23 @@ builder.Services.AddAplication();
 builder.Services.AddInfrastructure(configuration);
 builder.Services.AddAuthorization(configuration);
 
+var MyAllowSpecificOrigins = "allowAll";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyAllowSpecificOrigins,
+        builder =>
+        {
+            builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+        });
+});
+
+
 var app = builder.Build();
+app.UseCors(MyAllowSpecificOrigins);
 
 using var scope = app.Services.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<DataBaseContext>();

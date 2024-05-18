@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import useClienteApiService from "./useClienteApiService";
+import useCliente from "./useCliente";
 
 
 const useTransaction = ()=>{
     const [modalData, setModalData ]    = useState({});   
     const { registerTransaction} = useClienteApiService(); 
+    const { getCurrentUserData} = useCliente();
     const initalFormData = {
         Tipo:0,
         Valor:0
@@ -53,7 +55,8 @@ const useTransaction = ()=>{
                             show:false});
                         }
                     });    
-                    setFormData(initalFormData);            
+                    setFormData(initalFormData);     
+                    getCurrentUserData();       
             }else{
                 return response.text().then((text) =>{    
                     console.log("Error:", text);                 
