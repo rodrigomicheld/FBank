@@ -1,0 +1,1 @@
+reportgenerator -reports:"D:\00-Codify\FBank\backend\tests\UnitTests\coverage.cobertura.xml" -targetdir:"D:\00-Codify\FBank\backend\tests\CoverageResults\UnitTests" -reporttypes:Html

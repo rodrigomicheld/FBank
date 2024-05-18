@@ -1,0 +1,10 @@
+dotnet tool install --global dotnet-coverage
+
+dotnet-coverage collect dotnet run
+
+cd XUnit.Coverlet.MSBuild && dotnet add package coverlet.msbuild && cd ..
+ 
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+dotnet tool install -g dotnet-reportgenerator-globaltool
+
+

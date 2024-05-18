@@ -1,5 +1,8 @@
-﻿namespace Application.Dto
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Application.Dto
 {
+    
     public class TransferPixMoneyAccountDto
     {
         public int AccountNumberTo { get; set; }

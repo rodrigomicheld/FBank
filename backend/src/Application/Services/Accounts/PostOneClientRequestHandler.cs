@@ -43,6 +43,13 @@ namespace Application.Services.Accounts
             _unitOfWork.ClientRepository.Insert(client);
 
             var agency = _unitOfWork.AgencyRepository.SelectOne(x => x.Code == 1);
+            if (agency == null) 
+            {
+                agency = new Agency();
+                agency.Id = Guid.NewGuid();
+                agency.Code = 1;
+                agency.Name = "Agência de Teste";
+            }                
 
             var account = new Account
             {
