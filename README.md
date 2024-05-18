@@ -16,7 +16,7 @@ Acessar o endpoint POST Client passando:
 ### **Logar na conta**
 * Usuário ;
 * Senha;
-![login](https://github.com/rodrigomicheld/FBank/assets/45425275/f532751b-2d70-43e3-a8b0-9f3d19b6cdf8)
+
 Para realizar transações e consultas é necessário está logado em alguma conta com token válido, caso contrário o cliente não terá autorização de acesso.
 ### **Realizar depósito**
 Acessar o endpoint POST DepositAccount passando:
