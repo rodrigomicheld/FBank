@@ -2,7 +2,7 @@
 
 namespace Application.Dto
 {
-    [ExcludeFromCodeCoverage]
+    
     public class TransferPixMoneyAccountDto
     {
         public int AccountNumberTo { get; set; }

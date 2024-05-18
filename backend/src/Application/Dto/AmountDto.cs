@@ -2,7 +2,7 @@
 
 namespace Application.Dto
 {
-    [ExcludeFromCodeCoverage]
+    
     public class AmountDto
     {
         public decimal Value { get; set; }

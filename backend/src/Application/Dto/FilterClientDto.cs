@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Domain.Common.Filters
 {
-    [ExcludeFromCodeCoverage]
+    
     public class FilterClientDto : FilterBase
     {
         public DateTime InitialDate { get; set; } = DateTime.MinValue;

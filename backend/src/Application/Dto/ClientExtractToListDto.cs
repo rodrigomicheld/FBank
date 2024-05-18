@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Application.Dto
 {
-    [ExcludeFromCodeCoverage]
+    
     public class ClientExtractToListDto
     {
         public Guid IdTransaction { get; set; }
