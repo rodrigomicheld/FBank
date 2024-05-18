@@ -14,9 +14,7 @@ Acessar o endpoint POST Client passando:
 * Senha
 ![client](https://github.com/rodrigomicheld/FBank/assets/45425275/18b49cf2-c009-42b0-8863-0299729d9d1b)
 ### **Logar na conta**
-Acessar o endpoint GET Login passando: 
-* Agencia = 1 (A agência sempre será essa);
-* Conta;
+* Usuário ;
 * Senha;
 ![login](https://github.com/rodrigomicheld/FBank/assets/45425275/f532751b-2d70-43e3-a8b0-9f3d19b6cdf8)
 Para realizar transações e consultas é necessário está logado em alguma conta com token válido, caso contrário o cliente não terá autorização de acesso.
