@@ -1,11 +1,8 @@
-﻿using Domain.Entities;
-using Microsoft.AspNetCore.Mvc.Testing;
-using FluentAssertions;
+﻿using Application.Requests.Accounts;
+using Domain.Entities;
 using Domain.Enums;
 using Fbank.IntegrationTests.Builders.Entities;
-using Application.Requests.Accounts;
-using NSubstitute.Extensions;
-using System.Reflection.Metadata;
+using FluentAssertions;
 
 namespace Fbank.IntegrationTests.Application.Requests
 {
@@ -80,7 +77,7 @@ namespace Fbank.IntegrationTests.Application.Requests
         }
 
         [Fact]
-        public async Task Shoud_return_exception_when_client_not_exists()
+        public async Task Shoud_return_only_agency_and_count_when_client_not_exists()
         {
             const string NAME = "cliente Teste";
             const string DOCUMENT = "34425915038";
