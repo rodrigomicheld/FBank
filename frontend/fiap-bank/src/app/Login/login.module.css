@@ -1,8 +1,12 @@
 .containerLogin{
-    background: linear-gradient(180deg, #242368 0%, #00090E 100%);
+    background:linear-gradient(180deg, #101719 0%, #101719 100%);
     color: #fff;
     height: 100vh;
     width: 100vw;
+}
+.bankHeaderLogo{
+    display: flex;
+    justify-content: center;
 }
 .formLogin{
     

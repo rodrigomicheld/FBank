@@ -22,7 +22,7 @@ export default function Extract() {
                                             <td></td>
                                             <td>{item.dateTransaction}</td>
                                             <td>{item.description}</td>
-                                            <td>{item.amount}</td>
+                                            <td>R$ {item.amount}</td>
                                         </tr>)
                                 })
                              }
