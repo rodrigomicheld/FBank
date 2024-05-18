@@ -1,0 +1,10 @@
+
+.bankHeaderContainer{  
+    margin: 1px 60px;      
+}
+.bankContainer{
+    margin: 10px 60px;
+    height: 100vh;
+    display: flex;
+    gap: 28px;
+}

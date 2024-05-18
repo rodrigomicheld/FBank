@@ -2,7 +2,7 @@
 using Domain.Enums;
 
 
-namespace Fbank.IntegrationTests.Builders.Entities
+namespace IntegrationTests.Builders.Entities
 {
     public class TransactionBuilder
     {

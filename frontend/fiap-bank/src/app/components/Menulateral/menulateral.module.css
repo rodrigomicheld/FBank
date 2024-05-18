@@ -1,0 +1,13 @@
+.Menulateral {
+    border-radius: 8px;
+    background:  #171d1f;
+    padding: 40px 16px;
+    width: 140px;    
+    height: 100vh;
+}
+.ItensMenu{
+    padding: 0;
+}
+.ItensMenu li{
+    list-style: none;
+}

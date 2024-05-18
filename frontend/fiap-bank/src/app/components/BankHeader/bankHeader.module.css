@@ -1,0 +1,59 @@
+
+
+
+.bankHeader{  
+    border-radius: 4px 4px 0px 7px;
+    height: 120px;
+    background: #171d1f;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    font-size: 20px;
+    font-family: sans-serif;
+}
+.bankHeaderLogo{
+
+}
+.userPanelData{
+    width: 25%;
+    font-family: fantasy;
+}
+.userPanelData span{
+    font-size: 40px;
+    font-weight: bold;   
+}
+
+.userPanelData span.userPanelDataName{
+    font-size: 15px;
+    text-transform: uppercase;
+    margin-left: 5px;
+}
+.userPanelDataAccount{
+    width: 25%;
+}
+.userPanelBalance{
+    width: 25%;
+}
+.userSettingsPanel{
+    width: 25%;
+    float: right;
+}
+.userSettingsPanel .userSettingsIcon{
+    display: flex;
+    flex-direction: column;
+    float: right;
+}
+.userSettingsPanel .userSettingsIcon i{
+    font-size: 50px;
+}
+.userSettingsPanel Button{
+    background: transparent;
+    color: #fff;
+    border: none;
+    text-decoration: underline;
+    font-size: 15px;
+}
+.userSettingsPanel Button i{
+    font-size:inherit !important;
+}

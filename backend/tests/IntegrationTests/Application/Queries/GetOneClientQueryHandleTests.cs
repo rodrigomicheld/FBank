@@ -1,12 +1,11 @@
-﻿using Fbank.IntegrationTests.Builders.Entities;
+﻿using IntegrationTests.Builders.Entities;
 using Application.Queries.Accounts;
 using Application.Requests.Accounts;
 using Application.ViewMoldels;
 using Domain.Entities;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace Fbank.IntegrationTests.Application.Queries
+namespace IntegrationTests.Application.Queries
 {
     public class GetOneClientQueryHandleTests : ApplicationTestBase
     {

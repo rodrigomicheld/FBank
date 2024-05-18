@@ -1,6 +1,6 @@
 ﻿using Application.Requests.Transactions;
 
-namespace Fbank.IntegrationTests.Builders.Entities
+namespace IntegrationTests.Builders.Entities
 {
     public class DepositBuilder
     {

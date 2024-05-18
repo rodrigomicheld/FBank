@@ -1,13 +1,12 @@
-﻿using Fbank.IntegrationTests.Builders.Entities;
+﻿using IntegrationTests.Builders.Entities;
 using Application.Queries.Accounts;
 using Application.ViewMoldels;
 using Domain.Common;
 using Domain.Common.Filters;
 using Domain.Enums;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace Fbank.IntegrationTests.Application.Queries
+namespace IntegrationTests.Application.Queries
 {
     public class ListExtractClientQueryTests : ApplicationTestBase
     {

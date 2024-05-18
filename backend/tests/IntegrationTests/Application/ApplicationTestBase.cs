@@ -1,8 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Fbank.IntegrationTests.Application
+namespace IntegrationTests.Application
 {
     public abstract class ApplicationTestBase : IntegrationTestBase
     {

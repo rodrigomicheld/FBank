@@ -98,5 +98,80 @@ namespace UnitTests.Application.Requests
             Assert.Equal(10, response.Amount);
             Assert.Equal(TransactionType.WITHDRAW, response.TransactionType);
         }
+
+        [Fact]
+        public async void Should_Return_Exception_When_Account_Is_Inactive()
+        {
+            var _mockLoggerUpdateBalance = new Mock<ILogger<UpdateBalanceAccountRequestHandler>>();
+            var serviceProvider = new ServiceCollection()
+                .AddTransient(_ => _mockUnitOfWork.Object)
+                .AddTransient(_ => _mockLoggerUpdateBalance.Object)
+                .AddTransient<IRequestHandler<UpdateBalanceAccountRequest, Unit>, UpdateBalanceAccountRequestHandler>()
+                .AddTransient<IMediator, Mediator>()
+                .BuildServiceProvider();
+
+            var mediator = serviceProvider.GetRequiredService<IMediator>();
+
+            var request = new WithDrawMoneyAccountRequest
+            {
+                AccountNumber = 1,
+                Amount = 110
+            };
+
+            var mockResponse = new TransactionViewModel
+            {
+                Amount = 10,
+                TransactionType = Domain.Enums.TransactionType.WITHDRAW,
+                DateTransaction = DateTime.Now
+            };
+
+            _mockUnitOfWork.Setup(s => s.AccountRepository.SelectOne(It.IsAny<Expression<Func<Account, bool>>>()))
+                           .Returns(FakeData.Account(AccountStatus.Inactive));
+
+            _mockUnitOfWork.Setup(s => s.TransactionRepository.Insert(It.IsAny<Transaction>()));
+
+            var handler = new WithDrawMoneyAccountRequestHandler(_mockUnitOfWork.Object, mediator, _mockLogger.Object);
+
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(request, CancellationToken.None));
+            Assert.Contains("Account is Inactive!", ex.Message);
+        }
+
+        [Fact]
+        public async void Should_Return_Exception_When_Account_Is_Not_Nound()
+        {
+            var _mockLoggerUpdateBalance = new Mock<ILogger<UpdateBalanceAccountRequestHandler>>();
+            var serviceProvider = new ServiceCollection()
+                .AddTransient(_ => _mockUnitOfWork.Object)
+                .AddTransient(_ => _mockLoggerUpdateBalance.Object)
+                .AddTransient<IRequestHandler<UpdateBalanceAccountRequest, Unit>, UpdateBalanceAccountRequestHandler>()
+                .AddTransient<IMediator, Mediator>()
+                .BuildServiceProvider();
+
+            var mediator = serviceProvider.GetRequiredService<IMediator>();
+
+            var request = new WithDrawMoneyAccountRequest
+            {
+                AccountNumber = 1,
+                Amount = 110
+            };
+
+            var mockResponse = new TransactionViewModel
+            {
+                Amount = 10,
+                TransactionType = Domain.Enums.TransactionType.WITHDRAW,
+                DateTransaction = DateTime.Now
+            };
+
+            _mockUnitOfWork.Setup(s => s.AccountRepository.SelectOne(It.IsAny<Expression<Func<Account, bool>>>()))
+                           .Returns((Account)null);
+
+            _mockUnitOfWork.Setup(s => s.TransactionRepository.Insert(It.IsAny<Transaction>()));
+
+            var handler = new WithDrawMoneyAccountRequestHandler(_mockUnitOfWork.Object, mediator, _mockLogger.Object);
+
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(request, CancellationToken.None));
+            Assert.Contains("Account not found", ex.Message);
+        }
+
     }
 }

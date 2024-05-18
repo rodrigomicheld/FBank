@@ -1,4 +1,5 @@
 ﻿using Application.Requests.Login;
+using Application.Requests.Transactions;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.AspNetCore.Http;
@@ -36,7 +37,7 @@ namespace UnitTests
             };
         }
 
-        public static Account Account()
+        public static Account Account(AccountStatus accountStatus = AccountStatus.Active)
         {
             return new Account
             {
@@ -44,7 +45,7 @@ namespace UnitTests
                 Client = Client(),
                 Agency = Agency(),  
                 Number = 1,
-                Status = AccountStatus.Active,
+                Status = accountStatus,
                 Balance = 100
             };
         }
@@ -67,6 +68,18 @@ namespace UnitTests
             mockHttpContext.Setup(m => m.User.Identity.IsAuthenticated).Returns(true);
 
             return mockHttpContext.Object;
+        }
+
+        public static Transaction Transaction(DepositMoneyAccountRequest request, Account fakeAccount)
+        {
+            var transactionBank = new Transaction();
+            transactionBank.TransactionType = TransactionType.DEPOSIT;
+            transactionBank.FlowType = FlowType.INPUT;
+            transactionBank.AccountToId = fakeAccount.Id;
+            transactionBank.AccountId = fakeAccount.Id;
+            transactionBank.Value = request.Value;
+            transactionBank.Account = fakeAccount;
+            return transactionBank;
         }
     }
 }
