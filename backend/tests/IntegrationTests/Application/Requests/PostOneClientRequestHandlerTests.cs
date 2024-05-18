@@ -1,10 +1,10 @@
 ﻿using Application.Requests.Accounts;
 using Domain.Entities;
 using Domain.Enums;
-using Fbank.IntegrationTests.Builders.Entities;
+using IntegrationTests.Builders.Entities;
 using FluentAssertions;
 
-namespace Fbank.IntegrationTests.Application.Requests
+namespace IntegrationTests.Application.Requests
 {
     public class PostOneClientRequestHandlerTests : ApplicationTestBase
     {
