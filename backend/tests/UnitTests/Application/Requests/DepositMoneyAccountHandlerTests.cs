@@ -102,41 +102,5 @@ namespace UnitTests.Application.Requests
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _handler.Handle(request, CancellationToken.None));
             Assert.Contains("Account is Inactive!", ex.Message);
         }
-
-        //[Fact]
-        //public async Task Should_Return_Exception_When_Account_MAPPER_NAO_ESTA_FUNCIONANDO()
-        //{
-        //    var serviceProvider = new ServiceCollection()
-        //        .AddTransient(_ => _mockUnitOfWork)
-        //        .AddTransient<IMediator, Mediator>()
-        //        //.AddTransient(_=>_mockMediator)
-        //        .AddAutoMapper(typeof(BaseEntityToViewModelMapping))
-        //        .BuildServiceProvider();
-            
-        //    var mediator = serviceProvider.GetRequiredService<IMediator>();
-
-        //    var request = new DepositMoneyAccountRequest
-        //    {
-        //        AccountNumber = 1,
-        //        AgencyCode = 1,
-        //        Value = 10
-        //    };
-
-        //    var fakeAccount = FakeData.Account();
-
-
-        //    _mockUnitOfWork.AccountRepository.SelectOne(Arg.Any<Expression<Func<Account, bool>>>()).Returns(fakeAccount);
-
-        //    _mockUnitOfWork.TransactionRepository.SelectToId(Arg.Any<Guid>()).Returns(FakeData.Transaction(request, fakeAccount));
-
-        //    var teste = _handler.Handle(request, CancellationToken.None);
-
-        //    //Assert.Equal(100M, _mockUnitOfWork.Object.AccountRepository.SelectToId(fakeAccount.Id).Balance);
-        //    //var response = await handler.Handle(request, CancellationToken.None);
-
-        //    //Assert.Equal(110M, _mockUnitOfWork.Object.AccountRepository.SelectToId(fakeAccount.Id).Balance);
-        //}
-
-
     }
 }
