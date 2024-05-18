@@ -78,5 +78,31 @@ namespace UnitTests.Presentation
             Assert.Equal(mockResponse.DateTransaction, transactionViewModel.DateTransaction);
             Assert.Equal(10, transactionViewModel.Amount);
         }
-    }
+
+        [Fact]
+        public async void Should_Make_The_PostTransactionTransferAsync()
+        {
+            _transactionController.ControllerContext = new ControllerContext();
+            _transactionController.ControllerContext.HttpContext = FakeData.ContextRequestWithLogin();
+
+            var request = new TransferMoneyAccountDto
+            {
+                Value = 10,
+                AccountNumberTo = 2,
+            };
+            _mockMediator.Setup(obj => obj.Send(It
+                               .IsAny<TransferMoneyAccountRequest>(), new CancellationToken()))
+                               .ReturnsAsync("Successful transfer");
+
+            var response = await _transactionController.PostTransactionTransfer(request);
+
+            string transctionReturn = string.Empty;
+            if (response.Result is OkObjectResult okResult)
+            {
+                transctionReturn = okResult.Value as string;
+            }
+
+            Assert.Equal("Successful transfer", transctionReturn);
+        }
+ }
 }

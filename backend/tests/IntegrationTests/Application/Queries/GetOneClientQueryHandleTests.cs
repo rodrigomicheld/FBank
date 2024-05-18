@@ -4,7 +4,6 @@ using Application.Requests.Accounts;
 using Application.ViewMoldels;
 using Domain.Entities;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace IntegrationTests.Application.Queries
 {

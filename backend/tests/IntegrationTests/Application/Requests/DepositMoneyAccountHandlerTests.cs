@@ -10,7 +10,7 @@ namespace IntegrationTests.Application.Requests
 {
     public class DepositMoneyAccountHandlerTests : ApplicationTestBase
     {
-        private void PrepareScenarioToTest()
+        private void PrepareScenarioToTest(AccountStatus accountStatus = AccountStatus.Active)
         {
             var request = new AccountStatusRequest { AccountNumber = 1, AccountStatus = AccountStatus.Active };
 
@@ -27,7 +27,7 @@ namespace IntegrationTests.Application.Requests
             var account = new Account
             {
                 Id = Guid.NewGuid(),
-                Status = AccountStatus.Active,
+                Status = accountStatus,
                 AgencyId = agency.Id,
                 ClientId = client.Id,
             };
@@ -48,7 +48,7 @@ namespace IntegrationTests.Application.Requests
         }
 
         [Fact]
-        public async Task Should_return_Deposit_NotDid()
+        public async Task ShouldReturnAnException_WhenTheAccountDoesNotExist()
         {
             PrepareScenarioToTest();
 
@@ -57,6 +57,32 @@ namespace IntegrationTests.Application.Requests
             Func<Task> handle = async () => await Handle<DepositMoneyAccountRequest, TransactionViewModel>(request);
 
             await handle.Should().ThrowAsync<InvalidOperationException>().WithMessage("Account not found");
+        }
+
+        [Fact]
+        public async Task ShouldReturnAnException_WhenTheAccountInactive()
+        {
+            PrepareScenarioToTest(AccountStatus.Inactive);
+
+            var request = new DepositMoneyAccountRequest { AccountNumber = 1, Value = 10 };
+
+            Func<Task> handle = async () => await Handle<DepositMoneyAccountRequest, TransactionViewModel>(request);
+
+            await handle.Should().ThrowAsync<InvalidOperationException>().WithMessage("Account is Inactive!");
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyObject_WhenValueLessThanOrEqual0()
+        {
+            PrepareScenarioToTest();
+
+            var request = new DepositMoneyAccountRequest { AccountNumber = 1, Value = 0 };
+
+            var response = await Handle<DepositMoneyAccountRequest, TransactionViewModel>(request);
+
+            Assert.Equal(0, response.Amount);
+            Assert.Equal(TransactionType.PAYMENT, response.TransactionType);
+            Assert.Equal(DateTime.MinValue, response.DateTransaction);
         }
     }
 }

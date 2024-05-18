@@ -22,7 +22,7 @@ namespace Application.Services.Transactions
             if (request.Value <= 0)
                 errors.Add("Value to be updated cannot be less than or equal to zero");
 
-            if (request.FlowType.GetHashCode() == FlowType.OUTPUT.GetHashCode() && request.Value > accountUpdated.Balance)
+            if (request.FlowType.GetHashCode() == FlowType.OUTPUT.GetHashCode() && accountUpdated !=null && request.Value > accountUpdated.Balance)
                 errors.Add("Insufficient balance");
 
             if (errors.Count > 0)
