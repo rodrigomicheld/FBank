@@ -1,25 +1,24 @@
 Docker e Kubernates
 
-1 - docker network create fbank_network
+Subir o banco sql server
+1 - docker run -d --name fbankdb -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Fbank2023" -p 1433:1433 mcr.microsoft.com/mssql/server:2022-latest
 --------------------------------------------------
-2 - docker run -d --name fbankdb --network fbank_network -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Fbank2023" -p 1433:1433 mcr.microsoft.com/mssql/server:2022-latest
+Verificar ip do banco
+2 - docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' fbankdb
 --------------------------------------------------
-verificar ip
-3 - docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' fbankdb
---------------------------------------------------
-4 - Verifica a connection string e informar o ip no appconfig: "DefaultConnection": "Server=172.25.0.2,1433;Database=fbank;User Id=sa;Password=Fbank2023;Encrypt=False;"
+3 - Verifica a connection string e informar o ip no appconfig: "DefaultConnection": "Server=172.25.0.2,1433;Database=fbank;User Id=sa;Password=Fbank2023;Encrypt=False;"
 ---------------------------------------------------
-na pasta FBank\backend\devops\docker
-5 - docker build -t paulovasconcelos10/fbank:v1 -f Dockerfile ../../
+Na pasta FBank\backend\devops\docker
+4 - docker build -t paulovasconcelos10/fbank:v1 -f Dockerfile ../../
 
-6 - docker run -d -p 8080:80 --network fbank_network --name fbank_app paulovasconcelos10/fbank:v1
+5 - docker run -d -p 8080:80 --name fbank_app paulovasconcelos10/fbank:v1
 ---------------------------------------------------
 Na pasta FBank\backend\devops\k8s
-7 - kubectl apply -f pod.yml
+6 - kubectl apply -f pod.yml
 
-8 - kubectl get pods
+7 - kubectl get pods
 
-9 - kubectl port-forward fbankpod 7001:80
-
-precisar excluir a pod
+8 - kubectl port-forward fbankpod 7001:80
+------------------------------------------------
+Obs: Se precisar excluir a pod
 kubectl delete pods fbankpod
