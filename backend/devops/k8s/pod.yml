@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fbankpod
+  labels: 
+    app: fbankpod
+spec: 
+  containers:
+  - name: fbankpod     
+    image: paulovasconcelos10/fbank:v1
+    ports:
+    - containerPort: 80

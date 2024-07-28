@@ -1,0 +1,24 @@
+Docker e Kubernates
+
+Subir o banco sql server
+1 - docker run -d --name fbankdb -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Fbank2023" -p 1433:1433 mcr.microsoft.com/mssql/server:2022-latest
+--------------------------------------------------
+Verificar ip do banco
+2 - docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' fbankdb
+--------------------------------------------------
+3 - Verifica a connection string e informar o ip no appconfig: "DefaultConnection": "Server=172.25.0.2,1433;Database=fbank;User Id=sa;Password=Fbank2023;Encrypt=False;"
+---------------------------------------------------
+Na pasta FBank\backend\devops\docker
+4 - docker build -t paulovasconcelos10/fbank:v1 -f Dockerfile ../../
+
+5 - docker run -d -p 8080:80 --name fbank_app paulovasconcelos10/fbank:v1
+---------------------------------------------------
+Na pasta FBank\backend\devops\k8s
+6 - kubectl apply -f pod.yml
+
+7 - kubectl get pods
+
+8 - kubectl port-forward fbankpod 7001:80
+------------------------------------------------
+Obs: Se precisar excluir a pod
+kubectl delete pods fbankpod
